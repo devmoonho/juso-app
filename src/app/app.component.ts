@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen, Keyboard } from 'ionic-native';
+import { StatusBar, Splashscreen, Keyboard, ScreenOrientation } from 'ionic-native';
 
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
@@ -37,6 +37,8 @@ export class MyApp {
       Splashscreen.hide();
       
       Keyboard.disableScroll(true); 
+      // TODO for debug 
+      ScreenOrientation.lockOrientation('portrait');
     });
   }
 
