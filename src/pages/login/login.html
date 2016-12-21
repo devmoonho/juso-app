@@ -5,31 +5,34 @@
         </ion-title>
         <ion-buttons start>
             <button ion-button (click)="dismiss()">
-        <span color="primary" showWhen="ios">취소</span>
+        <span showWhen="ios">취소</span>
         <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
       </button>
         </ion-buttons>
     </ion-toolbar>
 </ion-header>
 <ion-content padding>
+    <div class="spacer" style="height: 40px;"></div>
     <ion-row class="logo-row">
         <ion-col></ion-col>
         <ion-col width-67>
-            <img src="http://placehold.it/300x200" />
+            <img src="assets/icon/user-card.png" style="display: block; width: 50%; height: auto; margin-left: auto; margin-right: auto;"
+            />
         </ion-col>
         <ion-col></ion-col>
     </ion-row>
     <form class="list">
-        <ion-list>
-            <ion-item>
-                <ion-input type="text" placeholder="Username"></ion-input>
-            </ion-item>
-            <ion-item>
-                <ion-input type="password" placeholder="Password"></ion-input>
-            </ion-item>
-        </ion-list>
+        <ion-item>
+            <ion-label floating>사용자 이메일</ion-label>
+            <ion-input type="email"></ion-input>
+        </ion-item>
+        <ion-item>
+            <ion-label floating>패스워드</ion-label>
+            <ion-input type="password"></ion-input>
+        </ion-item>
         <div padding>
-            <button ion-button color="purple-300" block>Sign In</button>
+            <button ion-button color="purple-300" block>로그인</button>
+            <button ion-button color="purple-300" block clear>가입하기</button>
         </div>
     </form>
 </ion-content>

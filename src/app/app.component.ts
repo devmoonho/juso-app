@@ -20,7 +20,7 @@ export class MyApp {
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform) {
-    this.initializeApp();
+    this.initializeApp(platform);
 
     // used for an example of ngFor and navigation
     this.pages = [
@@ -30,7 +30,7 @@ export class MyApp {
 
   }
 
-  initializeApp() {
+  initializeApp(platform: Platform) {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -38,8 +38,10 @@ export class MyApp {
       Splashscreen.hide();
       
       Keyboard.disableScroll(true); 
-      // TODO for debug 
-      // ScreenOrientation.lockOrientation('portrait');
+
+      if (platform.is('android') || platform.is('ios')){
+        ScreenOrientation.lockOrientation('portrait');
+      }
     });
   }
 
