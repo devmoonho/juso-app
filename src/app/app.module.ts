@@ -7,6 +7,8 @@ import { HomePage } from '../pages/home/home';
 import { StartPage } from '../pages/start/start';
 import { LoginPage } from '../pages/login/login';
 
+import { AuthService } from '../services/auth';
+
 
 @NgModule({
   declarations: [
@@ -29,6 +31,7 @@ import { LoginPage } from '../pages/login/login';
     HomePage,
     LoginPage,
   ],
-  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler}]
+  providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
+  AuthService]
 })
 export class AppModule {}

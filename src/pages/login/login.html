@@ -21,17 +21,17 @@
         </ion-col>
         <ion-col></ion-col>
     </ion-row>
-    <form class="list">
+    <form class="list" (submit)="loginUser(email.value, password.value)">
         <ion-item>
             <ion-label floating>사용자 이메일</ion-label>
-            <ion-input type="email"></ion-input>
+            <ion-input #email type="email"></ion-input>
         </ion-item>
         <ion-item>
             <ion-label floating>패스워드</ion-label>
-            <ion-input type="password"></ion-input>
+            <ion-input #password type="password"></ion-input>
         </ion-item>
         <div padding>
-            <button ion-button color="purple-300" block>로그인</button>
+            <button ion-button type="submit" color="purple-300" block >로그인</button>
             <button ion-button color="purple-300" block clear>가입하기</button>
         </div>
     </form>
