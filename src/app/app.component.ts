@@ -5,6 +5,7 @@ import { StatusBar, Splashscreen, Keyboard, ScreenOrientation } from 'ionic-nati
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
+import { LoginPage } from '../pages/login/login';
 
 
 @Component({
@@ -13,8 +14,8 @@ import { AboutPage } from '../pages/about/about';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = StartPage;
-  // rootPage: any = HomePage;
+  // rootPage: any = StartPage;
+  rootPage: any = LoginPage;
 
   pages: Array<{title: string, component: any}>;
 
@@ -38,7 +39,7 @@ export class MyApp {
       
       Keyboard.disableScroll(true); 
       // TODO for debug 
-      ScreenOrientation.lockOrientation('portrait');
+      // ScreenOrientation.lockOrientation('portrait');
     });
   }
 

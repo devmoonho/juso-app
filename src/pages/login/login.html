@@ -1,0 +1,35 @@
+<ion-header>
+    <ion-toolbar color="purple-300">
+        <ion-title>
+            로그인
+        </ion-title>
+        <ion-buttons start>
+            <button ion-button (click)="dismiss()">
+        <span color="primary" showWhen="ios">취소</span>
+        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
+      </button>
+        </ion-buttons>
+    </ion-toolbar>
+</ion-header>
+<ion-content padding>
+    <ion-row class="logo-row">
+        <ion-col></ion-col>
+        <ion-col width-67>
+            <img src="http://placehold.it/300x200" />
+        </ion-col>
+        <ion-col></ion-col>
+    </ion-row>
+    <form class="list">
+        <ion-list>
+            <ion-item>
+                <ion-input type="text" placeholder="Username"></ion-input>
+            </ion-item>
+            <ion-item>
+                <ion-input type="password" placeholder="Password"></ion-input>
+            </ion-item>
+        </ion-list>
+        <div padding>
+            <button ion-button color="purple-300" block>Sign In</button>
+        </div>
+    </form>
+</ion-content>
