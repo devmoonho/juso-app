@@ -6,7 +6,7 @@ import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
 import { LoginPage } from '../pages/login/login';
-
+import firebase from 'firebase';
 
 @Component({
   templateUrl: 'app.html'
@@ -28,6 +28,14 @@ export class MyApp {
       { title: 'Page Two', component: AboutPage }
     ];
 
+    // Initialize Firebase
+    firebase.initializeApp ({
+      apiKey: "AIzaSyAMNwt55ewLWJv3Ymzf8jwzhxQlSURJyWQ",
+      authDomain: "juso-560bb.firebaseapp.com",
+      databaseURL: "https://juso-560bb.firebaseio.com",
+      storageBucket: "juso-560bb.appspot.com",
+      messagingSenderId: "19394399742"
+    });
   }
 
   initializeApp(platform: Platform) {
@@ -42,6 +50,7 @@ export class MyApp {
       if (platform.is('android') || platform.is('ios')){
         ScreenOrientation.lockOrientation('portrait');
       }
+
     });
   }
 
