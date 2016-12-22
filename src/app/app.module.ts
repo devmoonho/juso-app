@@ -8,6 +8,7 @@ import { StartPage } from '../pages/start/start';
 import { LoginPage } from '../pages/login/login';
 
 import { AuthService } from '../services/auth';
+import { DatabaseService } from '../services/database';
 
 
 @NgModule({
@@ -32,6 +33,6 @@ import { AuthService } from '../services/auth';
     LoginPage,
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
-  AuthService]
+  AuthService, DatabaseService]
 })
 export class AppModule {}

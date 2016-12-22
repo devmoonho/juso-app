@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { ModalController, Platform, ViewController, NavController } from 'ionic-angular';
 import { AuthService } from '../../services/auth'
+import { DatabaseService } from '../../services/database'
 import { AlertController } from 'ionic-angular';
 
 import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-login',
-  providers: [AuthService],
+  providers: [AuthService, DatabaseService],
   templateUrl: 'login.html'
 })
 
@@ -18,6 +19,7 @@ export class LoginPage {
     public viewCtrl: ViewController,
     public navCtrl: NavController,
     public authService: AuthService,
+    public databaseService: DatabaseService,
     public alertCtrl: AlertController
   ) {
   }
@@ -66,8 +68,12 @@ export class LoginPage {
   }
 
   signup(name: string, email: string, password: string) {
+
     this.authService.createUser(email, password)
       .then((res) => {
+        let user = this.authService.getCurrentUser();
+        this.databaseService.createUser(user.uid, name, email);
+
         this.navCtrl.setRoot(HomePage);
       })
       .catch((error) => {
