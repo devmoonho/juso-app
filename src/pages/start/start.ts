@@ -25,8 +25,6 @@ export class StartPage {
   }
 
   goLoginPage(): void {
-    let modal = this.modalCtrl.create(LoginPage);
-    modal.present()
+    this.navCtrl.push(LoginPage);
   }
-
 }

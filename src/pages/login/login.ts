@@ -36,7 +36,11 @@ export class LoginPage {
   }
 
   generateKorMessage(ret: any) {
+    
     switch (ret) {
+      case undefined:
+        this.navCtrl.setRoot(HomePage);
+        break;
       case 'auth/invalid-email':
         this.showLoginAlert("유효한 이메일이 아닙니다.");
         break;
@@ -73,7 +77,7 @@ export class LoginPage {
       .then((res) => {
         let user = this.authService.getCurrentUser();
         this.databaseService.createUser(user.uid, name, email);
-
+        
         this.navCtrl.setRoot(HomePage);
       })
       .catch((error) => {
