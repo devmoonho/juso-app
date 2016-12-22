@@ -5,7 +5,8 @@ import { StatusBar, Splashscreen, Keyboard, ScreenOrientation } from 'ionic-nati
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
-
+import { LoginPage } from '../pages/login/login';
+import firebase from 'firebase';
 
 @Component({
   templateUrl: 'app.html'
@@ -14,12 +15,12 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any = StartPage;
-  // rootPage: any = HomePage;
+  // rootPage: any = LoginPage;
 
   pages: Array<{title: string, component: any}>;
 
   constructor(public platform: Platform) {
-    this.initializeApp();
+    this.initializeApp(platform);
 
     // used for an example of ngFor and navigation
     this.pages = [
@@ -27,9 +28,17 @@ export class MyApp {
       { title: 'Page Two', component: AboutPage }
     ];
 
+    // Initialize Firebase
+    firebase.initializeApp ({
+      apiKey: "AIzaSyAMNwt55ewLWJv3Ymzf8jwzhxQlSURJyWQ",
+      authDomain: "juso-560bb.firebaseapp.com",
+      databaseURL: "https://juso-560bb.firebaseio.com",
+      storageBucket: "juso-560bb.appspot.com",
+      messagingSenderId: "19394399742"
+    });
   }
 
-  initializeApp() {
+  initializeApp(platform: Platform) {
     this.platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
@@ -37,8 +46,11 @@ export class MyApp {
       Splashscreen.hide();
       
       Keyboard.disableScroll(true); 
-      // TODO for debug 
-      ScreenOrientation.lockOrientation('portrait');
+
+      if (platform.is('android') || platform.is('ios')){
+        ScreenOrientation.lockOrientation('portrait');
+      }
+
     });
   }
 
