@@ -12,27 +12,68 @@
     </ion-toolbar>
 </ion-header>
 <ion-content padding>
-    <div class="spacer" style="height: 40px;"></div>
-    <ion-row class="logo-row">
-        <ion-col></ion-col>
-        <ion-col width-67>
-            <img src="assets/icon/user-card.png" style="display: block; width: 80%; height: auto; margin-left: auto; margin-right: auto;"
-            />
-        </ion-col>
-        <ion-col></ion-col>
-    </ion-row>
-    <form class="list" (submit)="loginUser(email.value, password.value)">
-        <ion-item>
-            <ion-label floating>사용자 이메일</ion-label>
-            <ion-input #email type="email"></ion-input>
-        </ion-item>
-        <ion-item>
-            <ion-label floating>패스워드</ion-label>
-            <ion-input #password type="password"></ion-input>
-        </ion-item>
-        <div padding>
-            <button ion-button type="submit" color="purple-300" block >로그인</button>
-            <button ion-button color="purple-300" block clear>가입하기</button>
-        </div>
-    </form>
+    <div padding>
+        <ion-segment [(ngModel)]="loginSwitch" color="purple-300">
+            <ion-segment-button value="login">
+                로그인
+            </ion-segment-button>
+            <ion-segment-button value="signup">
+                가입하기
+            </ion-segment-button>
+        </ion-segment>
+    </div>
+    <div [ngSwitch]="loginSwitch">
+        <ion-list *ngSwitchCase="'login'">
+            <div class="spacer" style="height: 20px;"></div>
+            <ion-row class="logo-row">
+                <ion-col></ion-col>
+                <ion-col width-67>
+                    <img src="assets/icon/user-card.png" style="display: block; width: 80%; height: auto; margin-left: auto; margin-right: auto;"
+                    />
+                </ion-col>
+                <ion-col></ion-col>
+            </ion-row>
+            <form class="list">
+                <ion-item>
+                    <ion-label floating>사용자 이메일</ion-label>
+                    <ion-input #email type="email"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>패스워드</ion-label>
+                    <ion-input #password type="password"></ion-input>
+                </ion-item>
+                <div padding>
+                    <button ion-button color="purple-300" block (click)="loginUser(email.value, password.value)">로그인</button>
+                </div>
+            </form>
+        </ion-list>
+        <ion-list *ngSwitchCase="'signup'">
+            <div class="spacer" style="height: 20px;"></div>
+            <ion-row class="logo-row">
+                <ion-col></ion-col>
+                <ion-col width-67>
+                    <img src="assets/icon/add-people.png" style="display: block; width: 60%; height: auto; margin-left: auto; margin-right: auto;"
+                    />
+                </ion-col>
+                <ion-col></ion-col>
+            </ion-row>
+            <form class="list">
+                <ion-item>
+                    <ion-label floating>사용자 이름</ion-label>
+                    <ion-input #name type="text"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>사용자 이메일</ion-label>
+                    <ion-input #email type="email"></ion-input>
+                </ion-item>
+                <ion-item>
+                    <ion-label floating>패스워드</ion-label>
+                    <ion-input #password type="password"></ion-input>
+                </ion-item>
+                <div padding>
+                    <button ion-button color="purple-300" block (click)="signup(name.value, email.value, password.value)">가입하기</button>
+                </div>
+            </form>
+        </ion-list>
+    </div>
 </ion-content>
