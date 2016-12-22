@@ -1,7 +1,9 @@
 import { Component } from '@angular/core';
-import { ModalController, Platform, ViewController } from 'ionic-angular';
+import { ModalController, Platform, ViewController, NavController } from 'ionic-angular';
 import { AuthService } from '../../services/auth'
 import { AlertController } from 'ionic-angular';
+
+import { HomePage } from '../home/home';
 
 @Component({
   selector: 'page-login',
@@ -13,6 +15,7 @@ export class LoginPage {
 
   constructor(
     public viewCtrl: ViewController,
+    public navCtrl: NavController,
     public authService: AuthService,
     public alertCtrl: AlertController
   ) {
@@ -20,8 +23,8 @@ export class LoginPage {
 
   loginUser(email: string, password: string) {
     this.authService.loginUser(email, password)
-      .then((res) => {
-        console.log(res);
+      .then((res)=> {
+        this.navCtrl.setRoot(HomePage);
       })
       .catch((error) => {
         console.log(error);
@@ -44,7 +47,7 @@ export class LoginPage {
         this.showAlert("유효하지 않은 패스워드입니다.");
         break;
       default:
-        this.showAlert("시스템 점검으로 로그인을 할 수 없습니다.");
+        this.showAlert("시스템 점검으로 로그인 할 수 없습니다.");
         break;
     }
   }
