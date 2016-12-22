@@ -48,7 +48,7 @@ export class MyApp {
       Keyboard.disableScroll(true); 
 
       if (platform.is('android') || platform.is('ios')){
-        ScreenOrientation.lockOrientation('portrait');
+        // ScreenOrientation.lockOrientation('portrait');
       }
 
     });
