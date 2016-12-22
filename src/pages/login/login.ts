@@ -53,7 +53,7 @@ export class LoginPage {
         this.showLoginAlert("패스워드는 적어도 6자리 이상이여야 합니다.");
         break;
       default:
-        this.showLoginAlert("시스템 점검으로 로그인 할 수 없습니다.");
+        this.showLoginAlert("시스템 점검으로 로그인 할 수 없습니다.\n" + ret);
         break;
     }
   }
