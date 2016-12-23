@@ -1,7 +1,7 @@
 import { NavController } from 'ionic-angular';
 import { Component } from '@angular/core';
 import { Platform } from 'ionic-angular';
-import { ModalController, ToastController } from 'ionic-angular';
+import { ModalController, ToastController, LoadingController } from 'ionic-angular';
 
 import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';
@@ -16,14 +16,16 @@ import firebase from 'firebase';
   templateUrl: 'start.html'
 })
 export class StartPage {
-
+  loader: any;
   isAndroid = false;
+
   constructor(
     public navCtrl: NavController,
     public modalCtrl: ModalController,
     public authService: AuthService,
     public databaseService: DatabaseService,
     public toastCtrl: ToastController,
+    public loadingCtrl: LoadingController,
     public platform: Platform) {
     this.isAndroid = platform.is('android');
   }
@@ -37,20 +39,25 @@ export class StartPage {
   }
 
   goGooglePlusAuth(): void {
+    this.displayLoading('로그인중...', 5000);
+
     this.authService.googlePlus()
       .then((userData) => {
         var provider = firebase.auth.GoogleAuthProvider.credential(userData.idToken);
         firebase.auth().signInWithCredential(provider)
           .then((result) => {
-            this.displayToast(result.email + ' 계정으로 로그인 되었습니다.');
+            this.loader.dismiss();
+            this.displayToast('로그인 되었습니다.');
             this.navCtrl.setRoot(HomePage);
           })
           .catch((error) => {
-            this.displayToast('유효하지 않은 아이디 입니다. \n' + JSON.stringify(error.message));
+            this.loader.dismiss();
+            this.displayToast('유효하지 않은 아이디 입니다.'); 
           })
       })
       .catch((error) => {
-        this.displayToast('유효하지 않은 아이디 입니다. \n' + JSON.stringify(error.message));
+        this.loader.dismiss();
+        this.displayToast('유효하지 않은 아이디 입니다.');
       });
   }
 
@@ -64,7 +71,7 @@ export class StartPage {
   logout(): void {
     this.authService.logout()
       .then((result) => {
-        this.displayToast('로그아웃 되었습니다.'); 
+        this.displayToast('로그아웃 되었습니다.');
       })
       .catch((error) => {
         this.displayToast('로그아웃 중 알 수 없는 에러 \n' + JSON.stringify(error));
@@ -80,4 +87,11 @@ export class StartPage {
     toast.present();
   }
 
+  displayLoading(msg: string, du: number) {
+    this.loader = this.loadingCtrl.create({
+      content: msg,
+      duration: du
+    });
+    this.loader.present();
+  }
 }
