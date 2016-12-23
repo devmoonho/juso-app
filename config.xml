@@ -77,4 +77,7 @@
     <param name="ios-package" onload="true" value="CDVStatusBar"/>
   </feature>
   <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
+  <plugin name="cordova-plugin-googleplus" source="npm">
+    <param name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.19394399742-ferhsm5d0r52qi4dtesukac5sd7si6ou"/>
+  </plugin>
 </widget>

@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { GooglePlus } from 'ionic-native';
+import { ToastController } from 'ionic-angular';
 
 import firebase from 'firebase';
 
@@ -6,7 +8,8 @@ import firebase from 'firebase';
 export class AuthService {
     public fireAuth: any;
 
-    constructor() {
+    constructor(
+        public toastCtrl: ToastController) {
         this.fireAuth = firebase.auth();
     }
 
@@ -22,14 +25,13 @@ export class AuthService {
         return this.fireAuth.currentUser;
     }
 
-    googlePlus(): any{
-        var provider = new firebase.auth.GoogleAuthProvider();
-        return this.fireAuth.signInWithPopup(provider);
-
-        // return this.fireAuth.getRedirectResult();
+    googlePlus(): any {
+        return GooglePlus.login({
+            'webClientId': '19394399742-t0johi5e0kdd2o05d9oumfu91agnu4p8.apps.googleusercontent.com'
+        });
     }
 
-    logout(): any{
+    logout(): any {
         return this.fireAuth.signOut();
     }
 }

@@ -27,6 +27,10 @@
         },
         "cordova-plugin-screen-orientation": {
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
+        },
+        "cordova-plugin-googleplus": {
+            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.19394399742-ferhsm5d0r52qi4dtesukac5sd7si6ou",
+            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         }
     },
     "dependent_plugins": {}
