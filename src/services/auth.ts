@@ -21,4 +21,15 @@ export class AuthService {
     getCurrentUser(): any {
         return this.fireAuth.currentUser;
     }
+
+    googlePlus(): any{
+        var provider = new firebase.auth.GoogleAuthProvider();
+        return this.fireAuth.signInWithPopup(provider);
+
+        // return this.fireAuth.getRedirectResult();
+    }
+
+    logout(): any{
+        return this.fireAuth.signOut();
+    }
 }
