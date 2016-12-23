@@ -14,6 +14,7 @@ import { HomePage } from '../home/home';
 
 export class LoginPage {
   loginSwitch: string = "login";
+  loader: any;
 
   constructor(
     public viewCtrl: ViewController,
@@ -26,14 +27,16 @@ export class LoginPage {
   }
 
   loginUser(email: string, password: string) {
-    this.displayLoading('로그인중...', 3000);
+    this.displayLoading('로그인중...', 5000);
 
     this.authService.loginUser(email, password)
       .then((res) => {
+        this.loader.dismiss();
         this.navCtrl.setRoot(HomePage);
       })
       .catch((error) => {
         console.log(error);
+        this.loader.dismiss();
         this.generateKorMessage(error.code);
       })
   }
@@ -75,29 +78,31 @@ export class LoginPage {
   }
 
   signup(name: string, email: string, password: string) {
-
+    this.displayLoading('가입중...', 5000);
     this.authService.createUser(email, password)
       .then((res) => {
+        this.loader.dismiss();
         let user = this.authService.getCurrentUser();
         this.databaseService.createUser(user.uid, name, email);
 
         this.navCtrl.setRoot(HomePage);
       })
       .catch((error) => {
-        console.log(error);
+        this.loader.dismiss();
         this.generateKorMessage(error.code);
       })
   }
 
   dismiss() {
+    this.loader.dismiss();
     this.viewCtrl.dismiss();
   }
 
   displayLoading(msg: string, du: number) {
-    let loader = this.loadingCtrl.create({
+    this.loader = this.loadingCtrl.create({
       content: msg,
       duration: du
     });
-    loader.present();
+    this.loader.present();
   }
 }
