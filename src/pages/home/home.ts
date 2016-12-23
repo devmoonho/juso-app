@@ -14,7 +14,7 @@ import { AuthService } from '../../services/auth'
 export class HomePage {
 
   searchTerm: any;
- 
+
   constructor(public navCtrl: NavController,
     public modalCtrl: ModalController,
     public authService: AuthService,
@@ -23,10 +23,19 @@ export class HomePage {
 
   searchJuso(term: any): void {
     let user = this.authService.getCurrentUser();
-    let toast = this.toastCtrl.create({
-      message: 'User was added successfully\n' + term + '\n' + user,
-      duration: 3000
-    });
+    let toast: any;
+
+    if (user) {
+      toast = this.toastCtrl.create({
+        message: 'User was added successfully\n' + term + '\n' + user.email,
+        duration: 3000
+      });
+    } else {
+      toast = this.toastCtrl.create({
+        message: 'User was added successfully\n' + term + '\n',
+        duration: 3000
+      });
+    }
     toast.present()
   }
 

@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { ModalController, Platform, ViewController, NavController } from 'ionic-angular';
+import { ModalController, Platform, ViewController, NavController, LoadingController} from 'ionic-angular';
 import { AuthService } from '../../services/auth'
 import { DatabaseService } from '../../services/database'
 import { AlertController } from 'ionic-angular';
@@ -18,6 +18,7 @@ export class LoginPage {
   constructor(
     public viewCtrl: ViewController,
     public navCtrl: NavController,
+    public loadingCtrl: LoadingController,
     public authService: AuthService,
     public databaseService: DatabaseService,
     public alertCtrl: AlertController
@@ -25,6 +26,8 @@ export class LoginPage {
   }
 
   loginUser(email: string, password: string) {
+    this.displayLoading('로그인중...', 3000);
+
     this.authService.loginUser(email, password)
       .then((res) => {
         this.navCtrl.setRoot(HomePage);
@@ -36,7 +39,7 @@ export class LoginPage {
   }
 
   generateKorMessage(ret: any) {
-    
+
     switch (ret) {
       case undefined:
         this.navCtrl.setRoot(HomePage);
@@ -77,7 +80,7 @@ export class LoginPage {
       .then((res) => {
         let user = this.authService.getCurrentUser();
         this.databaseService.createUser(user.uid, name, email);
-        
+
         this.navCtrl.setRoot(HomePage);
       })
       .catch((error) => {
@@ -88,5 +91,13 @@ export class LoginPage {
 
   dismiss() {
     this.viewCtrl.dismiss();
+  }
+
+  displayLoading(msg: string, du: number) {
+    let loader = this.loadingCtrl.create({
+      content: msg,
+      duration: du
+    });
+    loader.present();
   }
 }
