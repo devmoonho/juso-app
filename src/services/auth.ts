@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GooglePlus, Facebook } from 'ionic-native';
+import { GooglePlus, Facebook, TwitterConnect } from 'ionic-native';
 import { ToastController } from 'ionic-angular';
 
 import firebase from 'firebase';
@@ -33,6 +33,10 @@ export class AuthService {
 
     facebook(): any {
         return Facebook.login(["public_profile", "email"]);
+    }
+
+    twitter(): any {
+        return TwitterConnect.login();
     }
 
     logout(): any {
