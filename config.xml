@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
 <widget id="com.ionicframework.jusoapp934053" version="0.0.1" xmlns="http://www.w3.org/ns/widgets" xmlns:cdv="http://cordova.apache.org/ns/1.0">
+  <preference name="TwitterConsumerKey" value="9sQOwYb6lPBzH0n281rJJfrdA"/>
+  <preference name="TwitterConsumerSecret" value="sgcr8NHHJtO405IULDFYYWhLlnL2poLhkXWz2WlFdLrARKvbvG"/>
+  <preference name="deployment-target" value="7.0" />
   <name>주소</name>
   <description>주소찾기 앱.</description>
   <author email="yeomoonho@gmail.com" href="http://www.juso.co.kr/">Yeo MoonHo</author>
@@ -79,5 +82,8 @@
   <icon src="resources/android/icon/drawable-xhdpi-icon.png"/>
   <plugin name="cordova-plugin-googleplus" source="npm">
     <param name="REVERSED_CLIENT_ID" value="com.googleusercontent.apps.19394399742-ferhsm5d0r52qi4dtesukac5sd7si6ou"/>
+  </plugin>
+  <plugin name="twitter-connect-plugin" source="npm" spec="0.5.0">
+    <param name="FABRIC_KEY" value="c56b751ddca407ddc6c66b22c00eb8fe0fad190b"/>
   </plugin>
 </widget>

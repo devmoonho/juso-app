@@ -79,6 +79,25 @@ export class StartPage {
       })
   }
 
+  goTwitterAuth() {
+    this.authService.twitter()
+      .then((userData) => {
+        this.displayToast('로그인 되었습니다.' + JSON.stringify(userData));
+        var credential = firebase.auth.TwitterAuthProvider.credential(userData.token, userData.secret);
+        firebase.auth().signInWithCredential(credential)
+          .then((result) => {
+            this.displayToast('로그인 되었습니다.');
+            this.navCtrl.setRoot(HomePage);
+          })
+          .catch((error) => {
+            this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+          })
+      })
+      .catch((error) => {
+        this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+      })
+  }
+
   saveUserInfo(result: any) {
     let uid = result.user.uid;
     let email = result.user.email;
