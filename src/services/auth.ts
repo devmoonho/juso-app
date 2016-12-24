@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { GooglePlus } from 'ionic-native';
+import { GooglePlus, Facebook } from 'ionic-native';
 import { ToastController } from 'ionic-angular';
 
 import firebase from 'firebase';
@@ -29,6 +29,10 @@ export class AuthService {
         return GooglePlus.login({
             'webClientId': '19394399742-t0johi5e0kdd2o05d9oumfu91agnu4p8.apps.googleusercontent.com'
         });
+    }
+
+    facebook(): any {
+        return Facebook.login(["public_profile", "email"]);
     }
 
     logout(): any {

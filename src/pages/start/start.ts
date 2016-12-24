@@ -43,8 +43,8 @@ export class StartPage {
 
     this.authService.googlePlus()
       .then((userData) => {
-        var provider = firebase.auth.GoogleAuthProvider.credential(userData.idToken);
-        firebase.auth().signInWithCredential(provider)
+        var credential = firebase.auth.GoogleAuthProvider.credential(userData.idToken);
+        firebase.auth().signInWithCredential(credential)
           .then((result) => {
             this.loader.dismiss();
             this.displayToast('로그인 되었습니다.');
@@ -52,13 +52,31 @@ export class StartPage {
           })
           .catch((error) => {
             this.loader.dismiss();
-            this.displayToast('유효하지 않은 아이디 입니다.'); 
+            this.displayToast('유효하지 않은 아이디 입니다.');
           })
       })
       .catch((error) => {
         this.loader.dismiss();
         this.displayToast('유효하지 않은 아이디 입니다.');
       });
+  }
+
+  goFacebookAuth() {
+    this.authService.facebook()
+      .then((userData) => {
+        var credential = firebase.auth.FacebookAuthProvider.credential(userData.authResponse.accessToken);
+        firebase.auth().signInWithCredential(credential)
+          .then((result) => {
+            this.displayToast('로그인 되었습니다.');
+            this.navCtrl.setRoot(HomePage);
+          })
+          .catch((error) => {
+            this.displayToast('유효하지 않은 아이디 입니다.');
+          })
+      })
+      .catch((error) => {
+        this.displayToast('유효하지 않은 아이디 입니다.');
+      })
   }
 
   saveUserInfo(result: any) {
