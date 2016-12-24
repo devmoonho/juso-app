@@ -64,5 +64,16 @@
         "variables": {
             "REVERSED_CLIENT_ID": "com.googleusercontent.apps.19394399742-ferhsm5d0r52qi4dtesukac5sd7si6ou"
         }
+    },
+    "cordova-plugin-facebook4": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-facebook4"
+        },
+        "is_top_level": true,
+        "variables": {
+            "APP_ID": "304282719967644",
+            "APP_NAME": "NewAddress"
+        }
     }
 }

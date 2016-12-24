@@ -30,6 +30,11 @@
         },
         "cordova-plugin-googleplus": {
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
+        },
+        "cordova-plugin-facebook4": {
+            "APP_ID": "304282719967644",
+            "APP_NAME": "NewAddress",
+            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         }
     },
     "dependent_plugins": {}
