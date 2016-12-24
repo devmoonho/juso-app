@@ -52,13 +52,28 @@ export class StartPage {
           })
           .catch((error) => {
             this.loader.dismiss();
-            this.displayToast('유효하지 않은 아이디 입니다.'); 
+            this.displayToast('유효하지 않은 아이디 입니다.');
           })
       })
       .catch((error) => {
         this.loader.dismiss();
         this.displayToast('유효하지 않은 아이디 입니다.');
       });
+  }
+
+  goFacebookAuth() {
+    this.displayLoading('로그인중...', 5000);
+
+    this.authService.facebook()
+      .then((result) => {
+        this.loader.dismiss();
+        this.displayToast('로그인 되었습니다.');
+        this.navCtrl.setRoot(HomePage);
+      })
+      .catch((error) => {
+        this.loader.dismiss();
+        this.displayToast('유효하지 않은 아이디 입니다.');
+      })
   }
 
   saveUserInfo(result: any) {
