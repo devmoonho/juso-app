@@ -32,7 +32,7 @@ export class AuthService {
     }
 
     facebook(): any {
-        return Facebook.login(["public_profile"]);
+        return Facebook.login(["public_profile", "email"]);
     }
 
     logout(): any {
