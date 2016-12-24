@@ -82,7 +82,6 @@ export class StartPage {
   goTwitterAuth() {
     this.authService.twitter()
       .then((userData) => {
-        this.displayToast('로그인 되었습니다.' + JSON.stringify(userData));
         var credential = firebase.auth.TwitterAuthProvider.credential(userData.token, userData.secret);
         firebase.auth().signInWithCredential(credential)
           .then((result) => {
