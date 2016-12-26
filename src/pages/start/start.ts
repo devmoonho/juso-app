@@ -97,6 +97,39 @@ export class StartPage {
       })
   }
 
+  goGitHubAuth() {
+    
+  }
+
+  goInstagramAuth() {
+    this.authService.instagram()
+      .then((userData) => {
+        this.displayToast('로그인 되었습니다.' + JSON.stringify(userData));
+      })
+      .catch((error) => {
+        this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+      })
+  }
+
+  goLinkedInAuth() {
+    this.authService.linkedIn()
+      .then((userData) => {
+        // var uid = "some-uid";
+        // var customToken = firebase.auth().createCustomToken(uid);
+        // this.displayToast('Token.' + customToken + '\n user : ' + JSON.stringify(userData));
+        // firebase.auth().signInWithCustomToken(customToken)
+        //   .then((result) => {
+        this.displayToast('로그인 되었습니다.\n' + JSON.stringify(userData));
+        //   })
+        //   .catch((error) => {
+        //     this.displayToast('Token.' + customToken + '\n user : ' + JSON.stringify(userData));
+        //   })
+      })
+      .catch((error) => {
+        this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+      })
+  }
+
   saveUserInfo(result: any) {
     let uid = result.user.uid;
     let email = result.user.email;
@@ -118,7 +151,7 @@ export class StartPage {
     let toast: any;
     toast = this.toastCtrl.create({
       message: msg,
-      duration: 3000
+      duration: 10000
     });
     toast.present();
   }
@@ -130,4 +163,5 @@ export class StartPage {
     });
     this.loader.present();
   }
+
 }

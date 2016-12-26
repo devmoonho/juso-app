@@ -39,6 +39,9 @@
         "twitter-connect-plugin": {
             "FABRIC_KEY": "c56b751ddca407ddc6c66b22c00eb8fe0fad190b",
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         }
     },
     "dependent_plugins": {}

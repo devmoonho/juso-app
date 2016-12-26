@@ -1,0 +1,12 @@
+{
+  "type": "service_account",
+  "project_id": "juso-560bb",
+  "private_key_id": "cc134a589b4265e110d768da7901693eaddfe2ff",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvwIBADANBgkqhkiG9w0BAQEFAASCBKkwggSlAgEAAoIBAQC59eH87b1+aVaT\naJzAbQq5GqaoaQrnMZQYDd26wRtLNtXwbzj9Smhf7D9wzFRplUKB7Y0P3kSYDxJK\nSfevDgo3IvtEJqhMBoC/deWVngNsD59rdZsZz4cmlGIok5Y2vYicWpEB/cXlXBk8\nPDUWUxQ9K/jCf5KgXoXGL3/dV65N9Ezi9XDJxcOPJN1vbs9TXuTgahb7/raNZtqE\nMD/o4JaplG9I1wLN/3BDZ9A1sG7b9N4O0Sj2NOrQ7ANV+pA83oNhTatDV63ubiwC\nESfdkxc1kXPp2m8FIVlFTBrtyavPJqQP6kf2DLSnQzgB8hhfD0bNPHOvfRSE35Bl\nchk/K4OxAgMBAAECggEBAKchgxNERHvZhpMDgWY8WlfUyRYxGjiBSZ140OAo8DPg\nO9VU0P5sonQbq0Tgj7k5CcYmTxKE7FdRrFmSMwZk8u9tBDDTIYz6hzoMZuPaWS8E\nt33n/BbteoVE9ReM1YOrQp1rlEoa34JtDM0jO38t+dGktHVyHMD/UvG0/RFc3W52\n6Q4Gq3abrATdY64Cs0aBlimbKq4q8UxiheEuHlmYsgO467wYBANGj3REJCigT0qS\niaTA1qs1R71eD2TLRGRpfcOA4MmGcDV73W4W9lyThTv8dzy219hFHNQW49IoTYav\nLQhbCFPgM62uIOq64DBtCiQlwCla4PgppSGAQ16UJbECgYEA87azUXomyZUwbdqc\n9V0KmOspGmQJvinTl6jdFxVCZKdu+XlaWqEek7UUe/XInpXmo+DUqiGJ9hXyiUcC\nWyR2ZuIBLOpiv19JxRe53q44k7iXHrQ7rg+cC9J9Ke9JCc8cfpyBOUP7OwemJ7Cg\n4f7RxgqTaz7tuPA1w3iFMRg5LwUCgYEAw1XWAa5mT7RQC1dnu0N57Z8LRjAHyISF\nUk4AV94cEunOtfzPnSSoNYHx2VaEZJLNiDGre72GK1jiYJt5HN/73LlwxCxKAunA\nxuzBexdGlRn4k3Oh6B5XU8NCWBZtnWkZX13yvFsUYEE57mibAPsKYkrMlYug4Exl\nJB6uDBZ8Kb0CgYEApu34KxGo6aAnWMdJhQJilNVWBP6KcddCV/nQ3dOw8zJ/357Q\nVY1QXUnFqxZxgLYaERuZbqKkVYs44fBiW71A4D1jIrm0Q3JoG/ihVjYtCHmCAQTg\nb9u/PZXCJ2v/shlLYimelXPL6+XUWBEyUTlxw91Qlj+3Ilpd6PJvAG6gFGUCgYAz\ngCsXcGLbOuArzVS1I9o+00MGs10p+f6or5YZlJ70QZ7Vjp0yglqzGNqqAcyQM8Bq\n2yWqT1LTlPDCpdstyMQ/8siPgFnXIMhJ6lws1vsuDpXiUodqiq1dkUqprOgjq3Uc\nFsoL7TuXETtz5zKO9KFNPwlnmFPHL30vI8Ohvj/oRQKBgQDoWHhusXD3RLHj8gTd\nO65i4lrn+Sf5q2FhD17UJPRTgiCeQJ3+mNu+OecvJqNLJORO3WoD18sJcF0lFbw9\nkcRbvjMHABK7gG6VOTElpZOLd/D57itAaFgrV5c1oeUkvVh3TYaD2Z3vlQdzZ2rP\n7iWoaqLQvJumjsCxbcE4l8ACVQ==\n-----END PRIVATE KEY-----\n",
+  "client_email": "juso-auth@juso-560bb.iam.gserviceaccount.com",
+  "client_id": "105502502212248492408",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://accounts.google.com/o/oauth2/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/juso-auth%40juso-560bb.iam.gserviceaccount.com"
+}
