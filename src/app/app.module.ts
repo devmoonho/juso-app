@@ -10,7 +10,6 @@ import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth';
 import { DatabaseService } from '../services/database';
 
-
 @NgModule({
   declarations: [
     MyApp,

@@ -1,13 +1,17 @@
 import { NavController } from 'ionic-angular';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { ModalController, ToastController, LoadingController } from 'ionic-angular';
 
 import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';
 
+import { Http } from '@angular/http';
+
 import { AuthService } from '../../services/auth';
 import { DatabaseService } from '../../services/database';
+
+import { LinkedinProvider, FirebaseToken } from '../../services/auth-provider'
 
 import firebase from 'firebase';
 
@@ -18,9 +22,14 @@ import firebase from 'firebase';
 export class StartPage {
   loader: any;
   isAndroid = false;
+  userInfo: any;
+
+  linkedinProvider: LinkedinProvider = new LinkedinProvider();
+  firebaseToken: FirebaseToken = new FirebaseToken();
 
   constructor(
     public navCtrl: NavController,
+    public http: Http,
     public modalCtrl: ModalController,
     public authService: AuthService,
     public databaseService: DatabaseService,
@@ -89,11 +98,36 @@ export class StartPage {
             this.navCtrl.setRoot(HomePage);
           })
           .catch((error) => {
-            this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+            this.displayToast('유효하지 않은 아이디 입니다.');
           })
       })
       .catch((error) => {
-        this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+        this.displayToast('유효하지 않은 아이디 입니다.');
+      })
+  }
+
+  goGitHubAuth() {
+
+  }
+
+  goInstagramAuth() {
+    this.authService.instagram()
+      .then((userData) => {
+        this.displayToast('로그인 되었습니다.');
+      })
+      .catch((error) => {
+        this.displayToast('유효하지 않은 아이디 입니다.');
+      })
+  }
+
+  goLinkedInAuth() {
+    this.authService.linkedIn()
+      .then((userData) => {
+        this.displayToast('로그인 되었습니다.');
+        this.navCtrl.setRoot(HomePage);
+      })
+      .catch((error) => {
+        this.displayToast('유효하지 않은 아이디 입니다.');
       })
   }
 
@@ -110,7 +144,7 @@ export class StartPage {
         this.displayToast('로그아웃 되었습니다.');
       })
       .catch((error) => {
-        this.displayToast('로그아웃 중 알 수 없는 에러 \n' + JSON.stringify(error));
+        this.displayToast('로그아웃 중 알 수 없는 에러 \n');
       })
   }
 
@@ -118,7 +152,7 @@ export class StartPage {
     let toast: any;
     toast = this.toastCtrl.create({
       message: msg,
-      duration: 3000
+      duration: 10000
     });
     toast.present();
   }
@@ -130,4 +164,5 @@ export class StartPage {
     });
     this.loader.present();
   }
+
 }

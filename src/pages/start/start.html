@@ -69,7 +69,16 @@
             <button ion-button icon-only style="color:#55acee" clear (click)="goTwitterAuth()">
                 <ion-icon ios="logo-twitter" md="logo-twitter"></ion-icon>
             </button>
-           <button ion-button icon-only style="color:#FF7043" clear (click)="goLoginPage()">
+            <!--<button ion-button icon-only style="color:#000000" clear (click)="goGitHubAuth()">
+                  <ion-icon ios="logo-github" md="logo-github"></ion-icon>
+            </button>-->
+            <!--<button ion-button icon-only style="color:#000000" clear (click)="goInstagramAuth()">
+                <ion-icon ios="logo-instagram" md="logo-instagram"></ion-icon>
+            </button>-->
+            <button ion-button icon-only style="color:#000000" clear (click)="goLinkedInAuth()">
+                <ion-icon ios="logo-linkedin" md="logo-linkedin"></ion-icon>
+            </button>
+            <button ion-button icon-only style="color:#FF7043" clear (click)="goLoginPage()">
                 <ion-icon ios="ios-mail-open" md="md-mail-open"></ion-icon>
             </button>
           </ion-buttons>
@@ -79,6 +88,10 @@
                 바로시작하기
             </button>
           </ion-buttons>
+          <ion-item>
+            <ion-label stacked>Debug Message</ion-label>
+            <ion-textarea rows="10" [(ngModel)]="userInfo"></ion-textarea>
+          </ion-item>
         </div>
       </div>
     </div>

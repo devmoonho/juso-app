@@ -6,7 +6,8 @@ import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
 import { LoginPage } from '../pages/login/login';
-import firebase from 'firebase';
+
+import * as firebase from 'firebase';
 
 @Component({
   templateUrl: 'app.html'
