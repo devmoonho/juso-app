@@ -121,8 +121,6 @@ export class StartPage {
   }
 
   goLinkedInAuth() {
-    this.displayLoading('로그인중...', 5000);
-
     this.authService.linkedIn()
       .then((userData) => {
         this.displayToast('로그인 되었습니다.');

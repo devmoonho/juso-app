@@ -38,7 +38,8 @@ export class AuthService {
     }
 
     getCurrentUser(): any {
-        return this.fireAuth.currentUser;
+        var user = firebase.auth().currentUser;
+        return user; 
     }
 
     googlePlus(): any {
