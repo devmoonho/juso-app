@@ -98,11 +98,11 @@ export class StartPage {
             this.navCtrl.setRoot(HomePage);
           })
           .catch((error) => {
-            this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+            this.displayToast('유효하지 않은 아이디 입니다.');
           })
       })
       .catch((error) => {
-        this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+        this.displayToast('유효하지 않은 아이디 입니다.');
       })
   }
 
@@ -112,11 +112,11 @@ export class StartPage {
 
   goInstagramAuth() {
     this.authService.instagram()
-     .then((userData) => {
-        this.displayToast('로그인 되었습니다.' + JSON.stringify(userData));
+      .then((userData) => {
+        this.displayToast('로그인 되었습니다.');
       })
       .catch((error) => {
-        this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+        this.displayToast('유효하지 않은 아이디 입니다.');
       })
   }
 
@@ -124,11 +124,12 @@ export class StartPage {
     this.displayLoading('로그인중...', 5000);
 
     this.authService.linkedIn()
-     .then((userData) => {
-        this.displayToast('로그인 되었습니다.' + JSON.stringify(userData));
+      .then((userData) => {
+        this.displayToast('로그인 되었습니다.');
+        this.navCtrl.setRoot(HomePage);
       })
       .catch((error) => {
-        this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+        this.displayToast('유효하지 않은 아이디 입니다.');
       })
   }
 
@@ -145,7 +146,7 @@ export class StartPage {
         this.displayToast('로그아웃 되었습니다.');
       })
       .catch((error) => {
-        this.displayToast('로그아웃 중 알 수 없는 에러 \n' + JSON.stringify(error));
+        this.displayToast('로그아웃 중 알 수 없는 에러 \n');
       })
   }
 

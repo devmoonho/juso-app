@@ -4,7 +4,12 @@ import { LinkedIn, Instagram } from "ng2-cordova-oauth/core";
 import { OauthCordova } from 'ng2-cordova-oauth/platform/cordova';
 import { ToastController } from 'ionic-angular';
 
-import { Http } from '@angular/http';
+import { Http, Response } from '@angular/http';
+import { Observable } from 'rxjs/Rx';
+
+// Import RxJs required methods
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/catch';
 
 import firebase from 'firebase';
 
@@ -74,64 +79,68 @@ export class AuthService {
             state: this.linkedinProvider.state
         });
 
-        this.oauth.logInVia(provider)
+        return this.oauth.logInVia(provider)
             .then((res) => {
                 let queryAccessToken = this.linkedinProvider.getQueryString('access-token', res);
-                // this.userInfo = '#####' + queryAccessToken;
-
+                return queryAccessToken;
+            })
+            .then((queryAccessToken) => {
                 // get linkedin accessToken
-                this.http.post(queryAccessToken, '')
-                    .subscribe(res => {
-                        let queryUserProfile = this.linkedinProvider.getQueryString('user-profile', res);
-                        // this.userInfo = this.userInfo + '#####' + queryUserProfile;
-
-                        // get linkedin user profile
-                        this.http.get(queryUserProfile)
-                            .subscribe(res => {
-                                // this.userInfo = this.userInfo + '#####' + JSON.stringify(res.json())
-                                this.linkedinProvider.setUserProfile(res.json());
-                                // this.userInfo = this.userInfo + '#####' + JSON.stringify(this.linkedinProvider.getUserProfile());
-
-                                let queryCustomToken = this.firebaseToken
-                                    .getQueryString('custom-token', this.linkedinProvider.getUserProfile());
-
-                                // this.userInfo = this.userInfo + '#####' + queryCustomToken;
-
-                                // get firebase accessToken 
-                                this.http.get(queryCustomToken)
-                                    .subscribe(res => {
-                                        // firebase sing up or login 
-                                        this.firebaseToken.singIn(res, firebase, this.linkedinProvider.getUserProfile())
-                                            .then((result) => {
-                                                var user = firebase.auth().currentUser;
-                                                user.updateProfile({
-                                                    displayName: this.linkedinProvider.getUserProfile()['name'],
-                                                    photoURL: this.linkedinProvider.getUserProfile()['publicProfileUrl']
-                                                }).then((res) => {
-                                                    // Update successful.
-                                                    user.updateEmail(this.linkedinProvider.getUserProfile().email)
-                                                        .then((res) => {
-                                                            // Update successful.
-
-                                                        }, (error) => {
-                                                            // An error happened.
-                                                        });
-                                                }, (error) => {
-                                                    // An error happened.
-                                                });
-                                            })
-                                            .catch((error) => {
-
-                                            });
-                                    }, (err) => {
-
-                                    })
-                            }, (err) => {
-
-                            })
-                    }, (err) => {
-
+                return this.http.post(queryAccessToken, '')
+                    .map((res: Response) => {
+                        return this.linkedinProvider.getQueryString('user-profile', res);
                     })
+                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+                    .toPromise();
+            })
+            .then((queryUserProfile) => {
+                // get linkedin user profile
+                return this.http.get(queryUserProfile)
+                    .map((res: Response) => {
+                        this.linkedinProvider.setUserProfile(res.json())
+                        let queryCustomToken = this.firebaseToken
+                            .getQueryString('custom-token', this.linkedinProvider.getUserProfile());
+                        return queryCustomToken;
+                    })
+                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+                    .toPromise();
+            })
+            .then((queryCustomToken) => {
+                // get firebase accessToken 
+                return this.http.get(queryCustomToken)
+                    .map((res: Response) => {
+                        return res;
+                    })
+                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+                    .toPromise();
+            })
+            .then((res) => {
+                // firebase sing up or login 
+                return this.firebaseToken.singIn(res, firebase, this.linkedinProvider.getUserProfile())
+                    .then((result) => {
+                        return result;
+                    })
+                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+                    .toPromise();
+            })
+            .then((res) => {
+                var user = firebase.auth().currentUser;
+                return user.updateProfile({
+                    displayName: this.linkedinProvider.getUserProfile()['name'],
+                    photoURL: this.linkedinProvider.getUserProfile()['publicProfileUrl']
+                })
+                    .then((res) => {
+                        return res;
+                    })
+                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+            })
+            .then((res) => {
+                var user = firebase.auth().currentUser;
+                return user.updateEmail(this.linkedinProvider.getUserProfile().email)
+                    .then((res) => {
+                        return res;
+                    })
+                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
             })
             .catch((error) => {
 
