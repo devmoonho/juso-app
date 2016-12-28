@@ -4,7 +4,11 @@ import { LinkedIn, Instagram } from "ng2-cordova-oauth/core";
 import { OauthCordova } from 'ng2-cordova-oauth/platform/cordova';
 import { ToastController } from 'ionic-angular';
 
+import { Http } from '@angular/http';
+
 import firebase from 'firebase';
+
+import { LinkedinProvider, FirebaseToken } from './auth-provider'
 
 declare var window: any;
 
@@ -14,7 +18,11 @@ export class AuthService {
     private oauth: OauthCordova = new OauthCordova();
 
     constructor(
-        public toastCtrl: ToastController) {
+        public toastCtrl: ToastController,
+        public http: Http,
+        public linkedinProvider: LinkedinProvider,
+        public firebaseToken: FirebaseToken
+    ) {
         this.fireAuth = firebase.auth();
     }
 
@@ -61,14 +69,45 @@ export class AuthService {
 
     linkedIn(): any {
         let provider: LinkedIn = new LinkedIn({
-            clientId: "81alo9i368lt7t",
-            appScope: ["r_basicprofile", "r_emailaddress"],
-            redirectUri: "http://localhost/callback",
-            responseType: "code",
-            state: "987654321"
+            clientId: this.linkedinProvider.clientId,
+            appScope: this.linkedinProvider.appScope,
+            redirectUri: this.linkedinProvider.redirectUri,
+            responseType: this.linkedinProvider.responseType,
+            state: this.linkedinProvider.state
         });
 
-        return this.oauth.logInVia(provider);
+        this.oauth.logInVia(provider)
+            .then((res) => {
+                let queryAccessToken = this.linkedinProvider.getQueryString('access-token', res);
+                // get linkedin accessToken
+                this.http.post(queryAccessToken, '')
+                    .subscribe(res => {
+                        let queryUserProfile = this.linkedinProvider.getQueryString('user-profile', res);
+                        // get linkedin user profile
+                        this.http.get(queryUserProfile)
+                            .subscribe(res => {
+                                this.linkedinProvider.setUserProfile(res);
+                                // get firebase accessToken 
+                                let queryCustomToken = this.firebaseToken
+                                    .getQueryString('custom-token', this.linkedinProvider.getUserProfile);
+                                this.http.get(queryCustomToken)
+                                    .subscribe(res => {
+                                        // firebase sing up or login 
+                                        this.firebaseToken.singIn(res, firebase, this.linkedinProvider.getUserProfile);
+                                        return 
+                                    }, (err) => {
+
+                                    })
+                            }, (err) => {
+
+                            })
+                    }, (err) => {
+
+                    })
+            })
+            .catch((error) => {
+
+            })
     }
 
     logout(): any {
@@ -79,7 +118,7 @@ export class AuthService {
         let toast: any;
         toast = this.toastCtrl.create({
             message: msg,
-            duration: 3000
+            duration: 5000
         });
         toast.present();
     }

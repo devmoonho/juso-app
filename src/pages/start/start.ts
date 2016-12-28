@@ -1,15 +1,18 @@
 import { NavController } from 'ionic-angular';
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { Platform } from 'ionic-angular';
 import { ModalController, ToastController, LoadingController } from 'ionic-angular';
 
 import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';
 
+import { Http } from '@angular/http';
+
 import { AuthService } from '../../services/auth';
 import { DatabaseService } from '../../services/database';
 
 import firebase from 'firebase';
+import * as xml2js from 'xml2js';
 
 @Component({
   selector: 'page-start',
@@ -18,9 +21,12 @@ import firebase from 'firebase';
 export class StartPage {
   loader: any;
   isAndroid = false;
+  userInfo: any;
+  x2js: any;
 
   constructor(
     public navCtrl: NavController,
+    public http: Http,
     public modalCtrl: ModalController,
     public authService: AuthService,
     public databaseService: DatabaseService,
@@ -98,7 +104,7 @@ export class StartPage {
   }
 
   goGitHubAuth() {
-    
+
   }
 
   goInstagramAuth() {
@@ -113,17 +119,8 @@ export class StartPage {
 
   goLinkedInAuth() {
     this.authService.linkedIn()
-      .then((userData) => {
-        // var uid = "some-uid";
-        // var customToken = firebase.auth().createCustomToken(uid);
-        // this.displayToast('Token.' + customToken + '\n user : ' + JSON.stringify(userData));
-        // firebase.auth().signInWithCustomToken(customToken)
-        //   .then((result) => {
-        this.displayToast('로그인 되었습니다.\n' + JSON.stringify(userData));
-        //   })
-        //   .catch((error) => {
-        //     this.displayToast('Token.' + customToken + '\n user : ' + JSON.stringify(userData));
-        //   })
+      .then((res) => {
+        this.displayToast('로그인 되었습니다.');
       })
       .catch((error) => {
         this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
