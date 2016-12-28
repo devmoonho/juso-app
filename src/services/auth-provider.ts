@@ -1,3 +1,5 @@
+import firebase from 'firebase';
+
 export class LinkedinProvider {
     clientId: any = '81alo9i368lt7t';
     clientSecret: any = 'zTQQz0BtaGBjv0g7';
@@ -13,13 +15,11 @@ export class LinkedinProvider {
     userProfile: any = {};
 
     setUserProfile(res: any) {
-        this.userProfile = {
-            'name': res.json().lastName + ' ' + res.json().firstName,
-            'id': res.json().id,
-            'email': res.json().emailAddress,
-            'publicProfileUrl': res.json().publicProfileUrl,
-            'uid': 'linkedif:' + res.json().id
-        }
+        this.userProfile['name'] = res.lastName + ' ' + res.firstName
+        this.userProfile['id'] = res.id;
+        this.userProfile['email'] = res.emailAddress;
+        this.userProfile['publicProfileUrl'] = res.publicProfileUrl;
+        this.userProfile['uid'] = 'linkedin:' + res.id;
     }
 
     getUserProfile(): any {
@@ -54,36 +54,13 @@ export class FirebaseToken {
     singIn(res: any, firebase: any, userProfile: any): any {
         let customToken = res.json().token;
 
-        firebase.auth().signInWithCustomToken(customToken)
-            .then((result) => {
-                var user = firebase.auth().currentUser;
-
-                user.updateProfile({
-                    displayName: userProfile.name,
-                    photoURL: userProfile.publicProfileUrl
-                }).then(function () {
-                    // Update successful.
-                    user.updateEmail(userProfile.email).then(function () {
-                        // Update successful.
-
-                    }, function (error) {
-                        // An error happened.
-
-                    });
-                }, function (error) {
-                    // An error happened.
-
-                });
-            })
-            .catch((error) => {
-
-            });
+        return firebase.auth().signInWithCustomToken(customToken);
     }
 
     getQueryString(what: any, res: any): string {
         let qStr: string;
         switch (what) {
-            case '':
+            case 'custom-token':
                 qStr = this.urlRequestToken + 'token?uid=' + res.uid;
                 break;
             default:

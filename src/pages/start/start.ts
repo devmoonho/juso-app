@@ -11,8 +11,9 @@ import { Http } from '@angular/http';
 import { AuthService } from '../../services/auth';
 import { DatabaseService } from '../../services/database';
 
+import { LinkedinProvider, FirebaseToken } from '../../services/auth-provider'
+
 import firebase from 'firebase';
-import * as xml2js from 'xml2js';
 
 @Component({
   selector: 'page-start',
@@ -22,7 +23,9 @@ export class StartPage {
   loader: any;
   isAndroid = false;
   userInfo: any;
-  x2js: any;
+
+  linkedinProvider: LinkedinProvider = new LinkedinProvider();
+  firebaseToken: FirebaseToken = new FirebaseToken();
 
   constructor(
     public navCtrl: NavController,
@@ -109,7 +112,7 @@ export class StartPage {
 
   goInstagramAuth() {
     this.authService.instagram()
-      .then((userData) => {
+     .then((userData) => {
         this.displayToast('로그인 되었습니다.' + JSON.stringify(userData));
       })
       .catch((error) => {
@@ -118,9 +121,11 @@ export class StartPage {
   }
 
   goLinkedInAuth() {
+    this.displayLoading('로그인중...', 5000);
+
     this.authService.linkedIn()
-      .then((res) => {
-        this.displayToast('로그인 되었습니다.');
+     .then((userData) => {
+        this.displayToast('로그인 되었습니다.' + JSON.stringify(userData));
       })
       .catch((error) => {
         this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
