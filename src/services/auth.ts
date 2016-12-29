@@ -158,10 +158,6 @@ export class AuthService {
                     .then((res) => {
                         return res;
                     })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-            })
-            .catch((error) => {
-                                 
                     .catch((error: any) => Observable.throw('updateEmail error'))
             })
             .catch((error: any) => Observable.throw('Server error'))
