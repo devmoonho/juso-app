@@ -12,7 +12,7 @@ import { AuthService } from '../../services/auth'
   providers: [AuthService],
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit{
+export class HomePage implements OnInit {
 
   searchTerm: any;
   userInfo: any;
@@ -23,27 +23,31 @@ export class HomePage implements OnInit{
     public toastCtrl: ToastController) {
   }
 
-  ngOnInit(){
+  ngOnInit() {
     this.userInfo = JSON.stringify(this.authService.getCurrentUser());
   }
 
-  searchJuso(term: any): void {
+  searchJuso(): void {
     let user = this.authService.getCurrentUser();
     let toast: any;
 
+    this.userInfo = this.searchTerm; 
+
     if (user) {
       toast = this.toastCtrl.create({
-        message: 'User was added successfully\n' + term + '\n' + user.email,
+        message: 'User was added successfully\n' + this.searchTerm + '\n' + user.email,
         duration: 3000
       });
     } else {
       toast = this.toastCtrl.create({
-        message: 'User was added successfully\n' + term + '\n',
+        message: 'User was added successfully\n' + this.searchTerm + '\n',
         duration: 3000
       });
     }
+    Keyboard.close()
     toast.present()
   }
+
 
   openAbout(): void {
     let modal = this.modalCtrl.create(AboutPage);
@@ -54,7 +58,7 @@ export class HomePage implements OnInit{
   logout(): void {
     this.authService.logout()
       .then((result) => {
-        this.navCtrl.setRoot(StartPage); 
+        this.navCtrl.setRoot(StartPage);
       })
       .catch((error) => {
 

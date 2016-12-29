@@ -12,17 +12,20 @@
       </button>
     </ion-buttons>
   </ion-navbar>
-  <ion-navbar color="teal-300">
-    <ion-item>
-      <ion-icon ios="ios-search" md="md-search" item-left></ion-icon>
-      <ion-input type="text" onfocus="this.select();" [(ngModel)]="searchTerm" name="term" placeholder="도로명, 건물명, 지번">
-      </ion-input>
-    </ion-item>
+  <ion-navbar>
+    <form (ngSubmit)="searchJuso()">
+      <ion-row>
+        <ion-item>
+          <ion-icon ios="ios-search" md="md-search" item-left></ion-icon>
+          <ion-input type="search" onfocus="this.select();" [(ngModel)]="searchTerm" name="term" placeholder="도로명, 건물명, 지번">
+          </ion-input>
+        </ion-item>
+        <button ion-button type="submit" clear color="grey-500">검색</button>
+      </ion-row>
+    </form>
   </ion-navbar>
 </ion-header>
 <ion-content padding>
-  <form (ngSubmit)="searchJuso(searchTerm)">
-  </form>
   <h2>Welcome to Ionic!</h2>
   <p>
     user info : {{userInfo}}
