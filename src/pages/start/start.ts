@@ -15,11 +15,13 @@ import { LinkedinProvider, FirebaseToken } from '../../services/auth-provider'
 
 import firebase from 'firebase';
 
+import { Storage } from '@ionic/storage';
+
 @Component({
   selector: 'page-start',
   templateUrl: 'start.html'
 })
-export class StartPage {
+export class StartPage implements OnInit {
   loader: any;
   isAndroid = false;
   userInfo: any;
@@ -35,8 +37,16 @@ export class StartPage {
     public databaseService: DatabaseService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
+    public storage: Storage,
     public platform: Platform) {
     this.isAndroid = platform.is('android');
+  }
+
+  ngOnInit() {
+    this.storage.get(this.linkedinProvider.STORAGE_KEY)
+      .then((result) => {
+        this.userInfo = result;
+      });
   }
 
   goHomePage(): void {
@@ -121,14 +131,37 @@ export class StartPage {
   }
 
   goLinkedInAuth() {
-    this.authService.linkedIn()
-      .then((userData) => {
-        this.displayToast('로그인 되었습니다.');
-        this.navCtrl.setRoot(HomePage);
+    this.storage.get(this.linkedinProvider.STORAGE_KEY)
+      .then((res) => {
+        if (res === null) {
+          this.authService.linkedIn()
+            .then((userData) => {
+              this.displayToast('로그인 되었습니다.');
+              this.navCtrl.setRoot(HomePage);
+            })
+            .catch((error) => {
+              this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+              this.userInfo = JSON.stringify(error);
+            })
+        } else {
+          this.authService.directlyLinkedIn(JSON.parse(res).customToken)
+            .then((userData) => {
+              this.displayToast('로그인 되었습니다.');
+              this.navCtrl.setRoot(HomePage);
+            })
+            .catch((error) => {
+              this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+              this.userInfo = JSON.stringify(error);
+            })
+        }
       })
-      .catch((error) => {
-        this.displayToast('유효하지 않은 아이디 입니다.');
-      })
+  }
+
+  showPreference() {
+    this.storage.get(this.linkedinProvider.STORAGE_KEY)
+      .then((result) => {
+        this.userInfo = JSON.parse(result).customToken;
+      });
   }
 
   saveUserInfo(result: any) {

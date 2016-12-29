@@ -7,6 +7,8 @@ import { ToastController } from 'ionic-angular';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { Storage } from '@ionic/storage';
+
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -24,7 +26,8 @@ export class AuthService {
 
     constructor(
         public toastCtrl: ToastController,
-        public http: Http
+        public http: Http,
+        public storage: Storage
     ) {
         this.fireAuth = firebase.auth();
     }
@@ -39,7 +42,7 @@ export class AuthService {
 
     getCurrentUser(): any {
         var user = firebase.auth().currentUser;
-        return user; 
+        return user;
     }
 
     googlePlus(): any {
@@ -71,6 +74,14 @@ export class AuthService {
         return this.oauth.logInVia(provider);
     }
 
+    directlyLinkedIn(customToken: any): any {
+        // exist value 
+        // 1. firebase login 
+        // 2. go homePage
+        // firebase sing up or login 
+        return this.firebaseToken.singIn(customToken, firebase);
+    }
+
     linkedIn(): any {
         let provider: LinkedIn = new LinkedIn({
             clientId: this.linkedinProvider.clientId,
@@ -83,15 +94,17 @@ export class AuthService {
         return this.oauth.logInVia(provider)
             .then((res) => {
                 let queryAccessToken = this.linkedinProvider.getQueryString('access-token', res);
+                this.linkedinProvider.preference['code'] = res['code'];
                 return queryAccessToken;
             })
             .then((queryAccessToken) => {
                 // get linkedin accessToken
                 return this.http.post(queryAccessToken, '')
                     .map((res: Response) => {
+                        this.linkedinProvider.preference['accessToken'] = res.json().access_token;
                         return this.linkedinProvider.getQueryString('user-profile', res);
                     })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+                    .catch((error: any) => Observable.throw('accessToken error'))
                     .toPromise();
             })
             .then((queryUserProfile) => {
@@ -101,9 +114,11 @@ export class AuthService {
                         this.linkedinProvider.setUserProfile(res.json())
                         let queryCustomToken = this.firebaseToken
                             .getQueryString('custom-token', this.linkedinProvider.getUserProfile());
+
+                        this.linkedinProvider.preference['userProfile'] = this.linkedinProvider.getUserProfile();
                         return queryCustomToken;
                     })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+                    .catch((error: any) => Observable.throw('linkedin user profile error'))
                     .toPromise();
             })
             .then((queryCustomToken) => {
@@ -112,16 +127,18 @@ export class AuthService {
                     .map((res: Response) => {
                         return res;
                     })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+                    .catch((error: any) => Observable.throw('custom token error'))
                     .toPromise();
             })
             .then((res) => {
+                this.linkedinProvider.preference['customToken'] = res.json().token;
                 // firebase sing up or login 
-                return this.firebaseToken.singIn(res, firebase, this.linkedinProvider.getUserProfile())
+                return this.firebaseToken.singIn(res.json().token, firebase)
                     .then((result) => {
+                        this.storage.set(this.linkedinProvider.STORAGE_KEY, JSON.stringify(this.linkedinProvider.preference));
                         return result;
                     })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+                    .catch((error: any) => Observable.throw('singIn error'))
                     .toPromise();
             })
             .then((res) => {
@@ -133,7 +150,7 @@ export class AuthService {
                     .then((res) => {
                         return res;
                     })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+                    .catch((error: any) => Observable.throw('updateProfile error'))
             })
             .then((res) => {
                 var user = firebase.auth().currentUser;
@@ -145,10 +162,13 @@ export class AuthService {
             })
             .catch((error) => {
                                  
+                    .catch((error: any) => Observable.throw('updateEmail error'))
             })
+            .catch((error: any) => Observable.throw('Server error'))
     }
 
     logout(): any {
+        this.storage.clear();
         return this.fireAuth.signOut();
     }
 

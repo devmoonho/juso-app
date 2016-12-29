@@ -1,6 +1,7 @@
 import firebase from 'firebase';
 
 export class LinkedinProvider {
+    STORAGE_KEY: any = 'linkedinLogin';
     clientId: any = '81alo9i368lt7t';
     clientSecret: any = 'zTQQz0BtaGBjv0g7';
     appScope: any = ['r_basicprofile', 'r_emailaddress'];
@@ -13,6 +14,13 @@ export class LinkedinProvider {
     '~:(id,first-name,last-name,picture-url,public-profile-url,email-address)' +
     '?format=json';
     userProfile: any = {};
+
+    preference: any ={
+        'code':'',
+        'accessToken':'',
+        'userProfile':'',
+        'customToken':''
+    };
 
     setUserProfile(res: any) {
         this.userProfile['name'] = res.lastName + ' ' + res.firstName
@@ -51,9 +59,7 @@ export class LinkedinProvider {
 export class FirebaseToken {
     urlRequestToken: any = 'https://firebase-token-server.appspot-preview.com/api/v1/';
 
-    singIn(res: any, firebase: any, userProfile: any): any {
-        let customToken = res.json().token;
-
+    singIn(customToken: any, firebase: any): any {
         return firebase.auth().signInWithCustomToken(customToken);
     }
 
