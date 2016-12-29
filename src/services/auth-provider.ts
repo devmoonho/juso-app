@@ -59,9 +59,7 @@ export class LinkedinProvider {
 export class FirebaseToken {
     urlRequestToken: any = 'https://firebase-token-server.appspot-preview.com/api/v1/';
 
-    singIn(res: any, firebase: any, userProfile: any): any {
-        let customToken = res.json().token;
-
+    singIn(customToken: any, firebase: any): any {
         return firebase.auth().signInWithCustomToken(customToken);
     }
 

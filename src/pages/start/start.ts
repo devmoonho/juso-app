@@ -45,7 +45,7 @@ export class StartPage implements OnInit {
   ngOnInit() {
     this.storage.get(this.linkedinProvider.STORAGE_KEY)
       .then((result) => {
-        this.userInfo = JSON.stringify(result);
+        this.userInfo = result;
       });
   }
 
@@ -131,21 +131,36 @@ export class StartPage implements OnInit {
   }
 
   goLinkedInAuth() {
-    this.authService.linkedIn()
-      .then((userData) => {
-        this.displayToast('로그인 되었습니다.');
-        this.navCtrl.setRoot(HomePage);
-      })
-      .catch((error) => {
-        this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
-        this.userInfo = JSON.stringify(error);
+    this.storage.get(this.linkedinProvider.STORAGE_KEY)
+      .then((res) => {
+        if (res === null) {
+          this.authService.linkedIn()
+            .then((userData) => {
+              this.displayToast('로그인 되었습니다.');
+              this.navCtrl.setRoot(HomePage);
+            })
+            .catch((error) => {
+              this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+              this.userInfo = JSON.stringify(error);
+            })
+        } else {
+          this.authService.directlyLinkedIn(JSON.parse(res).customToken)
+            .then((userData) => {
+              this.displayToast('로그인 되었습니다.');
+              this.navCtrl.setRoot(HomePage);
+            })
+            .catch((error) => {
+              this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+              this.userInfo = JSON.stringify(error);
+            })
+        }
       })
   }
 
   showPreference() {
     this.storage.get(this.linkedinProvider.STORAGE_KEY)
       .then((result) => {
-        this.userInfo = JSON.stringify(result);
+        this.userInfo = JSON.parse(result).customToken;
       });
   }
 
