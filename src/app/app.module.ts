@@ -10,6 +10,8 @@ import { LoginPage } from '../pages/login/login';
 import { AuthService } from '../services/auth';
 import { DatabaseService } from '../services/database';
 
+import { Storage } from '@ionic/storage';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -32,6 +34,6 @@ import { DatabaseService } from '../services/database';
     LoginPage,
   ],
   providers: [{provide: ErrorHandler, useClass: IonicErrorHandler},
-  AuthService, DatabaseService]
+  AuthService, DatabaseService, Storage]
 })
 export class AppModule {}

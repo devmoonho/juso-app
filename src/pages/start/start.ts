@@ -15,11 +15,13 @@ import { LinkedinProvider, FirebaseToken } from '../../services/auth-provider'
 
 import firebase from 'firebase';
 
+import { Storage } from '@ionic/storage';
+
 @Component({
   selector: 'page-start',
   templateUrl: 'start.html'
 })
-export class StartPage {
+export class StartPage implements OnInit {
   loader: any;
   isAndroid = false;
   userInfo: any;
@@ -35,8 +37,16 @@ export class StartPage {
     public databaseService: DatabaseService,
     public toastCtrl: ToastController,
     public loadingCtrl: LoadingController,
+    public storage: Storage,
     public platform: Platform) {
     this.isAndroid = platform.is('android');
+  }
+
+  ngOnInit() {
+    this.storage.get(this.linkedinProvider.STORAGE_KEY)
+      .then((result) => {
+        this.userInfo = JSON.stringify(result);
+      });
   }
 
   goHomePage(): void {
@@ -127,8 +137,16 @@ export class StartPage {
         this.navCtrl.setRoot(HomePage);
       })
       .catch((error) => {
-        this.displayToast('유효하지 않은 아이디 입니다.');
+        this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
+        this.userInfo = JSON.stringify(error);
       })
+  }
+
+  showPreference() {
+    this.storage.get(this.linkedinProvider.STORAGE_KEY)
+      .then((result) => {
+        this.userInfo = JSON.stringify(result);
+      });
   }
 
   saveUserInfo(result: any) {

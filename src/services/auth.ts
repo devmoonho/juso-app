@@ -7,6 +7,8 @@ import { ToastController } from 'ionic-angular';
 import { Http, Response } from '@angular/http';
 import { Observable } from 'rxjs/Rx';
 
+import { Storage } from '@ionic/storage';
+
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
 import 'rxjs/add/operator/catch';
@@ -24,7 +26,8 @@ export class AuthService {
 
     constructor(
         public toastCtrl: ToastController,
-        public http: Http
+        public http: Http,
+        public storage: Storage
     ) {
         this.fireAuth = firebase.auth();
     }
@@ -39,7 +42,7 @@ export class AuthService {
 
     getCurrentUser(): any {
         var user = firebase.auth().currentUser;
-        return user; 
+        return user;
     }
 
     googlePlus(): any {
@@ -72,83 +75,111 @@ export class AuthService {
     }
 
     linkedIn(): any {
-        let provider: LinkedIn = new LinkedIn({
-            clientId: this.linkedinProvider.clientId,
-            appScope: this.linkedinProvider.appScope,
-            redirectUri: this.linkedinProvider.redirectUri,
-            responseType: this.linkedinProvider.responseType,
-            state: this.linkedinProvider.state
-        });
+        return this.storage.get(this.linkedinProvider.STORAGE_KEY)
+            .then((res) => {
+                if (res === 'undefined' || res === null) {
+                    // not exist 
+                    // do all process 
 
-        return this.oauth.logInVia(provider)
-            .then((res) => {
-                let queryAccessToken = this.linkedinProvider.getQueryString('access-token', res);
-                return queryAccessToken;
-            })
-            .then((queryAccessToken) => {
-                // get linkedin accessToken
-                return this.http.post(queryAccessToken, '')
-                    .map((res: Response) => {
-                        return this.linkedinProvider.getQueryString('user-profile', res);
-                    })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-                    .toPromise();
-            })
-            .then((queryUserProfile) => {
-                // get linkedin user profile
-                return this.http.get(queryUserProfile)
-                    .map((res: Response) => {
-                        this.linkedinProvider.setUserProfile(res.json())
-                        let queryCustomToken = this.firebaseToken
-                            .getQueryString('custom-token', this.linkedinProvider.getUserProfile());
-                        return queryCustomToken;
-                    })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-                    .toPromise();
-            })
-            .then((queryCustomToken) => {
-                // get firebase accessToken 
-                return this.http.get(queryCustomToken)
-                    .map((res: Response) => {
-                        return res;
-                    })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-                    .toPromise();
-            })
-            .then((res) => {
-                // firebase sing up or login 
-                return this.firebaseToken.singIn(res, firebase, this.linkedinProvider.getUserProfile())
-                    .then((result) => {
-                        return result;
-                    })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-                    .toPromise();
-            })
-            .then((res) => {
-                var user = firebase.auth().currentUser;
-                return user.updateProfile({
-                    displayName: this.linkedinProvider.getUserProfile()['name'],
-                    photoURL: this.linkedinProvider.getUserProfile()['publicProfileUrl']
-                })
-                    .then((res) => {
-                        return res;
-                    })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-            })
-            .then((res) => {
-                var user = firebase.auth().currentUser;
-                return user.updateEmail(this.linkedinProvider.getUserProfile().email)
-                    .then((res) => {
-                        return res;
-                    })
-                    .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
-            })
-            .catch((error) => {
+                    let provider: LinkedIn = new LinkedIn({
+                        clientId: this.linkedinProvider.clientId,
+                        appScope: this.linkedinProvider.appScope,
+                        redirectUri: this.linkedinProvider.redirectUri,
+                        responseType: this.linkedinProvider.responseType,
+                        state: this.linkedinProvider.state
+                    });
 
-            })
+                    return this.oauth.logInVia(provider)
+                        .then((res) => {
+                            let queryAccessToken = this.linkedinProvider.getQueryString('access-token', res);
+                            this.linkedinProvider.preference['code'] = res['code'];
+                            return queryAccessToken;
+                        })
+                        .then((queryAccessToken) => {
+                            // get linkedin accessToken
+                            return this.http.post(queryAccessToken, '')
+                                .map((res: Response) => {
+                                    this.linkedinProvider.preference['accessToken'] = res.json().access_token;
+                                    return this.linkedinProvider.getQueryString('user-profile', res);
+                                })
+                                .catch((error: any) => Observable.throw(error.json().error || 'accessToken error'))
+                                .toPromise();
+                        })
+                        .then((queryUserProfile) => {
+                            // get linkedin user profile
+                            return this.http.get(queryUserProfile)
+                                .map((res: Response) => {
+                                    this.linkedinProvider.setUserProfile(res.json())
+                                    let queryCustomToken = this.firebaseToken
+                                        .getQueryString('custom-token', this.linkedinProvider.getUserProfile());
+                                    this.linkedinProvider.preference['userProfile'] = this.linkedinProvider.getUserProfile;
+                                    return queryCustomToken;
+                                })
+                                .catch((error: any) => Observable.throw(error.json().error || 'linkedin user profile error'))
+                                .toPromise();
+                        })
+                        .then((queryCustomToken) => {
+                            // get firebase accessToken 
+                            return this.http.get(queryCustomToken)
+                                .map((res: Response) => {
+                                    return res;
+                                })
+                                .catch((error: any) => Observable.throw(error.json().error || 'custom token error'))
+                                .toPromise();
+                        })
+                        .then((res) => {
+                            this.linkedinProvider.preference['customToken'] = res.json().token;
+                            // firebase sing up or login 
+                            return this.firebaseToken.singIn(res, firebase, this.linkedinProvider.getUserProfile())
+                                .then((result) => {
+                                    return result;
+                                })
+                                .catch((error: any) => Observable.throw(error.json().error || 'singIn error'))
+                                .toPromise();
+                        })
+                        .then((res) => {
+                            var user = firebase.auth().currentUser;
+                            return user.updateProfile({
+                                displayName: this.linkedinProvider.getUserProfile()['name'],
+                                photoURL: this.linkedinProvider.getUserProfile()['publicProfileUrl']
+                            })
+                                .then((res) => {
+                                    return res;
+                                })
+                                .catch((error: any) => Observable.throw(error.json().error || 'updateProfile error'))
+                        })
+                        .then((res) => {
+                            var user = firebase.auth().currentUser;
+                            return user.updateEmail(this.linkedinProvider.getUserProfile().email)
+                                .then((res) => {
+                                    // finally success auth
+                                    // save preference
+                                    this.storage.set(this.linkedinProvider.STORAGE_KEY, JSON.stringify(this.linkedinProvider.preference));
+                                    return res;
+                                })
+                                .catch((error: any) => Observable.throw(error.json().error || 'updateEmail error'))
+                        })
+                        .catch((error: any) => Observable.throw(error.json().error || 'Server error'))
+
+                } else {
+                    // exist value 
+                    // 1. firebase login 
+                    // 2. go homePage
+                    // firebase sing up or login 
+                    let storage_linkedin = JSON.parse(res);
+                    return this.firebaseToken.singIn({ 'customToken': storage_linkedin['customToken'] }, firebase, storage_linkedin.userProfile)
+                        .then((result) => {
+                            return result;
+                        })
+                        .catch((error: any) => Observable.throw(error.json().error || 'storage singIn error'))
+                        .toPromise()
+                }
+            });
+
     }
 
     logout(): any {
+        this.storage.clear();
         return this.fireAuth.signOut();
     }
 
