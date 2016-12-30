@@ -22,12 +22,14 @@ export class HomePage implements OnInit {
   addressList: any;
   searchIndex: number = 1;
   searchPerPage: number = 5;
+  totalPage: any = 0;
 
   STATUS: any = {
     'FIREST_LOAD': 'FIREST_LOAD',
     'NOT_EXIST_ITEMS': 'NOT_EXIST_ITEMS',
     'EXIST_ITEMS': 'EXIST_ITEMS'
   }
+  
 
   currentStatus: any = this.STATUS.FIREST_LOAD;
 
@@ -49,10 +51,10 @@ export class HomePage implements OnInit {
       .then((res) => {
 
         let totalItems = res.results.common.totalCount
-        let totalPage = Math.ceil(totalItems/this.searchPerPage);
+        this.totalPage = Math.ceil(totalItems/this.searchPerPage);
 
-        this.searchedAddressInfo = totalPage + ' / ' + this.searchIndex; 
-        this.bookmarkAddressInfo = '0/0';
+        this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex; 
+        this.bookmarkAddressInfo = '0 / 0';
 
         this.addressList = res.results.juso;
         if (res.results.common.totalCount == 0) {
@@ -85,8 +87,10 @@ export class HomePage implements OnInit {
   }
 
   doRefresh(refresher) {
-    if (this.currentStatus == this.STATUS.FIREST_LOAD ||
-      this.currentStatus == this.STATUS.NOT_EXIST_ITEMS) {
+   if (this.currentStatus == this.STATUS.FIREST_LOAD ||
+      this.currentStatus == this.STATUS.NOT_EXIST_ITEMS ||
+      this.searchIndex >= this.totalPage      
+      ) {
       refresher.complete();
       return;
     }
@@ -94,10 +98,9 @@ export class HomePage implements OnInit {
     this.searchIndex += 1;
     this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
       .then((res) => {
-        let totalItems = res.results.common.totalCount
-        let totalPage = Math.ceil(totalItems/this.searchPerPage);
 
-        this.searchedAddressInfo = totalPage + ' / ' + this.searchIndex; 
+        let totalItems = res.results.common.totalCount
+        this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex; 
         this.addressList = res.results.juso.concat(this.addressList);
         this.currentStatus = this.STATUS.EXIST_ITEMS;
         refresher.complete();
