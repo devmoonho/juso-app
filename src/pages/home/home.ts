@@ -13,8 +13,8 @@ import { AddressService } from '../../services/address';
   providers: [AuthService, AddressService],
   templateUrl: 'home.html'
 })
-export class HomePage implements OnInit {
 
+export class HomePage implements OnInit {
   searchTerm: any;
   userInfo: any;
   searchedAddressInfo: any;
@@ -22,6 +22,14 @@ export class HomePage implements OnInit {
   addressList: any;
   searchIndex: number = 1;
   searchPerPage: number = 5;
+
+  STATUS: any = {
+    'FIREST_LOAD': 'FIREST_LOAD',
+    'NOT_EXIST_ITEMS': 'NOT_EXIST_ITEMS',
+    'EXIST_ITEMS': 'EXIST_ITEMS'
+  }
+
+  currentStatus: any = this.STATUS.FIREST_LOAD;
 
   constructor(public navCtrl: NavController,
     public modalCtrl: ModalController,
@@ -36,17 +44,23 @@ export class HomePage implements OnInit {
 
   searchJuso(): void {
     let user = this.authService.getCurrentUser();
-    this.searchIndex = 1 
+    this.searchIndex = 1
     this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
       .then((res) => {
         this.userInfo = JSON.stringify(res);
-        this.searchedAddressInfo = '찾은 주소 ' + JSON.stringify(res.results.common.totalCount);
+        this.searchedAddressInfo = '찾은 주소 ' + res.results.common.totalCount;
         this.bookmarkAddressInfo = '즐겨찾기 ';
         this.addressList = res.results.juso;
+        if (res.results.common.totalCount == 0) {
+          this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
+        } else {
+          this.currentStatus = this.STATUS.EXIST_ITEMS;
+        }
         Keyboard.close()
       })
       .catch((err) => {
         this.userInfo = JSON.stringify(err);
+        this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
       })
   }
 
@@ -67,22 +81,22 @@ export class HomePage implements OnInit {
   }
 
   doRefresh(refresher) {
-    console.log('Begin async operation', refresher);
+    if (this.currentStatus == this.STATUS.FIREST_LOAD ||
+      this.currentStatus == this.STATUS.NOT_EXIST_ITEMS) {
+      refresher.complete();
+      return;
+    }
+
     this.searchIndex += 1;
     this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
       .then((res) => {
         this.addressList = res.results.juso.concat(this.addressList);
+        this.currentStatus = this.STATUS.EXIST_ITEMS;
         refresher.complete();
       })
       .catch((err) => {
-
+        this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
         refresher.complete();
       })
-
-    // setTimeout(() => {
-    //   console.log('Async operation has ended');
-    //   this.userInfo = 'Async operation has ended';
-    //   refresher.complete();
-    // }, 2000);
   }
 }
