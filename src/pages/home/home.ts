@@ -47,9 +47,13 @@ export class HomePage implements OnInit {
     this.searchIndex = 1
     this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
       .then((res) => {
-        this.userInfo = JSON.stringify(res);
-        this.searchedAddressInfo = '찾은 주소 ' + res.results.common.totalCount;
-        this.bookmarkAddressInfo = '즐겨찾기 ';
+
+        let totalItems = res.results.common.totalCount
+        let totalPage = Math.ceil(totalItems/this.searchPerPage);
+
+        this.searchedAddressInfo = totalPage + ' / ' + this.searchIndex; 
+        this.bookmarkAddressInfo = '0/0';
+
         this.addressList = res.results.juso;
         if (res.results.common.totalCount == 0) {
           this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
@@ -90,6 +94,10 @@ export class HomePage implements OnInit {
     this.searchIndex += 1;
     this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
       .then((res) => {
+        let totalItems = res.results.common.totalCount
+        let totalPage = Math.ceil(totalItems/this.searchPerPage);
+
+        this.searchedAddressInfo = totalPage + ' / ' + this.searchIndex; 
         this.addressList = res.results.juso.concat(this.addressList);
         this.currentStatus = this.STATUS.EXIST_ITEMS;
         refresher.complete();
