@@ -17,6 +17,8 @@ export class HomePage implements OnInit {
 
   searchTerm: any;
   userInfo: any;
+  searchedAddressInfo: any;
+  bookmarkAddressInfo: any;
 
   constructor(public navCtrl: NavController,
     public modalCtrl: ModalController,
@@ -35,9 +37,12 @@ export class HomePage implements OnInit {
     this.addressService.searchAddress(this.searchTerm, 1, 10)
       .then((res) => {
         this.userInfo = JSON.stringify(res);
+        this.searchedAddressInfo  = '찾은 주소 ' + JSON.stringify(res.results.common.totalCount);
+        this.bookmarkAddressInfo  = '즐겨찾기 ';
+        Keyboard.close()
       })
       .catch((err) => {
-
+        this.userInfo = JSON.stringify(err);
       })
   }
 
@@ -55,5 +60,15 @@ export class HomePage implements OnInit {
       .catch((error) => {
 
       })
+  }
+
+  doRefresh(refresher) {
+    console.log('Begin async operation', refresher);
+
+    setTimeout(() => {
+      console.log('Async operation has ended');
+      this.userInfo = 'Async operation has ended';
+      refresher.complete();
+    }, 2000);
   }
 }
