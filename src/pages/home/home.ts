@@ -19,6 +19,9 @@ export class HomePage implements OnInit {
   userInfo: any;
   searchedAddressInfo: any;
   bookmarkAddressInfo: any;
+  addressList: any;
+  searchIndex: number = 1;
+  searchPerPage: number = 5;
 
   constructor(public navCtrl: NavController,
     public modalCtrl: ModalController,
@@ -33,12 +36,13 @@ export class HomePage implements OnInit {
 
   searchJuso(): void {
     let user = this.authService.getCurrentUser();
-
-    this.addressService.searchAddress(this.searchTerm, 1, 10)
+    this.searchIndex = 1 
+    this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
       .then((res) => {
         this.userInfo = JSON.stringify(res);
-        this.searchedAddressInfo  = '찾은 주소 ' + JSON.stringify(res.results.common.totalCount);
-        this.bookmarkAddressInfo  = '즐겨찾기 ';
+        this.searchedAddressInfo = '찾은 주소 ' + JSON.stringify(res.results.common.totalCount);
+        this.bookmarkAddressInfo = '즐겨찾기 ';
+        this.addressList = res.results.juso;
         Keyboard.close()
       })
       .catch((err) => {
@@ -64,11 +68,21 @@ export class HomePage implements OnInit {
 
   doRefresh(refresher) {
     console.log('Begin async operation', refresher);
+    this.searchIndex += 1;
+    this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
+      .then((res) => {
+        this.addressList = res.results.juso.concat(this.addressList);
+        refresher.complete();
+      })
+      .catch((err) => {
 
-    setTimeout(() => {
-      console.log('Async operation has ended');
-      this.userInfo = 'Async operation has ended';
-      refresher.complete();
-    }, 2000);
+        refresher.complete();
+      })
+
+    // setTimeout(() => {
+    //   console.log('Async operation has ended');
+    //   this.userInfo = 'Async operation has ended';
+    //   refresher.complete();
+    // }, 2000);
   }
 }

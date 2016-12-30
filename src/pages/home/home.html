@@ -28,17 +28,18 @@
 <ion-content>
 
   <ion-list>
-    <ion-list-header>
-      {{searchedAddressInfo}}
+    <ion-list-header color="grey-100">
+      <h2>{{searchedAddressInfo}}</h2>
     </ion-list-header>
 
-    <ion-item-sliding>
+    <ion-item-sliding *ngFor="let address of addressList">
       <ion-item>
         <ion-avatar item-left>
           <img src="assets/img/venkman.jpg">
         </ion-avatar>
-        <h2>Venkman</h2>
-        <p>Back off man, I'm a scientist.</p>
+        <h2>{{address.zipNo}}</h2>
+        <p>{{address.jibunAddr}}</p>
+        <p>{{address.roadAddrPart1}}</p>
       </ion-item>
       <ion-item-options>
         <button ion-button color="light" icon-left>
@@ -58,8 +59,8 @@
   </ion-list>
 
   <ion-list>
-    <ion-list-header>
-     {{bookmarkAddressInfo}} 
+    <ion-list-header color="grey-100">
+      <h2> {{bookmarkAddressInfo}}</h2>
     </ion-list-header>
 
     <ion-item-sliding>
