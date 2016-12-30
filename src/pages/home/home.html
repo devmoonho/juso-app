@@ -1,10 +1,10 @@
 <ion-header>
-  <ion-navbar color="teal-300"> 
+  <ion-navbar color="teal-300">
     <button ion-button icon-only menuToggle>
       <ion-icon name="menu"></ion-icon>
     </button>
     <ion-title>
-      새 주소 찾기 
+      새 주소 찾기
     </ion-title>
     <ion-buttons end>
       <button ion-button icon-only (click)="openAbout()">
@@ -12,22 +12,100 @@
       </button>
     </ion-buttons>
   </ion-navbar>
+  <ion-navbar>
+    <form (ngSubmit)="searchJuso()">
+      <ion-row>
+        <ion-item>
+          <ion-icon ios="ios-search" md="md-search" item-left></ion-icon>
+          <ion-input type="search" onfocus="this.select();" [(ngModel)]="searchTerm" name="term" placeholder="도로명, 건물명, 지번">
+          </ion-input>
+        </ion-item>
+        <button ion-button type="submit" clear color="grey-500">검색</button>
+      </ion-row>
+    </form>
+  </ion-navbar>
 </ion-header>
-<ion-content padding>
-  <form (ngSubmit)="searchJuso(searchTerm)">
-    <ion-row>
-      <ion-item>
-        <ion-label>검색어: </ion-label>
-        <ion-input type="text" onfocus="this.select();" [(ngModel)]="searchTerm" name="term" placeholder="도로명, 건물명, 지번"></ion-input>
-      </ion-item>
-      <button ion-button type="submit" color="teal-300" outline>검색</button>
-    </ion-row>
-  </form>
-  <h2>Welcome to Ionic!</h2>
-  <p>
-    user info : {{userInfo}}
-  </p>
-  <button ion-button icon-only (click)="logout()">
-    Logout
-  </button>
+<ion-content>
+  <ion-refresher (ionRefresh)="doRefresh($event)">
+    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles">
+    </ion-refresher-content>
+  </ion-refresher>
+
+  <div *ngIf="currentStatus==STATUS.EXIST_ITEMS">
+    <ion-list>
+      <ion-list-header color="grey-50">
+        <h2>{{searchedAddressInfo}}</h2>
+      </ion-list-header>
+
+      <ion-item-sliding *ngFor="let address of addressList">
+        <ion-item>
+          <ion-avatar item-left>
+            <img src="assets/img/venkman.jpg">
+          </ion-avatar>
+          <h2>{{address.zipNo}}</h2>
+          <p>{{address.jibunAddr}}</p>
+          <p>{{address.roadAddrPart1}}</p>
+        </ion-item>
+        <ion-item-options>
+          <button ion-button color="light" icon-left>
+          <ion-icon name="ios-more"></ion-icon>
+          More
+        </button>
+          <button ion-button color="primary" icon-left>
+          <ion-icon name="text"></ion-icon>
+          Text
+        </button>
+          <button ion-button color="secondary" icon-left>
+          <ion-icon name="call"></ion-icon>
+          Call
+        </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+    <ion-list>
+      <ion-list-header color="grey-50">
+        <h2> {{bookmarkAddressInfo}}</h2>
+      </ion-list-header>
+
+      <ion-item-sliding>
+        <ion-item>
+          <ion-avatar item-left>
+            <img src="assets/img/slimer.jpg">
+          </ion-avatar>
+          <h2>Slimer</h2>
+          <p>Boo!</p>
+        </ion-item>
+        <ion-item-options>
+          <button ion-button color="light" icon-left>
+          <ion-icon name="ios-more"></ion-icon>
+          More
+        </button>
+          <button ion-button color="primary" icon-left>
+          <ion-icon name="text"></ion-icon>
+          Text
+        </button>
+          <button ion-button color="secondary" icon-left>
+          <ion-icon name="call"></ion-icon>
+          Call
+        </button>
+        </ion-item-options>
+      </ion-item-sliding>
+    </ion-list>
+
+  </div>
+
+  <div *ngIf="currentStatus==STATUS.FIREST_LOAD">
+    <h2>FIREST_LOAD</h2>
+    <h2>Welcome to Ionic!</h2>
+    <p>
+      user info : {{userInfo}}
+    </p>
+    <button ion-button icon-only (click)="logout()">Logout</button>
+  </div>
+
+  <div *ngIf="currentStatus==STATUS.NOT_EXIST_ITEMS">
+    <h2>NOT_EXIST_ITEMS</h2>
+  </div>
+
 </ion-content>
