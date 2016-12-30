@@ -5,11 +5,12 @@ import { NavController } from 'ionic-angular';
 import { AboutPage } from '../about/about';
 import { StartPage } from '../start/start';
 import { FormBuilder, Validators } from '@angular/forms';
-import { AuthService } from '../../services/auth'
+import { AuthService } from '../../services/auth';
+import { AddressService } from '../../services/address';
 
 @Component({
   selector: 'page-home',
-  providers: [AuthService],
+  providers: [AuthService, AddressService],
   templateUrl: 'home.html'
 })
 export class HomePage implements OnInit {
@@ -20,6 +21,7 @@ export class HomePage implements OnInit {
   constructor(public navCtrl: NavController,
     public modalCtrl: ModalController,
     public authService: AuthService,
+    public addressService: AddressService,
     public toastCtrl: ToastController) {
   }
 
@@ -29,25 +31,15 @@ export class HomePage implements OnInit {
 
   searchJuso(): void {
     let user = this.authService.getCurrentUser();
-    let toast: any;
 
-    this.userInfo = this.searchTerm; 
+    this.addressService.searchAddress(this.searchTerm, 1, 10)
+      .then((res) => {
+        this.userInfo = JSON.stringify(res);
+      })
+      .catch((err) => {
 
-    if (user) {
-      toast = this.toastCtrl.create({
-        message: 'User was added successfully\n' + this.searchTerm + '\n' + user.email,
-        duration: 3000
-      });
-    } else {
-      toast = this.toastCtrl.create({
-        message: 'User was added successfully\n' + this.searchTerm + '\n',
-        duration: 3000
-      });
-    }
-    Keyboard.close()
-    toast.present()
+      })
   }
-
 
   openAbout(): void {
     let modal = this.modalCtrl.create(AboutPage);
