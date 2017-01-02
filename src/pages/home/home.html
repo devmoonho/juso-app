@@ -33,11 +33,14 @@
 
   <div *ngIf="currentStatus==STATUS.EXIST_ITEMS">
     <ion-list>
-      <ion-list-header color="grey-50">
-        <h2>{{searchedAddressInfo}}</h2>
-      </ion-list-header>
 
-      <ion-item-sliding *ngFor="let address of addressList">
+      <ion-item style="color:#009688;">
+        <ion-icon ios="ios-information-circle" md="md-information-circle" larger item-left></ion-icon>
+          끌어서 더 보기
+        <ion-badge color="teal-300" item-right>{{searchedAddressInfo}}</ion-badge>
+      </ion-item>
+ 
+      <ion-item-sliding *ngFor="let address of addressList">기
         <ion-item>
           <ion-avatar item-left>
             <img src="assets/img/venkman.jpg">
@@ -64,10 +67,11 @@
     </ion-list>
 
     <ion-list>
-      <ion-list-header color="grey-50">
-        <h2> {{bookmarkAddressInfo}}</h2>
-      </ion-list-header>
-
+      <ion-item style="color:#009688;">
+        <ion-icon ios="ios-bookmark" md="md-bookmark" larger item-left></ion-icon>
+        주소 즐겨 찾기
+        <ion-badge color="teal-300" item-right>{{bookmarkAddressInfo}}</ion-badge>
+      </ion-item>
       <ion-item-sliding>
         <ion-item>
           <ion-avatar item-left>
