@@ -8,10 +8,14 @@ import { Pipe, PipeTransform } from '@angular/core';
  *   {{ (삼성동) |  exponentialStrength:1:2}}
  *   formats to: 1024
 */
-@Pipe({name: 'subString'})
+@Pipe({ name: 'subString' })
 export class SubStringPipe implements PipeTransform {
-  transform(value: string, start: number, end: number): string{
+  transform(value: string, start: number, end: number): string {
     let regExp = /\(|\)|\s|"|,/g
-    return value.replace(regExp,'').substring(start,end); 
+    if (value != '') {
+      return value.replace(regExp, '').substring(start, end);
+    }else{
+      return '읍'
+    }
   }
 }
