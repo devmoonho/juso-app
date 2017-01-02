@@ -13,6 +13,18 @@
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         },
+        "cordova-plugin-facebook4": {
+            "APP_ID": "304282719967644",
+            "APP_NAME": "NewAddress",
+            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
+        },
+        "cordova-plugin-googleplus": {
+            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.19394399742-ferhsm5d0r52qi4dtesukac5sd7si6ou",
+            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
+        },
+        "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
+        },
         "cordova-plugin-splashscreen": {
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         },
@@ -23,21 +35,6 @@
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         },
         "ionic-plugin-keyboard": {
-            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
-        },
-        "cordova-plugin-screen-orientation": {
-            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
-        },
-        "cordova-plugin-inappbrowser": {
-            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
-        },
-        "cordova-plugin-googleplus": {
-            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.19394399742-ferhsm5d0r52qi4dtesukac5sd7si6ou",
-            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
-        },
-        "cordova-plugin-facebook4": {
-            "APP_ID": "304282719967644",
-            "APP_NAME": "NewAddress",
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         },
         "twitter-connect-plugin": {
