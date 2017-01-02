@@ -15,6 +15,8 @@ import { DatabaseService } from '../services/database';
 import { AddressService } from '../services/address';
 import { Storage } from '@ionic/storage';
 
+import { SubStringPipe } from '../pipe/common.pipe';
+
 @NgModule({
   declarations: [
     MyApp,
@@ -23,6 +25,7 @@ import { Storage } from '@ionic/storage';
     ContactPage,
     HomePage,
     LoginPage,
+    SubStringPipe,
   ],
   imports: [
     IonicModule.forRoot(MyApp),

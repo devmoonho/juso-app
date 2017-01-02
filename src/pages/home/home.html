@@ -40,10 +40,10 @@
         <ion-badge color="teal-300" item-right>{{searchedAddressInfo}}</ion-badge>
       </ion-item>
  
-      <ion-item-sliding *ngFor="let address of addressList">기
+      <ion-item-sliding *ngFor="let address of addressList">
         <ion-item>
           <ion-avatar item-left>
-            <img src="assets/img/venkman.jpg">
+            <h1 class="avatar-text" text-center>{{address.roadAddrPart2 | subString:0:2}}</h1>
           </ion-avatar>
           <h2>{{address.zipNo}}</h2>
           <p>{{address.jibunAddr}}</p>

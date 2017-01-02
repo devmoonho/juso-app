@@ -29,7 +29,8 @@ export class HomePage implements OnInit {
     'NOT_EXIST_ITEMS': 'NOT_EXIST_ITEMS',
     'EXIST_ITEMS': 'EXIST_ITEMS'
   }
-  
+
+  prefixAddress: any = 'A';  
 
   currentStatus: any = this.STATUS.FIREST_LOAD;
 
