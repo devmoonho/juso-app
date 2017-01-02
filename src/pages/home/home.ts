@@ -29,7 +29,11 @@ export class HomePage implements OnInit {
     'NOT_EXIST_ITEMS': 'NOT_EXIST_ITEMS',
     'EXIST_ITEMS': 'EXIST_ITEMS'
   }
-  
+
+  prefixAddress: any = 'A';
+  randomColor: any = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5',
+    '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B',
+    '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'];
 
   currentStatus: any = this.STATUS.FIREST_LOAD;
 
@@ -47,6 +51,10 @@ export class HomePage implements OnInit {
     this.searchJuso();
   }
 
+  getRandomColor(index: number): string {
+    return this.randomColor[index + ((this.searchIndex - 1) % this.randomColor.length)];
+  }
+
   searchJuso(): void {
     let user = this.authService.getCurrentUser();
     this.searchIndex = 1
@@ -54,9 +62,9 @@ export class HomePage implements OnInit {
       .then((res) => {
 
         let totalItems = res.results.common.totalCount
-        this.totalPage = Math.ceil(totalItems/this.searchPerPage);
+        this.totalPage = Math.ceil(totalItems / this.searchPerPage);
 
-        this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex; 
+        this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex;
         this.bookmarkAddressInfo = '0 / 0';
 
         this.addressList = res.results.juso;
@@ -90,10 +98,10 @@ export class HomePage implements OnInit {
   }
 
   doRefresh(refresher) {
-   if (this.currentStatus == this.STATUS.FIREST_LOAD ||
+    if (this.currentStatus == this.STATUS.FIREST_LOAD ||
       this.currentStatus == this.STATUS.NOT_EXIST_ITEMS ||
-      this.searchIndex >= this.totalPage      
-      ) {
+      this.searchIndex >= this.totalPage
+    ) {
       refresher.complete();
       return;
     }
@@ -103,7 +111,7 @@ export class HomePage implements OnInit {
       .then((res) => {
 
         let totalItems = res.results.common.totalCount
-        this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex; 
+        this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex;
         this.addressList = res.results.juso.concat(this.addressList);
         this.currentStatus = this.STATUS.EXIST_ITEMS;
         refresher.complete();
