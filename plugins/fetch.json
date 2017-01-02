@@ -55,6 +55,14 @@
         "is_top_level": true,
         "variables": {}
     },
+    "cordova-plugin-inappbrowser": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-inappbrowser@1.6.1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "cordova-plugin-googleplus": {
         "source": {
             "type": "registry",
@@ -85,13 +93,5 @@
         "variables": {
             "FABRIC_KEY": "c56b751ddca407ddc6c66b22c00eb8fe0fad190b"
         }
-    },
-    "cordova-plugin-inappbrowser": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-inappbrowser@1.6.1"
-        },
-        "is_top_level": true,
-        "variables": {}
     }
 }
