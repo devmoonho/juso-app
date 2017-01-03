@@ -52,7 +52,10 @@ export class HomePage implements OnInit {
   }
 
   getRandomColor(index: number): string {
-    return this.randomColor[index + ((this.searchIndex - 1) % this.randomColor.length)];
+    let idx = (index + this.searchIndex) % this.randomColor.length
+
+    // return this.randomColor[index + ((this.searchIndex - 1) % this.randomColor.length)];
+    return this.randomColor[idx];
   }
 
   searchJuso(): void {
