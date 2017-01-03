@@ -1,4 +1,32 @@
 {
+    "cordova-plugin-googleplus": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-googleplus"
+        },
+        "is_top_level": true,
+        "variables": {
+            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.19394399742-ferhsm5d0r52qi4dtesukac5sd7si6ou"
+        }
+    },
+    "twitter-connect-plugin": {
+        "source": {
+            "type": "registry",
+            "id": "twitter-connect-plugin@0.5.0"
+        },
+        "is_top_level": true,
+        "variables": {
+            "FABRIC_KEY": "c56b751ddca407ddc6c66b22c00eb8fe0fad190b"
+        }
+    },
+    "cordova-plugin-inappbrowser": {
+        "source": {
+            "type": "registry",
+            "id": "cordova-plugin-inappbrowser@~1.6.1"
+        },
+        "is_top_level": true,
+        "variables": {}
+    },
     "cordova-plugin-whitelist": {
         "source": {
             "type": "registry",
@@ -18,7 +46,7 @@
     "cordova-plugin-statusbar": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-statusbar@2.2.0"
+            "id": "cordova-plugin-statusbar@2.2.1"
         },
         "is_top_level": true,
         "variables": {}
@@ -34,7 +62,7 @@
     "cordova-plugin-splashscreen": {
         "source": {
             "type": "registry",
-            "id": "cordova-plugin-splashscreen@4.0.0"
+            "id": "cordova-plugin-splashscreen@4.0.1"
         },
         "is_top_level": true,
         "variables": {}
@@ -47,24 +75,6 @@
         "is_top_level": true,
         "variables": {}
     },
-    "cordova-plugin-screen-orientation": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-screen-orientation"
-        },
-        "is_top_level": true,
-        "variables": {}
-    },
-    "cordova-plugin-googleplus": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-googleplus"
-        },
-        "is_top_level": true,
-        "variables": {
-            "REVERSED_CLIENT_ID": "com.googleusercontent.apps.19394399742-ferhsm5d0r52qi4dtesukac5sd7si6ou"
-        }
-    },
     "cordova-plugin-facebook4": {
         "source": {
             "type": "registry",
@@ -75,23 +85,5 @@
             "APP_ID": "304282719967644",
             "APP_NAME": "NewAddress"
         }
-    },
-    "twitter-connect-plugin": {
-        "source": {
-            "type": "registry",
-            "id": "twitter-connect-plugin@0.5.0"
-        },
-        "is_top_level": true,
-        "variables": {
-            "FABRIC_KEY": "c56b751ddca407ddc6c66b22c00eb8fe0fad190b"
-        }
-    },
-    "cordova-plugin-inappbrowser": {
-        "source": {
-            "type": "registry",
-            "id": "cordova-plugin-inappbrowser@1.6.1"
-        },
-        "is_top_level": true,
-        "variables": {}
     }
 }
