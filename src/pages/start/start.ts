@@ -6,7 +6,7 @@ import { ModalController, ToastController, LoadingController } from 'ionic-angul
 import { HomePage } from '../home/home';
 import { LoginPage } from '../login/login';
 
-import { Http } from '@angular/http';
+import { Http, Response } from '@angular/http';
 
 import { AuthService } from '../../services/auth';
 import { DatabaseService } from '../../services/database';
@@ -131,29 +131,22 @@ export class StartPage implements OnInit {
   }
 
   goLinkedInAuth() {
-    this.storage.get(this.linkedinProvider.STORAGE_KEY)
-      .then((res) => {
-        if (res === null) {
-          this.authService.linkedIn()
-            .then((userData) => {
-              this.displayToast('로그인 되었습니다.');
-              this.navCtrl.setRoot(HomePage);
-            })
-            .catch((error) => {
-              this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
-              this.userInfo = JSON.stringify(error);
-            })
-        } else {
-          this.authService.directlyLinkedIn(JSON.parse(res).customToken)
-            .then((userData) => {
-              this.displayToast('로그인 되었습니다.');
-              this.navCtrl.setRoot(HomePage);
-            })
-            .catch((error) => {
-              this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
-              this.userInfo = JSON.stringify(error);
-            })
-        }
+    this.authService.linkedIn()
+      .then((userData) => {
+        this.authService.linkedinCustomToken(userData)
+          .then((res) => {
+            this.storage.set(this.linkedinProvider.STORAGE_KEY, JSON.stringify(this.linkedinProvider.preference));
+            this.displayToast('로그인 되었습니다.');
+            this.navCtrl.setRoot(HomePage);
+          })
+          .catch((err) => {
+            this.storage.remove(this.linkedinProvider.STORAGE_KEY);
+            this.displayToast('세션이 만료 되었습니다. 재 로그인 해주세요');
+          })
+      })
+      .catch((error) => {
+        this.storage.remove(this.linkedinProvider.STORAGE_KEY);
+        this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
       })
   }
 
