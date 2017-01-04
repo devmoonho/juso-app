@@ -9,6 +9,7 @@ import { AddressService } from '../../services/address';
 
 export class DetailPage implements OnInit {
     addressInfo: any;
+    daumInfo: any = {};
 
     constructor(
         private viewCtrl: ViewController,
@@ -22,8 +23,7 @@ export class DetailPage implements OnInit {
         this.addressService.getAddress2Coord(this.addressInfo.jibunAddr)
             .then((res) => {
                 if (res.channel.item.length != 0) {
-                    this.addressInfo['daum'] = res.channel.item[0];
-                    this.addressInfo = JSON.stringify(this.addressInfo);
+                    this.daumInfo = res.channel.item[0];
                 }
             })
     }

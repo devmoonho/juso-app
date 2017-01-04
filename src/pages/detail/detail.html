@@ -1,7 +1,7 @@
 <ion-header>
-    <ion-toolbar>
+    <ion-toolbar color="teal-300">
         <ion-title>
-            detail 
+            상세정보
         </ion-title>
         <ion-buttons start>
             <button ion-button (click)="dismiss()">
@@ -12,7 +12,37 @@
     </ion-toolbar>
 </ion-header>
 <ion-content padding>
-    <div>
-        {{addressInfo}}
-    </div>
+    <ion-card>
+        <img src="assets/icon/home.png" style="display: block; width: 60%; height: auto; margin-left: auto; margin-right: auto;">
+        <ion-card-content>
+            <ion-card-title>
+                {{addressInfo.jibunAddr}}
+            </ion-card-title>
+            <p>
+                우편번호 : {{addressInfo.zipNo}}
+            </p>
+            <P>
+                도로명 주소 : {{addressInfo.roadAddrPart1}}
+            </P>
+            <p>
+                영문 주소 : {{addressInfo.engAddr}}
+            </p>
+            <p>
+                위도 : {{daumInfo['point_x']}}
+                <br> 경도 : {{daumInfo['point_y']}}
+            </p>
+        </ion-card-content>
+        <ion-row text-right>
+            <ion-col>
+                <button ion-button icon-left clear small color="bg-500" >
+                    <ion-icon ios="ios-copy" md="md-copy"></ion-icon>
+                    <div>복사하기</div>
+                </button>
+                 <button ion-button icon-left clear small  color="bg-500" >
+                    <ion-icon ios="ios-copy" md="md-copy"></ion-icon>
+                    <div>즐겨찾기</div>
+                </button>
+            </ion-col>
+       </ion-row>
+    </ion-card>
 </ion-content>
