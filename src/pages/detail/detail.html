@@ -1,3 +1,4 @@
+<script type="text/javascript" src="//apis.daum.net/maps/maps3.js?apikey=발급받은 API KEY를 사용하세요"></script>
 <ion-header>
     <ion-toolbar color="teal-300">
         <ion-title>
@@ -13,25 +14,25 @@
 </ion-header>
 <ion-content padding>
     <ion-card>
-        <img src="assets/icon/home.png" style="display: block; width: 60%; height: auto; margin-left: auto; margin-right: auto;">
+        <div #map id="map" style="display: block; height: 200px; margin-left: 4px; margin-right: 4px; margin-top: 4px"></div>
         <ion-card-content>
             <ion-card-title>
-                {{addressInfo.jibunAddr}}
+                <h1>{{addressInfo.jibunAddr}}</h1>
             </ion-card-title>
             <ion-item>
-                <ion-checkbox [(ngModel)]="checkZipNo" color="purple-300"></ion-checkbox>
+                <ion-checkbox [(ngModel)]="checkZipNo" color="teal-300"></ion-checkbox>
                 <ion-label>우편번호 : {{addressInfo.zipNo}}</ion-label>
             </ion-item>
             <ion-item>
-                <ion-checkbox [(ngModel)]="checkRoadAddr" color="purple-300"></ion-checkbox>
+                <ion-checkbox [(ngModel)]="checkRoadAddr" color="teal-300"></ion-checkbox>
                 <ion-label>도로명 주소 : {{addressInfo.roadAddrPart1}}</ion-label>
             </ion-item>
             <ion-item>
-                <ion-checkbox [(ngModel)]="checkEngAddr" color="purple-300"></ion-checkbox>
+                <ion-checkbox [(ngModel)]="checkEngAddr" color="teal-300"></ion-checkbox>
                 <ion-label>영문 주소 : {{addressInfo.engAddr}}</ion-label>
             </ion-item>
             <ion-item>
-                <ion-checkbox [(ngModel)]="checkLocal" color="purple-300"></ion-checkbox>
+                <ion-checkbox [(ngModel)]="checkLocal" color="teal-300"></ion-checkbox>
                 <ion-label>위도 : {{daumInfo['point_x']}}
                     <br> 경도 : {{daumInfo['point_y']}}
                 </ion-label>
@@ -44,7 +45,7 @@
                     <div>복사하기</div>
                 </button>
                 <button ion-button icon-left clear color="bg-500" style="padding-left: 2px;padding-right: 2px;">
-                    <ion-icon ios="ios-copy" md="md-copy"></ion-icon>
+                    <ion-icon ios="ios-bookmarks" md="md-bookmarks"></ion-icon>
                     <div>즐겨찾기</div>
                 </button>
             </ion-col>
