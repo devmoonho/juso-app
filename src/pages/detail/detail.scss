@@ -1,3 +1,10 @@
-page-detail{
-
+page-detail {
+    .item.item-md .checkbox-md {
+        position: static;
+        display: block;
+        margin: 9px 9px 9px 4px;
+    }
+    .item-md {
+        padding-left: 1px;
+    }
 }

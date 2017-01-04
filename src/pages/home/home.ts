@@ -49,7 +49,7 @@ export class HomePage implements OnInit {
   ngOnInit() {
     // this.userInfo = JSON.stringify(this.authService.getCurrentUser());
     // TODO for Debug
-    this.searchTerm = '신림';
+    this.searchTerm = '삼성동';
     this.searchJuso();
   }
 
