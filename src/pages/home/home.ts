@@ -4,6 +4,8 @@ import { ModalController, ToastController } from 'ionic-angular';
 import { NavController } from 'ionic-angular';
 import { AboutPage } from '../about/about';
 import { StartPage } from '../start/start';
+import { DetailPage } from '../detail/detail';
+
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { AddressService } from '../../services/address';
@@ -123,5 +125,11 @@ export class HomePage implements OnInit {
         this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
         refresher.complete();
       })
+  }
+
+  detail(idx: number): void {
+    let modal = this.modalCtrl.create(DetailPage, {"addressInfo": JSON.stringify(this.addressList[idx])});
+    Keyboard.close()
+    modal.present();
   }
 }

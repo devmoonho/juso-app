@@ -9,6 +9,7 @@ import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
 import { StartPage } from '../pages/start/start';
 import { LoginPage } from '../pages/login/login';
+import { DetailPage } from '../pages/detail/detail';
 
 import { AuthService } from '../services/auth';
 import { DatabaseService } from '../services/database';
@@ -25,6 +26,7 @@ import { SubStringPipe } from '../pipe/common.pipe';
     ContactPage,
     HomePage,
     LoginPage,
+    DetailPage,
     SubStringPipe,
   ],
   imports: [
@@ -39,6 +41,7 @@ import { SubStringPipe } from '../pipe/common.pipe';
     ContactPage,
     HomePage,
     LoginPage,
+    DetailPage,
   ],
   providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthService, 
