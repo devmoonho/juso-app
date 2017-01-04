@@ -1,6 +1,6 @@
 page-home {
     .avatar-text {
-        padding: 10px 0;
+        padding: 12px 0;
         margin: auto;
         background-color: #EC407A;
         color: #FFFFFF;
@@ -10,5 +10,16 @@ page-home {
     }
     ion-col {
         height: 30px;
+        padding-top: 0px;
+        padding-bottom: 0px;
+    }
+    .address-list-height{
+        height: 100px;
+    }
+    .address-menu-icon {
+        padding-left: 2px;
+        padding-right: 2px;
+        margin-top: 0px;
+        margin-bottom: 0px;
     }
 }

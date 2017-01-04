@@ -5,12 +5,30 @@ export class AddressModel {
 
     getQueryString(term: any, currentPage: any, countPerPage: any): any {
         let queryString = this.url
-            + '?keyword=' + term 
+            + '?keyword=' + term
             + '&currentPage=' + currentPage
             + '&countPerPage=' + countPerPage
             + '&confmKey=' + this.confmKey
-            + '&resultType=' + this.resultType 
+            + '&resultType=' + this.resultType
             + '&callback=JSONP_CALLBACK';
-        return queryString; 
+        return queryString;
+    }
+}
+
+export class DaumModel {
+    apiKey: string = '5bff0e5cded7a36b5b82c2905c11d951';
+    localUrl: string = 'https://apis.daum.net';
+    add2coord: string = '/local/geo/addr2coord';
+
+    getQueryString(what: any, params: any): any {
+        switch (what) {
+            case 'add2coord':
+                return this.localUrl + this.add2coord
+                    + '?apiKey=' + this.apiKey
+                    + '&q=' + params[0] + '&output=json'
+                    + '&callback=JSONP_CALLBACK';
+            default:
+                break;
+        }
     }
 }

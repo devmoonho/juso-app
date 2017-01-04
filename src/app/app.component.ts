@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform } from 'ionic-angular';
-import { StatusBar, Splashscreen, Keyboard, ScreenOrientation } from 'ionic-native';
+import { StatusBar, Splashscreen, Keyboard } from 'ionic-native';
 
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
@@ -15,9 +15,9 @@ import * as firebase from 'firebase';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  rootPage: any = StartPage;
+  // rootPage: any = StartPage;
   // rootPage: any = LoginPage;
-  // rootPage: any = HomePage;
+  rootPage: any = HomePage;
 
   pages: Array<{title: string, component: any}>;
 
