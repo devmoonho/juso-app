@@ -25,7 +25,7 @@
     </form>
   </ion-navbar>
 </ion-header>
-<ion-content>
+<ion-content class="login-background">
   <ion-refresher (ionRefresh)="doRefresh($event)">
     <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles">
     </ion-refresher-content>
@@ -33,8 +33,8 @@
   <div *ngIf="currentStatus==STATUS.EXIST_ITEMS">
     <ion-list>
       <ion-item style="color:#009688;" text-center>
-        <ion-icon ios="ios-arrow-dropdown-circle" md="md-arrow-dropdown-circle" larger item-left></ion-icon>
-        끌어서 더 보기
+        <ion-icon ios="ios-text" md="md-text" larger item-left></ion-icon>
+        {{mainNotification}}
         <ion-badge color="teal-300" item-right>{{searchedAddressInfo}}</ion-badge>
       </ion-item>
       <ion-item-sliding *ngFor="let address of addressList; let i = index">
@@ -49,7 +49,7 @@
           </div>
           <ion-row text-right>
             <ion-col color="danger">
-             <button class="address-menu-icon" ion-button icon-right clear color="bg-500" style="height: 22px;">
+              <button class="address-menu-icon" ion-button icon-right clear color="bg-500" style="height: 22px;">
                 <ion-icon ios="ios-bookmark" md="md-bookmark"></ion-icon>
               </button>
               <button class="address-menu-icon" (click)="detail(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
@@ -74,46 +74,54 @@
         </ion-item-options>
       </ion-item-sliding>
     </ion-list>
-    <ion-list>
-      <ion-item style="color:#009688;">
-        <ion-icon ios="ios-bookmark" md="md-bookmark" larger item-left></ion-icon>
-        주소 즐겨 찾기
-        <ion-badge color="teal-300" item-right>{{bookmarkAddressInfo}}</ion-badge>
+  </div>
+  <ion-list>
+    <ion-item style="color:#009688;" text-center>
+      <ion-icon ios="ios-bookmark" md="md-bookmark" larger item-left></ion-icon>
+      주소 즐겨 찾기
+      <ion-badge color="teal-300" item-right>{{bookmarkAddressInfo}}</ion-badge>
+    </ion-item>
+    <ion-item-sliding>
+      <ion-item>
+        <ion-avatar item-left>
+          <img src="assets/img/slimer.jpg">
+        </ion-avatar>
+        <h2>Slimer</h2>
+        <p>Boo!</p>
       </ion-item>
-      <ion-item-sliding>
-        <ion-item>
-          <ion-avatar item-left>
-            <img src="assets/img/slimer.jpg">
-          </ion-avatar>
-          <h2>Slimer</h2>
-          <p>Boo!</p>
-        </ion-item>
-        <ion-item-options>
-          <button ion-button color="light" icon-left>
+      <ion-item-options>
+        <button ion-button color="light" icon-left>
           <ion-icon name="ios-more"></ion-icon>
           More
         </button>
-          <button ion-button color="primary" icon-left>
+        <button ion-button color="primary" icon-left>
           <ion-icon name="text"></ion-icon>
           Text
         </button>
-          <button ion-button color="secondary" icon-left>
+        <button ion-button color="secondary" icon-left>
           <ion-icon name="call"></ion-icon>
           Call
         </button>
-        </ion-item-options>
-      </ion-item-sliding>
-    </ion-list>
+      </ion-item-options>
+    </ion-item-sliding>
+  </ion-list>
+  <div *ngIf="currentStatus==STATUS.NOT_EXIST_ITEMS">
+    <div class="spacer" style="width: 300px; height: 40px;"></div>
+    <div>
+      <img src="assets/icon/delete-button.png" style="display: block; width: 40%; height: auto; margin-left: auto; margin-right: auto;">
+    </div>
+    <div text-center>
+      <h3>{{mainNotification}}</h3>
+    </div>
   </div>
   <div *ngIf="currentStatus==STATUS.FIREST_LOAD">
-    <h2>FIREST_LOAD</h2>
-    <h2>Welcome to Ionic!</h2>
-    <p>
-      user info : {{userInfo}}
-    </p>
-    <button ion-button icon-only (click)="logout()">Logout</button>
-  </div>
-  <div *ngIf="currentStatus==STATUS.NOT_EXIST_ITEMS">
-    <h2>NOT_EXIST_ITEMS</h2>
+    <div class="spacer" style="width: 300px; height: 40px;"></div>
+    <div>
+      <img src="assets/icon/musica-searcher.png" style="display: block; width: 40%; height: auto; margin-left: auto; margin-right: auto;">
+    </div>
+    <div text-center>
+      <h2><b>새 주소</b>를</h2>
+      <h3>검색해주세요</h3>
+    </div>
   </div>
 </ion-content>
