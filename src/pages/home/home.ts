@@ -17,7 +17,7 @@ import { AddressService } from '../../services/address';
 })
 
 export class HomePage implements OnInit {
-  searchTerm: any;
+  searchTerm: any = '';
   userInfo: any;
   searchedAddressInfo: any;
   bookmarkAddressInfo: any;
@@ -52,6 +52,7 @@ export class HomePage implements OnInit {
     // TODO for Debug
     // this.searchTerm = '삼성동';
     // this.searchJuso();
+    this.userInfo = this.authService.getCurrentUser();
     this.getBookmark();
   }
 
@@ -67,7 +68,6 @@ export class HomePage implements OnInit {
   }
   
   searchJuso(): void {
-    let user = this.authService.getCurrentUser();
     this.searchIndex = 1
     this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
       .then((res) => {
