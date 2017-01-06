@@ -17,14 +17,16 @@ import { AddressService } from '../../services/address';
 })
 
 export class HomePage implements OnInit {
-  searchTerm: any;
+  searchTerm: any = '';
   userInfo: any;
   searchedAddressInfo: any;
   bookmarkAddressInfo: any;
   addressList: any;
+  bookmarkList: any;
   searchIndex: number = 1;
   searchPerPage: number = 5;
   totalPage: any = 0;
+  mainNotification: any;
 
   STATUS: any = {
     'FIREST_LOAD': 'FIREST_LOAD',
@@ -38,6 +40,8 @@ export class HomePage implements OnInit {
     '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'];
 
   currentStatus: any = this.STATUS.FIREST_LOAD;
+  
+  segment: any = 'search';
 
   constructor(public navCtrl: NavController,
     public modalCtrl: ModalController,
@@ -49,8 +53,15 @@ export class HomePage implements OnInit {
   ngOnInit() {
     // this.userInfo = JSON.stringify(this.authService.getCurrentUser());
     // TODO for Debug
-    this.searchTerm = '삼성동';
-    this.searchJuso();
+    // this.searchTerm = '삼성동';
+    // this.searchJuso();
+    this.userInfo = this.authService.getCurrentUser();
+    this.getBookmark();
+  }
+
+  getBookmark(){
+    this.bookmarkList 
+    this.bookmarkAddressInfo = '0'     
   }
 
   getRandomColor(index: number): string {
@@ -59,9 +70,9 @@ export class HomePage implements OnInit {
     // return this.randomColor[index + ((this.searchIndex - 1) % this.randomColor.length)];
     return this.randomColor[idx];
   }
-
+  
   searchJuso(): void {
-    let user = this.authService.getCurrentUser();
+    this.segment = 'search'
     this.searchIndex = 1
     this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
       .then((res) => {
@@ -70,13 +81,14 @@ export class HomePage implements OnInit {
         this.totalPage = Math.ceil(totalItems / this.searchPerPage);
 
         this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex;
-        this.bookmarkAddressInfo = '0 / 0';
 
         this.addressList = res.results.juso;
         if (res.results.common.totalCount == 0) {
           this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
+          this.mainNotification = '검색된 주소가 없습니다' 
         } else {
           this.currentStatus = this.STATUS.EXIST_ITEMS;
+          this.mainNotification = '끌어서 더보기';
         }
         Keyboard.close()
       })
@@ -105,7 +117,8 @@ export class HomePage implements OnInit {
   doRefresh(refresher) {
     if (this.currentStatus == this.STATUS.FIREST_LOAD ||
       this.currentStatus == this.STATUS.NOT_EXIST_ITEMS ||
-      this.searchIndex >= this.totalPage
+      this.searchIndex >= this.totalPage ||
+      this.segment != 'search'
     ) {
       refresher.complete();
       return;

@@ -15,10 +15,13 @@ page-detail {
         padding-top: 4px;
     }
     ion-item{
-        height: 40px;
+       height: 40px;
     }
     .item-ios{
         padding-left: 4px;
+    }
+    .label-ios { 
+        margin: none !important;
     }
     #map {
         width: 100%;

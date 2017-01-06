@@ -13,7 +13,7 @@ page-home {
         padding-top: 0px;
         padding-bottom: 0px;
     }
-    .address-list-height{
+    .address-list-height {
         height: 100px;
     }
     .address-menu-icon {
@@ -21,5 +21,17 @@ page-home {
         padding-right: 2px;
         margin-top: 0px;
         margin-bottom: 0px;
+    }
+    .swiper-slide {
+        align-items: baseline;
+    }
+    ion-slide {
+        ion-list {
+            height: 85vh;
+            overflow-y: scroll;
+        }
+    }
+    .segment-ios .segment-button:first-of-type{
+        border-radius: none !important;
     }
 }
