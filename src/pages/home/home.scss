@@ -22,7 +22,16 @@ page-home {
         margin-top: 0px;
         margin-bottom: 0px;
     }
-    // .login-background {
-    //     background-image: url('https://images.pexels.com/photos/1562/italian-landscape-mountains-nature.jpg?w=940&h=650&auto=compress&cs=tinysrgb');
-    // }
+    .swiper-slide {
+        align-items: baseline;
+    }
+    ion-slide {
+        ion-list {
+            height: 85vh;
+            overflow-y: scroll;
+        }
+    }
+    .segment-ios .segment-button:first-of-type{
+        border-radius: none !important;
+    }
 }

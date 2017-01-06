@@ -22,6 +22,7 @@ export class HomePage implements OnInit {
   searchedAddressInfo: any;
   bookmarkAddressInfo: any;
   addressList: any;
+  bookmarkList: any;
   searchIndex: number = 1;
   searchPerPage: number = 5;
   totalPage: any = 0;
@@ -39,6 +40,8 @@ export class HomePage implements OnInit {
     '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'];
 
   currentStatus: any = this.STATUS.FIREST_LOAD;
+  
+  segment: any = 'search';
 
   constructor(public navCtrl: NavController,
     public modalCtrl: ModalController,
@@ -57,6 +60,7 @@ export class HomePage implements OnInit {
   }
 
   getBookmark(){
+    this.bookmarkList 
     this.bookmarkAddressInfo = '0'     
   }
 
@@ -68,6 +72,7 @@ export class HomePage implements OnInit {
   }
   
   searchJuso(): void {
+    this.segment = 'search'
     this.searchIndex = 1
     this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
       .then((res) => {
@@ -112,7 +117,8 @@ export class HomePage implements OnInit {
   doRefresh(refresher) {
     if (this.currentStatus == this.STATUS.FIREST_LOAD ||
       this.currentStatus == this.STATUS.NOT_EXIST_ITEMS ||
-      this.searchIndex >= this.totalPage
+      this.searchIndex >= this.totalPage ||
+      this.segment != 'search'
     ) {
       refresher.complete();
       return;
