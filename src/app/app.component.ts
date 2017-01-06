@@ -7,6 +7,9 @@ import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
 import { LoginPage } from '../pages/login/login';
 
+import { LoginRecord } from '../services/auth-provider'
+import { Storage } from '@ionic/storage';
+
 import * as firebase from 'firebase';
 
 @Component({
@@ -15,13 +18,17 @@ import * as firebase from 'firebase';
 export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
-  // rootPage: any = StartPage;
+  rootPage: any;
   // rootPage: any = LoginPage;
-  rootPage: any = HomePage;
+  // rootPage: any = HomePage;
 
-  pages: Array<{title: string, component: any}>;
+  loginRecord: LoginRecord = new LoginRecord();
+  pages: Array<{ title: string, component: any }>;
 
-  constructor(public platform: Platform) {
+  constructor(
+    public platform: Platform,
+    private storage: Storage
+  ) {
     this.initializeApp(platform);
 
     // used for an example of ngFor and navigation
@@ -31,7 +38,7 @@ export class MyApp {
     ];
 
     // Initialize Firebase
-    firebase.initializeApp ({
+    firebase.initializeApp({
       apiKey: "AIzaSyAMNwt55ewLWJv3Ymzf8jwzhxQlSURJyWQ",
       authDomain: "juso-560bb.firebaseapp.com",
       databaseURL: "https://juso-560bb.firebaseio.com",
@@ -46,13 +53,19 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
-      
-      Keyboard.disableScroll(true); 
 
-      if (platform.is('android') || platform.is('ios')){
+      Keyboard.disableScroll(true);
+
+      if (platform.is('android') || platform.is('ios')) {
         // ScreenOrientation.lockOrientation('portrait');
       }
 
+      this.storage.get(this.loginRecord.STORAGE_KEY)
+        .then((result) => {
+          if (result != null) {
+            this.rootPage = HomePage;
+          }
+        })
     });
   }
 

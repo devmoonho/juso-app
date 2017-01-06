@@ -43,10 +43,7 @@ export class StartPage implements OnInit {
   }
 
   ngOnInit() {
-    this.storage.get(this.linkedinProvider.STORAGE_KEY)
-      .then((result) => {
-        this.userInfo = result;
-      });
+
   }
 
   goHomePage(): void {

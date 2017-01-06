@@ -10,6 +10,9 @@ import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth';
 import { AddressService } from '../../services/address';
 
+import { Storage } from '@ionic/storage';
+import { LoginRecord} from '../../services/auth-provider'
+
 @Component({
   selector: 'page-home',
   providers: [AuthService, AddressService],
@@ -27,6 +30,8 @@ export class HomePage implements OnInit {
   searchPerPage: number = 5;
   totalPage: any = 0;
   mainNotification: any;
+
+  loginRecord: LoginRecord = new LoginRecord();
 
   STATUS: any = {
     'FIREST_LOAD': 'FIREST_LOAD',
@@ -47,6 +52,7 @@ export class HomePage implements OnInit {
     public modalCtrl: ModalController,
     public authService: AuthService,
     public addressService: AddressService,
+    public storage: Storage,
     public toastCtrl: ToastController) {
   }
 
@@ -56,6 +62,11 @@ export class HomePage implements OnInit {
     // this.searchTerm = '삼성동';
     // this.searchJuso();
     this.userInfo = this.authService.getCurrentUser();
+    let loginRecord: any = {
+      'userInfo': this.userInfo,
+      'lastLogin': new Date()
+    }
+    this.storage.set(this.loginRecord.STORAGE_KEY, JSON.stringify(loginRecord));
     this.getBookmark();
   }
 

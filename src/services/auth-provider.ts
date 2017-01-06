@@ -1,5 +1,9 @@
 import firebase from 'firebase';
 
+export class LoginRecord {
+    STORAGE_KEY: any = 'loginRecord';
+}
+
 export class LinkedinProvider {
     STORAGE_KEY: any = 'linkedinLogin';
     clientId: any = '81alo9i368lt7t';
