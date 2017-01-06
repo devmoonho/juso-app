@@ -19,8 +19,6 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
-  // rootPage: any = LoginPage;
-  // rootPage: any = HomePage;
 
   loginRecord: LoginRecord = new LoginRecord();
   pages: Array<{ title: string, component: any }>;
@@ -64,6 +62,8 @@ export class MyApp {
         .then((result) => {
           if (result != null) {
             this.rootPage = HomePage;
+          }else{
+            this.rootPage = StartPage;
           }
         })
     });
