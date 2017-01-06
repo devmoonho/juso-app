@@ -10,8 +10,6 @@ import { LoginPage } from '../pages/login/login';
 import { LoginRecord } from '../services/auth-provider'
 import { Storage } from '@ionic/storage';
 
-import { AuthService } from '../services/auth';
-
 import * as firebase from 'firebase';
 
 @Component({
@@ -35,8 +33,9 @@ export class MyApp {
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: '로그인', component: StartPage, segment: 'login' },
-      { title: '로그아웃', component: StartPage, segment: 'bookmark' }
+      { title: '주소 찾기', component: HomePage, segment: 'search' },
+      { title: '즐겨 찾기', component: HomePage, segment: 'bookmark' },
+      { title: '로그인', component: HomePage, segment: 'login' }
     ];
 
     // Initialize Firebase
@@ -55,7 +54,7 @@ export class MyApp {
       // Here you can do any higher level native things you might need.
       StatusBar.styleDefault();
       Splashscreen.hide();
-      
+
       Keyboard.disableScroll(true);
 
       if (platform.is('android') || platform.is('ios')) {
@@ -67,7 +66,13 @@ export class MyApp {
           if (result != null) {
             this.rootPage = HomePage;
             this.userProfile = firebase.auth().currentUser;
-            this.heading = JSON.stringify(this.userProfile);
+            if(this.userProfile == null){
+                this.heading = '익명 사용자';
+                this.pages[2]['title'] = '로그인';
+            }else{
+                this.heading = this.userProfile;
+                this.pages[2]['title'] = '로그 아웃';
+            }
           } else {
             this.rootPage = StartPage;
           }
@@ -78,6 +83,10 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.setRoot(page);
+    if (page.component != HomePage) {
+      this.nav.push(page.component);
+    } else {
+      this.nav.getActive().instance.segment = page.segment;
+    }
   }
 }
