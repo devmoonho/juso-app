@@ -57,21 +57,21 @@ export class MenuLoginPage implements OnInit {
 
   successLogin() {
     let user = this.authService.getCurrentUser();
-    this.loader.dismiss();
     this.displayToast('로그인 되었습니다.');
     this.navCtrl.setRoot(HomePage);
 
     this.events.publish('user:created', user, Date.now());
+    // this.loader.dismiss();
   }
 
   failLogin() {
-    this.loader.dismiss();
     this.displayToast('유효하지 않은 아이디 입니다.');
     this.events.publish('user:created', null, Date.now());
+    // this.loader.dismiss();
   }
 
   goGooglePlusAuth(): void {
-    this.displayLoading('로그인중...', 5000);
+    // this.displayLoading('로그인중...', 5000);
 
     this.authService.googlePlus()
       .then((userData) => {

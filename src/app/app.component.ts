@@ -53,6 +53,10 @@ export class MyApp {
     events.subscribe('user:created', (user, time) => {
       this.updateSideMenu(user);
     });
+
+    events.subscribe('user:logout', () => {
+      this.updateSideMenu(null);
+    });
   }
 
   initializeApp(platform: Platform) {
@@ -83,27 +87,37 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    if (page.component != HomePage) {
-      if (this.pages[2]['segment'] == 'logout') {
-        firebase.auth().signOut();
-        this.storage.clear();
-        this.updateSideMenu(null);
-        this.nav.push(StartPage);
-      } else {
-        this.nav.push(page.component);
-      }
-    } else {
-      this.nav.getActive().instance.segment = page.segment;
+    switch (page.component) {
+      case MenuLoginPage:
+        if (this.pages[2]['segment'] == 'login') {
+          this.nav.push(page.component);
+        } else {
+          // this.events.publish('user:logout');
+          this.nav.push(StartPage);
+          this.logout();
+        }
+      case HomePage:
+        this.nav.getActive().instance.segment = page.segment;
+        break;
+      default:
+        break;
     }
   }
 
+  logout() {
+    firebase.auth().signOut();
+    this.storage.clear();
+    this.updateSideMenu(null);
+  }
 
   updateSideMenu(userProfile: any) {
     if (userProfile == null) {
       this.heading = '익명 사용자';
+      this.profileImage = 'assets/icon/icon.png';
       this.pages[2]['title'] = '로그인';
       this.pages[2]['segment'] = 'login';
     } else {
+
       this.heading = userProfile[0].email;
       this.profileImage = userProfile[0].photoURL == null ? 'assets/icon/icon.png' : userProfile[0].photoURL;
       this.pages[2]['title'] = '로그 아웃';
