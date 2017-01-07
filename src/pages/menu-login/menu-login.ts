@@ -18,10 +18,10 @@ import firebase from 'firebase';
 import { Storage } from '@ionic/storage';
 
 @Component({
-  selector: 'page-start',
-  templateUrl: 'start.html'
+  selector: 'menu-login',
+  templateUrl: 'menu-login.html'
 })
-export class StartPage implements OnInit {
+export class MenuLoginPage implements OnInit {
   loader: any;
   isAndroid = false;
   userInfo: any;
@@ -30,16 +30,16 @@ export class StartPage implements OnInit {
   firebaseToken: FirebaseToken = new FirebaseToken();
 
   constructor(
-    private navCtrl: NavController,
-    private http: Http,
-    private modalCtrl: ModalController,
-    private authService: AuthService,
-    private databaseService: DatabaseService,
-    private toastCtrl: ToastController,
-    private loadingCtrl: LoadingController,
-    private storage: Storage,
-    private events: Events,
-    private platform: Platform) {
+    public navCtrl: NavController,
+    public http: Http,
+    public modalCtrl: ModalController,
+    public authService: AuthService,
+    public databaseService: DatabaseService,
+    public toastCtrl: ToastController,
+    public loadingCtrl: LoadingController,
+    public storage: Storage,
+    public events: Events,
+    public platform: Platform) {
     this.isAndroid = platform.is('android');
   }
 
@@ -130,7 +130,7 @@ export class StartPage implements OnInit {
   goInstagramAuth() {
     this.authService.instagram()
       .then((userData) => {
-        this.displayToast('로그인 되었습니다.');
+        this.successLogin();
       })
       .catch((error) => {
         this.displayToast('유효하지 않은 아이디 입니다.');
@@ -142,17 +142,17 @@ export class StartPage implements OnInit {
       .then((userData) => {
         this.authService.linkedinCustomToken(userData)
           .then((res) => {
-            this.successLogin();
             this.storage.set(this.linkedinProvider.STORAGE_KEY, JSON.stringify(this.linkedinProvider.preference));
+            this.successLogin();
           })
           .catch((err) => {
             this.storage.remove(this.linkedinProvider.STORAGE_KEY);
-            this.failLogin();
+            this.displayToast('세션이 만료 되었습니다. 재 로그인 해주세요');
           })
       })
       .catch((error) => {
         this.storage.remove(this.linkedinProvider.STORAGE_KEY);
-        this.failLogin();
+        this.displayToast('유효하지 않은 아이디 입니다.' + JSON.stringify(error));
       })
   }
 

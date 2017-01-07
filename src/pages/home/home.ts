@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Keyboard } from 'ionic-native';
-import { ModalController, ToastController } from 'ionic-angular';
+import { ModalController, ToastController, Events } from 'ionic-angular';
 import { NavController } from 'ionic-angular';
 import { AboutPage } from '../about/about';
 import { StartPage } from '../start/start';
@@ -48,19 +48,22 @@ export class HomePage implements OnInit {
   
   segment: any = 'search';
 
+  debugInfo: any ='';
+
   constructor(public navCtrl: NavController,
-    public modalCtrl: ModalController,
-    public authService: AuthService,
-    public addressService: AddressService,
-    public storage: Storage,
-    public toastCtrl: ToastController) {
+    private modalCtrl: ModalController,
+    private authService: AuthService,
+    private addressService: AddressService,
+    private storage: Storage,
+    private events: Events,
+    private toastCtrl: ToastController) {
+
+    events.subscribe('user:created', (user, time) => {
+      this.debugInfo = JSON.stringify(user);
+    });
   }
 
   ngOnInit() {
-    // this.userInfo = JSON.stringify(this.authService.getCurrentUser());
-    // TODO for Debug
-    // this.searchTerm = '삼성동';
-    // this.searchJuso();
     this.userInfo = this.authService.getCurrentUser();
     let loginRecord: any = {
       'userInfo': this.userInfo,
