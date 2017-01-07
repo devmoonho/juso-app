@@ -40,6 +40,14 @@ export class LoginPage {
         this.generateKorMessage(error.code);
       })
   }
+  
+  goSignup(){
+     this.loginSwitch = 'signup';
+  }
+
+  goLogin(){
+     this.loginSwitch = 'login';
+  }
 
   generateKorMessage(ret: any) {
 
@@ -94,8 +102,7 @@ export class LoginPage {
   }
 
   dismiss() {
-    this.loader.dismiss();
-    this.viewCtrl.dismiss();
+    this.loginSwitch = 'login';
   }
 
   displayLoading(msg: string, du: number) {

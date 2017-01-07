@@ -1,34 +1,27 @@
 <ion-header>
-    <ion-toolbar color="purple-300">
+    <ion-toolbar color="teal-300">
         <ion-title>
             로그인
         </ion-title>
-        <ion-buttons start>
-            <button ion-button (click)="dismiss()">
-        <span showWhen="ios">취소</span>
-        <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
-      </button>
-        </ion-buttons>
+        <div [ngSwitch]="loginSwitch">
+            <div *ngSwitchCase="'signup'">
+                <ion-buttons start>
+                    <button ion-button icon-only (click)="goLogin()">
+                    <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
+                </button>
+                </ion-buttons>
+            </div>
+        </div>
     </ion-toolbar>
 </ion-header>
 <ion-content padding>
-    <div padding>
-        <ion-segment [(ngModel)]="loginSwitch" color="purple-300">
-            <ion-segment-button value="login">
-                로그인
-            </ion-segment-button>
-            <ion-segment-button value="signup">
-                가입하기
-            </ion-segment-button>
-        </ion-segment>
-    </div>
     <div [ngSwitch]="loginSwitch">
         <ion-list *ngSwitchCase="'login'">
             <div class="spacer" style="height: 20px;"></div>
             <ion-row class="logo-row">
                 <ion-col></ion-col>
                 <ion-col width-67>
-                    <img src="assets/icon/user-card.png" style="display: block; width: 70%; height: auto; margin-left: auto; margin-right: auto;"
+                    <img src="assets/icon/home.png" style="display: block; width: 70%; height: auto; margin-left: auto; margin-right: auto;"
                     />
                 </ion-col>
                 <ion-col></ion-col>
@@ -42,21 +35,45 @@
                     <ion-label floating>패스워드</ion-label>
                     <ion-input #password type="password"></ion-input>
                 </ion-item>
+                <div class="spacer" style="width: 300px; height: 30px;"></div>
+                <ion-buttons text-center>
+                    <button ion-button icon-only style="color:#dd4b39" clear (click)="goGooglePlusAuth()">
+                        <ion-icon ios="logo-googleplus" md="logo-googleplus"></ion-icon>
+                    </button>
+                    <button ion-button icon-only style="color:#3b5998" clear (click)="goFacebookAuth()">
+                        <ion-icon ios="logo-facebook" md="logo-facebook"></ion-icon>
+                    </button>
+                    <button ion-button icon-only style="color:#55acee" clear (click)="goTwitterAuth()">
+                        <ion-icon ios="logo-twitter" md="logo-twitter"></ion-icon>
+                    </button>
+                    <button ion-button icon-only style="color:#000000" clear (click)="goLinkedInAuth()">
+                        <ion-icon ios="logo-linkedin" md="logo-linkedin"></ion-icon>
+                    </button>
+                </ion-buttons>
                 <div padding>
-                    <button ion-button type="submit" color="purple-300" block (click)="loginUser(email.value, password.value)">로그인</button>
+                    <button ion-button type="submit" color="teal-300" block (click)="loginUser(email.value, password.value)">로그인</button>
                 </div>
             </form>
+            <ion-row text-center>
+                <ion-col>
+                    <button ion-button icon-left clear color="bg-500" (click)="clipboard()" style="padding-left: 4px;padding-right: 4px;">
+                            <div>패스워드 찾기</div>
+                        </button>
+                    <button ion-button icon-left clear color="bg-500" style="padding-left: 4px;padding-right: 4px;" (click)="goSignup()">
+                            <div>가입하기</div>
+                        </button>
+                </ion-col>
+            </ion-row>
         </ion-list>
         <ion-list *ngSwitchCase="'signup'">
             <div class="spacer" style="height: 20px;"></div>
             <ion-row class="logo-row">
-                <ion-col></ion-col>
-                <ion-col width-67>
-                    <img src="assets/icon/add-people.png" style="display: block; width: 50%; height: auto; margin-left: auto; margin-right: auto;"
+                <ion-col>
+                    <img src="assets/icon/add-people.png" style="display: block; width: 40%; height: auto; margin-left: auto; margin-right: auto;"
                     />
                 </ion-col>
-                <ion-col></ion-col>
             </ion-row>
+            <div class="spacer" style="height: 10px;"></div>
             <form class="list">
                 <ion-item>
                     <ion-label floating>사용자 이름</ion-label>
@@ -70,8 +87,9 @@
                     <ion-label floating>패스워드</ion-label>
                     <ion-input #password type="password"></ion-input>
                 </ion-item>
+                <div class="spacer" style="height: 20px;"></div>
                 <div padding>
-                    <button ion-button type="submit" color="purple-300" block (click)="signup(name.value, email.value, password.value)">가입하기</button>
+                    <button ion-button type="submit" color="teal-300" block (click)="signup(name.value, email.value, password.value)">가입하기</button>
                 </div>
             </form>
         </ion-list>

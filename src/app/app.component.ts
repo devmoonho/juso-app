@@ -21,7 +21,8 @@ export class MyApp {
 
   rootPage: any;
   userProfile: any;
-  heading: any;
+  headingDisplayName: any = '익명 사용자';
+  headingEmail: any; 
   profileImage: any = 'assets/icon/icon.png';
 
   loginRecord: LoginRecord = new LoginRecord();
@@ -112,14 +113,16 @@ export class MyApp {
 
   updateSideMenu(userProfile: any) {
     if (userProfile == null) {
-      this.heading = '익명 사용자';
+      this.headingDisplayName = '익명 사용자';
+      this.headingEmail = '';
       this.profileImage = 'assets/icon/icon.png';
       this.pages[2]['title'] = '로그인';
       this.pages[2]['segment'] = 'login';
     } else {
-
-      this.heading = userProfile[0].email;
-      this.profileImage = userProfile[0].photoURL == null ? 'assets/icon/icon.png' : userProfile[0].photoURL;
+      let provider = userProfile[0].providerData[0]
+      this.headingDisplayName = provider.displayName == null ? '이름 공개되지 않음' : provider.displayName;
+      this.headingEmail = provider.email == null ? '이메일이 공개되지 않음' : provider.email;
+      this.profileImage = provider.photoURL == null ? 'assets/icon/icon.png' : userProfile[0].photoURL;
       this.pages[2]['title'] = '로그 아웃';
       this.pages[2]['segment'] = 'logout';
     }
