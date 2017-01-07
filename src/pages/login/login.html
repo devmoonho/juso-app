@@ -1,18 +1,12 @@
 <ion-header>
-    <ion-toolbar color="teal-300">
+    <ion-navbar color="teal-300">
+        <button ion-button icon-only menuToggle>
+            <ion-icon name="menu"></ion-icon>
+        </button>
         <ion-title>
             로그인
         </ion-title>
-        <div [ngSwitch]="loginSwitch">
-            <div *ngSwitchCase="'signup'">
-                <ion-buttons start>
-                    <button ion-button icon-only (click)="goLogin()">
-                    <ion-icon ios="ios-arrow-back" md="md-arrow-back"></ion-icon>
-                </button>
-                </ion-buttons>
-            </div>
-        </div>
-    </ion-toolbar>
+    </ion-navbar>
 </ion-header>
 <ion-content padding>
     <div [ngSwitch]="loginSwitch">

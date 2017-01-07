@@ -1,10 +1,14 @@
 import { Component } from '@angular/core';
-import { ModalController, Platform, ViewController, NavController, LoadingController} from 'ionic-angular';
+import { ModalController, Events, Platform, ViewController, NavController, LoadingController, ToastController} from 'ionic-angular';
 import { AuthService } from '../../services/auth'
 import { DatabaseService } from '../../services/database'
 import { AlertController } from 'ionic-angular';
+import { Storage } from '@ionic/storage';
+import { LinkedinProvider } from '../../services/auth-provider'
 
 import { HomePage } from '../home/home';
+
+import firebase from 'firebase';
 
 @Component({
   selector: 'page-login',
@@ -15,16 +19,125 @@ import { HomePage } from '../home/home';
 export class LoginPage {
   loginSwitch: string = "login";
   loader: any;
+  linkedinProvider: LinkedinProvider = new LinkedinProvider();
 
   constructor(
-    public viewCtrl: ViewController,
-    public navCtrl: NavController,
-    public loadingCtrl: LoadingController,
-    public authService: AuthService,
-    public databaseService: DatabaseService,
-    public alertCtrl: AlertController
+    private viewCtrl: ViewController,
+    private navCtrl: NavController,
+    private toastCtrl: ToastController,
+    private loadingCtrl: LoadingController,
+    private events: Events,
+    private authService: AuthService,
+    private databaseService: DatabaseService,
+    private storage: Storage,
+    private alertCtrl: AlertController
   ) {
   }
+
+  successLogin() {
+    let user = this.authService.getCurrentUser();
+    this.displayToast('로그인 되었습니다.');
+    this.navCtrl.setRoot(HomePage);
+    this.events.publish('user:created', user, Date.now());
+    // this.loader.dismiss();
+  }
+
+  failLogin() {
+    this.displayToast('유효하지 않은 아이디 입니다.');
+    this.events.publish('user:created', null, Date.now());
+    // this.loader.dismiss();
+  }
+
+  goGooglePlusAuth(): void {
+    // this.displayLoading('로그인중...', 5000);
+
+    this.authService.googlePlus()
+      .then((userData) => {
+        var credential = firebase.auth.GoogleAuthProvider.credential(userData.idToken);
+        firebase.auth().signInWithCredential(credential)
+          .then((result) => {
+            this.successLogin();
+          })
+          .catch((error) => {
+            this.failLogin();
+          })
+      })
+      .catch((error) => {
+        this.failLogin();
+      });
+  }
+
+    goFacebookAuth() {
+    this.authService.facebook()
+      .then((userData) => {
+        var credential = firebase.auth.FacebookAuthProvider.credential(userData.authResponse.accessToken);
+        firebase.auth().signInWithCredential(credential)
+          .then((result) => {
+            this.successLogin();
+          })
+          .catch((error) => {
+            this.failLogin();
+          })
+      })
+      .catch((error) => {
+        this.failLogin();
+      })
+  }
+
+  goTwitterAuth() {
+    this.authService.twitter()
+      .then((userData) => {
+        var credential = firebase.auth.TwitterAuthProvider.credential(userData.token, userData.secret);
+        firebase.auth().signInWithCredential(credential)
+          .then((result) => {
+            this.successLogin();
+          })
+          .catch((error) => {
+            this.failLogin();
+          })
+      })
+      .catch((error) => {
+        this.failLogin();
+      })
+  }
+
+  goKakaoAuth(){
+
+  }
+
+  goGitHubAuth() {
+
+  }
+
+  goInstagramAuth() {
+    this.authService.instagram()
+      .then((userData) => {
+        this.displayToast('로그인 되었습니다.');
+      })
+      .catch((error) => {
+        this.displayToast('유효하지 않은 아이디 입니다.');
+      })
+  }
+
+  goLinkedInAuth() {
+    this.authService.linkedIn()
+      .then((userData) => {
+        this.authService.linkedinCustomToken(userData)
+          .then((res) => {
+            this.successLogin();
+            this.storage.set(this.linkedinProvider.STORAGE_KEY, JSON.stringify(this.linkedinProvider.preference));
+          })
+          .catch((err) => {
+            this.storage.remove(this.linkedinProvider.STORAGE_KEY);
+            this.failLogin();
+          })
+      })
+      .catch((error) => {
+        this.storage.remove(this.linkedinProvider.STORAGE_KEY);
+        this.failLogin();
+      })
+  }
+
 
   loginUser(email: string, password: string) {
     this.displayLoading('로그인중...', 5000);
@@ -40,17 +153,16 @@ export class LoginPage {
         this.generateKorMessage(error.code);
       })
   }
-  
-  goSignup(){
-     this.loginSwitch = 'signup';
+
+  goSignup() {
+    this.loginSwitch = 'signup';
   }
 
-  goLogin(){
-     this.loginSwitch = 'login';
+  goLogin() {
+    this.loginSwitch = 'login';
   }
 
   generateKorMessage(ret: any) {
-
     switch (ret) {
       case undefined:
         this.navCtrl.setRoot(HomePage);
@@ -105,6 +217,15 @@ export class LoginPage {
     this.loginSwitch = 'login';
   }
 
+  displayToast(msg: string) {
+    let toast: any;
+    toast = this.toastCtrl.create({
+      message: msg,
+      duration: 10000
+    });
+    toast.present();
+  }
+
   displayLoading(msg: string, du: number) {
     this.loader = this.loadingCtrl.create({
       content: msg,
@@ -112,4 +233,5 @@ export class LoginPage {
     });
     this.loader.present();
   }
+
 }

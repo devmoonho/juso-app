@@ -39,7 +39,7 @@ export class MyApp {
     this.pages = [
       { title: '주소 찾기', component: HomePage, segment: 'search' },
       { title: '즐겨 찾기', component: HomePage, segment: 'bookmark' },
-      { title: '로그인', component: MenuLoginPage, segment: 'login' }
+      { title: '로그인', component: LoginPage, segment: 'login' }
     ];
 
     // Initialize Firebase
@@ -76,7 +76,9 @@ export class MyApp {
       this.storage.get(this.loginRecord.STORAGE_KEY)
         .then((result) => {
           if (result != null) {
-            this.rootPage = HomePage;
+            // this.rootPage = HomePage;
+            // this.rootPage = LoginPage;
+            this.rootPage = StartPage;
             this.updateSideMenu(firebase.auth().currentUser);
           } else {
             this.rootPage = StartPage;
@@ -89,11 +91,10 @@ export class MyApp {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
     switch (page.component) {
-      case MenuLoginPage:
+      case LoginPage:
         if (this.pages[2]['segment'] == 'login') {
           this.nav.push(page.component);
         } else {
-          // this.events.publish('user:logout');
           this.nav.push(StartPage);
           this.logout();
         }
