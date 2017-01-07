@@ -1,11 +1,12 @@
 import { Component, ViewChild } from '@angular/core';
-import { Nav, Platform } from 'ionic-angular';
+import { Nav, Platform, Events } from 'ionic-angular';
 import { StatusBar, Splashscreen, Keyboard } from 'ionic-native';
 
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
 import { LoginPage } from '../pages/login/login';
+import { MenuLoginPage } from '../pages/menu-login/menu-login';
 
 import { LoginRecord } from '../services/auth-provider'
 import { Storage } from '@ionic/storage';
@@ -19,22 +20,25 @@ export class MyApp {
   @ViewChild(Nav) nav: Nav;
 
   rootPage: any;
-  // rootPage: any = LoginPage;
-  // rootPage: any = HomePage;
+  userProfile: any;
+  heading: any;
+  profileImage: any = 'assets/icon/icon.png';
 
   loginRecord: LoginRecord = new LoginRecord();
-  pages: Array<{ title: string, component: any }>;
+  pages: Array<{ title: string, component: any, segment: any }>;
 
   constructor(
-    public platform: Platform,
+    private platform: Platform,
+    private events: Events,
     private storage: Storage
   ) {
     this.initializeApp(platform);
 
     // used for an example of ngFor and navigation
     this.pages = [
-      { title: 'Page One', component: StartPage },
-      { title: 'Page Two', component: AboutPage }
+      { title: '주소 찾기', component: HomePage, segment: 'search' },
+      { title: '즐겨 찾기', component: HomePage, segment: 'bookmark' },
+      { title: '로그인', component: MenuLoginPage, segment: 'login' }
     ];
 
     // Initialize Firebase
@@ -44,6 +48,14 @@ export class MyApp {
       databaseURL: "https://juso-560bb.firebaseio.com",
       storageBucket: "juso-560bb.appspot.com",
       messagingSenderId: "19394399742"
+    });
+
+    events.subscribe('user:created', (user, time) => {
+      this.updateSideMenu(user);
+    });
+
+    events.subscribe('user:logout', () => {
+      this.updateSideMenu(null);
     });
   }
 
@@ -64,6 +76,9 @@ export class MyApp {
         .then((result) => {
           if (result != null) {
             this.rootPage = HomePage;
+            this.updateSideMenu(firebase.auth().currentUser);
+          } else {
+            this.rootPage = StartPage;
           }
         })
     });
@@ -72,6 +87,41 @@ export class MyApp {
   openPage(page) {
     // Reset the content nav to have just this page
     // we wouldn't want the back button to show in this scenario
-    this.nav.push(page.component);
+    switch (page.component) {
+      case MenuLoginPage:
+        if (this.pages[2]['segment'] == 'login') {
+          this.nav.push(page.component);
+        } else {
+          // this.events.publish('user:logout');
+          this.nav.push(StartPage);
+          this.logout();
+        }
+      case HomePage:
+        this.nav.getActive().instance.segment = page.segment;
+        break;
+      default:
+        break;
+    }
+  }
+
+  logout() {
+    firebase.auth().signOut();
+    this.storage.clear();
+    this.updateSideMenu(null);
+  }
+
+  updateSideMenu(userProfile: any) {
+    if (userProfile == null) {
+      this.heading = '익명 사용자';
+      this.profileImage = 'assets/icon/icon.png';
+      this.pages[2]['title'] = '로그인';
+      this.pages[2]['segment'] = 'login';
+    } else {
+
+      this.heading = userProfile[0].email;
+      this.profileImage = userProfile[0].photoURL == null ? 'assets/icon/icon.png' : userProfile[0].photoURL;
+      this.pages[2]['title'] = '로그 아웃';
+      this.pages[2]['segment'] = 'logout';
+    }
   }
 }

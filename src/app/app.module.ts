@@ -10,6 +10,7 @@ import { HomePage } from '../pages/home/home';
 import { StartPage } from '../pages/start/start';
 import { LoginPage } from '../pages/login/login';
 import { DetailPage } from '../pages/detail/detail';
+import { MenuLoginPage } from '../pages/menu-login/menu-login';
 
 import { AuthService } from '../services/auth';
 import { DatabaseService } from '../services/database';
@@ -28,6 +29,7 @@ import { SubStringPipe } from '../pipe/common.pipe';
     LoginPage,
     DetailPage,
     SubStringPipe,
+    MenuLoginPage,
   ],
   imports: [
     IonicModule.forRoot(MyApp),
@@ -42,6 +44,7 @@ import { SubStringPipe } from '../pipe/common.pipe';
     HomePage,
     LoginPage,
     DetailPage,
+    MenuLoginPage,
   ],
   providers: [{ provide: ErrorHandler, useClass: IonicErrorHandler },
     AuthService, 

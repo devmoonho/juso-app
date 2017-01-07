@@ -1,12 +1,27 @@
 <ion-menu [content]="content">
-  <ion-header>
-    <ion-toolbar color>
-      <ion-title>주소찾기메뉴</ion-title>
-    </ion-toolbar>
-  </ion-header>
-  <ion-content>
+  <ion-content class="side-menu-gradient">
+    <div class="spacer" style="width: 300px; height: 50px;"></div>
+    <div text-center> 
+      <div class="profile-image">
+        <img src="{{profileImage}}" style="display: block; width: 40%; height: auto; margin-left: auto; margin-right: auto;">
+      </div>
+      <h2 style="color:#FFFFFF;font-weight:300;" text-center>{{heading}}</h2>
+    </div>
+    <div class="spacer" style="width: 300px; height: 30px;"></div>
     <ion-list>
-      <button menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <button class="side-menu-item" menuClose ion-item *ngFor="let p of pages" (click)="openPage(p)">
+      <span *ngIf="p['segment']=='search'">
+         <ion-icon ios="ios-search" md="md-search" larger item-left></ion-icon>
+      </span>
+      <span *ngIf="p['segment']=='bookmark'">
+         <ion-icon ios="ios-book" md="md-book" larger item-left></ion-icon>
+      </span>
+       <span *ngIf="p['segment']=='login'">
+         <ion-icon ios="ios-log-in" md="md-log-in" larger item-left></ion-icon>
+      </span>
+      <span *ngIf="p['segment']=='logout'">
+        <ion-icon ios="ios-log-out" md="md-log-out" larger item-left></ion-icon>
+      </span>
         {{p.title}}
       </button>
     </ion-list>
