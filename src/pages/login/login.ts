@@ -44,7 +44,7 @@ export class LoginPage {
 
   failLogin() {
     this.displayToast('유효하지 않은 아이디 입니다.');
-    this.events.publish('user:created', null, Date.now());
+    // this.events.publish('user:created', null, Date.now());
     // this.loader.dismiss();
   }
 
@@ -144,11 +144,12 @@ export class LoginPage {
 
     this.authService.loginUser(email, password)
       .then((res) => {
+        this.successLogin();
         this.loader.dismiss();
         this.navCtrl.setRoot(HomePage);
       })
       .catch((error) => {
-        console.log(error);
+        this.failLogin();
         this.loader.dismiss();
         this.generateKorMessage(error.code);
       })
@@ -201,15 +202,25 @@ export class LoginPage {
     this.displayLoading('가입중...', 5000);
     this.authService.createUser(email, password)
       .then((res) => {
-        this.loader.dismiss();
         let user = this.authService.getCurrentUser();
         this.databaseService.createUser(user.uid, name, email);
-
-        this.navCtrl.setRoot(HomePage);
+        user.updateProfile({
+          displayName: name,
+          photoURL: ""
+        }).then((res) => {
+          this.successLogin();
+          this.navCtrl.setRoot(HomePage);
+          this.loader.dismiss();
+        }).catch((err) => {
+          this.failLogin();
+          this.generateKorMessage(err.code);
+          this.loader.dismiss();
+        })
       })
       .catch((error) => {
-        this.loader.dismiss();
+        this.failLogin();
         this.generateKorMessage(error.code);
+        this.loader.dismiss();
       })
   }
 
@@ -221,7 +232,7 @@ export class LoginPage {
     let toast: any;
     toast = this.toastCtrl.create({
       message: msg,
-      duration: 10000
+      duration: 3000
     });
     toast.present();
   }
