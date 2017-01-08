@@ -17,10 +17,10 @@ export class DetailPage implements OnInit {
     addressInfo: any;
     daumInfo: any = {};
 
-    checkZipNo: any = false;
-    checkRoadAddr: any = false;
-    checkEngAddr: any = false;
-    checkLocal: any = false;
+    checkZipNo: any = true;
+    checkRoadAddr: any = true;
+    checkEngAddr: any = true;
+    checkLocal: any = true;
 
     constructor(
         private viewCtrl: ViewController,
