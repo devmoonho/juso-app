@@ -46,7 +46,6 @@
         <ion-list>
           <ion-item style="color:#009688;" text-center>
             <ion-icon ios="ios-information-circle" md="md-information-circle" larger item-left></ion-icon>
-
             {{mainNotification}}
             <ion-badge color="teal-300" item-right>{{searchedAddressInfo}}</ion-badge>
           </ion-item>
@@ -118,20 +117,13 @@
               <h4>{{bookmark.roadAddrPart1}}</h4>
             </div>
           </ion-item>
-          <ion-item-options>
-            <button ion-button color="light" icon-left>
-          <ion-icon name="ios-more"></ion-icon>
-          More
-        </button>
-            <button ion-button color="primary" icon-left>
-          <ion-icon name="text"></ion-icon>
-          Text
-        </button>
-            <button ion-button color="secondary" icon-left>
-          <ion-icon name="call"></ion-icon>
-          Call
-        </button>
-          </ion-item-options>
+          <ion-row text-right>
+            <ion-col color="danger">
+             <button class="address-menu-icon" (click)="detail(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
+                <ion-icon ios="ios-more" md="md-more"></ion-icon>
+              </button>
+            </ion-col>
+          </ion-row>
         </ion-item-sliding>
       </ion-list>
     </div>

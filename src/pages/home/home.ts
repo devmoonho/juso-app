@@ -62,6 +62,7 @@ export class HomePage implements OnInit {
 
     events.subscribe('user:created', (user, time) => {
       this.debugInfo = JSON.stringify(user);
+      this.getBookmark()
     });
   }
 
@@ -76,8 +77,17 @@ export class HomePage implements OnInit {
   }
 
   getBookmark() {
-    this.bookmarkList
-    this.bookmarkAddressInfo = '0'
+    if (this.userInfo != null) {
+      this.databaseService.getBookmark(this.userInfo.uid)
+        .then((res) => {
+          let children = [];
+          res.forEach((childSnapshot) => {
+            children.push(childSnapshot.val());
+          })
+          this.bookmarkAddressInfo = res.numChildren();
+          this.bookmarkList = children;
+        })
+    }
   }
 
   getRandomColor(index: number): string {
@@ -164,16 +174,19 @@ export class HomePage implements OnInit {
 
   bookmark(idx: number): void {
     if (this.userInfo != null) {
-      this.databaseService.addBookmark(this.userInfo.uid, this.addressList[idx].bdMgtSn, this.addressList[idx]);
-      this.databaseService.getBookmark(this.userInfo.uid)
-        .then((res) => {
+      this.databaseService.addBookmark(this.userInfo.uid, this.addressList[idx].bdMgtSn, this.addressList[idx])
+      .then((res)=>{
+        return this.databaseService.getBookmark(this.userInfo.uid)
+      })
+      .then((res) => {
           let children = [];
           res.forEach((childSnapshot) => {
             children.push(childSnapshot.val());
           })
+          this.bookmarkAddressInfo = res.numChildren();
           this.bookmarkList = children;
           this.segment = "bookmark";
-        })
+      })
     }
   }
 }
