@@ -19,3 +19,19 @@ export class SubStringPipe implements PipeTransform {
     }
   }
 }
+
+@Pipe({ name: 'orderBy'})
+export class OrderByPipe implements PipeTransform{
+  transform(arr: Array<any>, key: any): any{
+    arr.sort((a: any, b: any) => {
+      if (a.index < b.index) {
+        return 1;
+      } else if (a.index > b.index) {
+        return -1;
+      } else {
+        return 0;
+      }
+    });
+    return arr;
+  }
+}

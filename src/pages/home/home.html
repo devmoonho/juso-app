@@ -106,7 +106,7 @@
           즐겨 찾기
           <ion-badge color="teal-300" item-right>{{bookmarkAddressInfo}}</ion-badge>
         </ion-item>
-        <ion-item-sliding *ngFor="let bookmark of bookmarkList; let i = index">
+        <ion-item-sliding *ngFor="let bookmark of bookmarkList | orderBy:'index'; let i = index">
           <ion-item>
             <ion-avatar item-left>
               <h1 class="avatar-text" [style.background-color]="getRandomColor(i)" text-center>{{bookmark.roadAddrPart2 | subString:0:2}}</h1>
