@@ -76,9 +76,9 @@ export class MyApp {
       this.storage.get(this.loginRecord.STORAGE_KEY)
         .then((result) => {
           if (result != null) {
-            // this.rootPage = HomePage;
+            this.rootPage = HomePage;
             // this.rootPage = LoginPage;
-            this.rootPage = StartPage;
+            // this.rootPage = StartPage;
             this.updateSideMenu(firebase.auth().currentUser);
           } else {
             this.rootPage = StartPage;

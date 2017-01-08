@@ -87,6 +87,8 @@ export class HomePage implements OnInit {
           this.bookmarkAddressInfo = res.numChildren();
           this.bookmarkList = children;
         })
+    } else {
+      this.bookmarkList = [];
     }
   }
 
@@ -166,8 +168,13 @@ export class HomePage implements OnInit {
       })
   }
 
-  detail(idx: number): void {
-    let modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.addressList[idx]) });
+  detail(idx: number, segement: string): void {
+    let modal;
+    if (segement == 'search') {
+      modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.addressList[idx]) });
+    } else {
+      modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.bookmarkList[idx]) });
+    }
     Keyboard.close()
     modal.present();
   }
@@ -181,7 +188,10 @@ export class HomePage implements OnInit {
         .then((res) => {
           this.updateBookmark(res);
         })
+    } else {
+      this.bookmarkList = [];
     }
+
   }
 
   trash(idx: number) {
