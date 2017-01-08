@@ -116,14 +116,14 @@
               <h4>{{bookmark.jibunAddr}}</h4>
               <h4>{{bookmark.roadAddrPart1}}</h4>
             </div>
+            <ion-row text-right>
+              <ion-col color="danger">
+                <button class="address-menu-icon" (click)="trash(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
+                  <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
           </ion-item>
-          <ion-row text-right>
-            <ion-col color="danger">
-             <button class="address-menu-icon" (click)="detail(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
-                <ion-icon ios="ios-more" md="md-more"></ion-icon>
-              </button>
-            </ion-col>
-          </ion-row>
         </ion-item-sliding>
       </ion-list>
     </div>

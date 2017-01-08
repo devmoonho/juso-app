@@ -175,18 +175,33 @@ export class HomePage implements OnInit {
   bookmark(idx: number): void {
     if (this.userInfo != null) {
       this.databaseService.addBookmark(this.userInfo.uid, this.addressList[idx].bdMgtSn, this.addressList[idx])
-      .then((res)=>{
+        .then((res) => {
+          return this.databaseService.getBookmark(this.userInfo.uid)
+        })
+        .then((res) => {
+          this.updateBookmark(res);
+        })
+    }
+  }
+
+  trash(idx: number) {
+    this.databaseService.removeBookmark(this.userInfo.uid, this.bookmarkList[idx].bdMgtSn)
+      .then((res) => {
         return this.databaseService.getBookmark(this.userInfo.uid)
       })
       .then((res) => {
-          let children = [];
-          res.forEach((childSnapshot) => {
-            children.push(childSnapshot.val());
-          })
-          this.bookmarkAddressInfo = res.numChildren();
-          this.bookmarkList = children;
-          this.segment = "bookmark";
+        this.updateBookmark(res);
       })
-    }
+  }
+
+  updateBookmark(res: any) {
+    let children = [];
+    res.forEach((childSnapshot) => {
+      children.push(childSnapshot.val());
+    })
+    this.bookmarkAddressInfo = res.numChildren();
+    this.bookmarkList = children;
+    this.segment = "bookmark";
+
   }
 }

@@ -25,17 +25,17 @@ export class DatabaseService {
         return this.database.ref(this.USERS + uid + this.BOOKMARK).once('value');
     }
 
-    addBookmark(uid: string, buildMangementNo: string, contents: any): any {
+    addBookmark(uid: string, buildMgtNo: string, contents: any): any {
         return this.database.ref(this.USERS + uid + this.BOOKMARK).once('value')
         .then((res) => {
            contents['index'] = res.numChildren()
-            this.database.ref(this.USERS + uid + this.BOOKMARK + buildMangementNo)
+            this.database.ref(this.USERS + uid + this.BOOKMARK + buildMgtNo)
             .set(contents)
         })
    }
 
-    removeBookmark(uid: string, buildMangementNo: string) {
-        this.database.ref.child(this.USERS + uid + this.BOOKMARK + buildMangementNo).remove();
+    removeBookmark(uid: string, buildMgtNo: string) {
+        return this.database.ref(this.USERS + uid + this.BOOKMARK).child(buildMgtNo).remove();
     }
 
 }
