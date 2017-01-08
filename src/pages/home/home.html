@@ -27,28 +27,21 @@
   <div padding>
     <ion-segment [(ngModel)]="segment" color="teal-300">
       <ion-segment-button value="search">
-        <ion-icon ios="ios-search" md="md-search"></ion-icon>
+        <ion-icon ios="ios-search" md="md-search" large></ion-icon>
+        {{searchedAddressInfo}}
       </ion-segment-button>
       <ion-segment-button value="bookmark">
-        <ion-icon ios="ios-bookmark" md="md-bookmark"></ion-icon>
+        <ion-icon ios="ios-bookmark" md="md-bookmark" large></ion-icon>
+        {{bookmarkAddressInfo}}
       </ion-segment-button>
     </ion-segment>
   </div>
 </ion-header>
 <ion-content class="login-background">
-  <ion-refresher (ionRefresh)="doRefresh($event)">
-    <ion-refresher-content pullingIcon="arrow-dropdown" pullingText="Pull to refresh" refreshingSpinner="circles">
-    </ion-refresher-content>
-  </ion-refresher>
   <div [ngSwitch]="segment">
     <div *ngSwitchCase="'search'">
       <div *ngIf="currentStatus==STATUS.EXIST_ITEMS">
         <ion-list>
-          <ion-item style="color:#009688;" text-center>
-            <ion-icon ios="ios-information-circle" md="md-information-circle" larger item-left></ion-icon>
-            {{mainNotification}}
-            <ion-badge color="teal-300" item-right>{{searchedAddressInfo}}</ion-badge>
-          </ion-item>
           <ion-item-sliding *ngFor="let address of addressList; let i = index">
             <ion-item class="address-list-height">
               <ion-avatar item-left>
@@ -100,12 +93,24 @@
       </ion-item>-->
     </div>
     <div *ngSwitchCase="'bookmark'">
+      <div *ngIf="bookmarkStatus==STATUS.NOT_EXIST_ITEMS">
+      <div class="spacer" style="width: 300px; height: 80px;"></div>
+      <div>
+        <img src="assets/icon/bookmark.png" style="display: block; width: 40%; height: auto; margin-left: auto; margin-right: auto;">
+      </div>
+      <div class="spacer" style="width: 300px; height: 20px;"></div>
+      <div text-center>
+        <h5 color="teal-300">등록된 <b>즐겨찾기</b>가 <br>없습니다.</h5>
+      </div>
+      </div>
+
+      <div *ngIf="bookmarkStatus==STATUS.EXIST_ITEMS">
       <ion-list>
-        <ion-item style="color:#009688;" text-center>
+        <!--<ion-item style="color:#009688;" text-center>
           <ion-icon ios="ios-bookmark" md="md-bookmark" larger item-left></ion-icon>
           즐겨 찾기
           <ion-badge color="teal-300" item-right>{{bookmarkAddressInfo}}</ion-badge>
-        </ion-item>
+        </ion-item>-->
         <ion-item-sliding *ngFor="let bookmark of bookmarkList | orderBy:'index'; let i = index">
           <ion-item>
             <ion-avatar item-left>
@@ -126,6 +131,12 @@
           </ion-item>
         </ion-item-sliding>
       </ion-list>
+      </div>
     </div>
   </div>
+  <ion-infinite-scroll (ionInfinite)="doRefresh($event)">
+    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="로딩중...">
+    </ion-infinite-scroll-content>
+  </ion-infinite-scroll>
+
 </ion-content>

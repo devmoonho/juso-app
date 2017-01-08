@@ -24,7 +24,7 @@ export class HomePage implements OnInit {
   searchTerm: any = '';
   userInfo: any;
   searchedAddressInfo: any;
-  bookmarkAddressInfo: any;
+  bookmarkAddressInfo: any = '';
   addressList: any;
   bookmarkList: any;
   searchIndex: number = 1;
@@ -46,6 +46,7 @@ export class HomePage implements OnInit {
     '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'];
 
   currentStatus: any = this.STATUS.FIREST_LOAD;
+  bookmarkStatus: any = this.STATUS.NOT_EXIST_ITEMS;
 
   segment: any = 'search';
 
@@ -84,6 +85,7 @@ export class HomePage implements OnInit {
           res.forEach((childSnapshot) => {
             children.push(childSnapshot.val());
           })
+          this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
           this.bookmarkAddressInfo = res.numChildren();
           this.bookmarkList = children;
         })
@@ -93,9 +95,9 @@ export class HomePage implements OnInit {
   }
 
   getRandomColor(index: number): string {
-    let idx = (index + this.searchIndex) % this.randomColor.length
-
+    // let idx = (index + this.searchIndex) % this.randomColor.length
     // return this.randomColor[index + ((this.searchIndex - 1) % this.randomColor.length)];
+    let idx = (index) % this.randomColor.length
     return this.randomColor[idx];
   }
 
@@ -152,20 +154,23 @@ export class HomePage implements OnInit {
       return;
     }
 
-    this.searchIndex += 1;
-    this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
-      .then((res) => {
+    setTimeout(() => {
+      this.searchIndex += 1;
+      this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
+        .then((res) => {
 
-        let totalItems = res.results.common.totalCount
-        this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex;
-        this.addressList = res.results.juso.concat(this.addressList);
-        this.currentStatus = this.STATUS.EXIST_ITEMS;
-        refresher.complete();
-      })
-      .catch((err) => {
-        this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
-        refresher.complete();
-      })
+          let totalItems = res.results.common.totalCount
+          this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex;
+          this.addressList = this.addressList.concat(res.results.juso);
+          this.currentStatus = this.STATUS.EXIST_ITEMS;
+          refresher.complete();
+        })
+        .catch((err) => {
+          this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
+          refresher.complete();
+        })
+      console.log('Async operation has ended');
+    }, 1000);
   }
 
   detail(idx: number, segement: string): void {
@@ -209,6 +214,7 @@ export class HomePage implements OnInit {
     res.forEach((childSnapshot) => {
       children.push(childSnapshot.val());
     })
+    this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
     this.bookmarkAddressInfo = res.numChildren();
     this.bookmarkList = children;
     this.segment = "bookmark";

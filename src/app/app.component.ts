@@ -6,7 +6,6 @@ import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
 import { AboutPage } from '../pages/about/about';
 import { LoginPage } from '../pages/login/login';
-import { MenuLoginPage } from '../pages/menu-login/menu-login';
 
 import { LoginRecord } from '../services/auth-provider'
 import { Storage } from '@ionic/storage';
@@ -78,7 +77,7 @@ export class MyApp {
           if (result != null) {
             this.rootPage = HomePage;
             // this.rootPage = LoginPage;
-            // this.rootPage = StartPage;
+            this.rootPage = StartPage;
             this.updateSideMenu(firebase.auth().currentUser);
           } else {
             this.rootPage = StartPage;
