@@ -46,7 +46,6 @@
         <ion-list>
           <ion-item style="color:#009688;" text-center>
             <ion-icon ios="ios-information-circle" md="md-information-circle" larger item-left></ion-icon>
-
             {{mainNotification}}
             <ion-badge color="teal-300" item-right>{{searchedAddressInfo}}</ion-badge>
           </ion-item>
@@ -62,7 +61,7 @@
               </div>
               <ion-row text-right>
                 <ion-col color="danger">
-                  <button class="address-menu-icon" ion-button icon-right clear color="bg-500" style="height: 22px;">
+                  <button class="address-menu-icon" (click)="bookmark(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
                 <ion-icon ios="ios-bookmark" md="md-bookmark"></ion-icon>
               </button>
                   <button class="address-menu-icon" (click)="detail(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
@@ -95,10 +94,10 @@
           <h5 color="teal-300">검색된 주소는 <b>즐겨찾기</b>를<br>통해 관리될 수 있습니다.</h5>
         </div>
       </div>
-      <ion-item>
+      <!--<ion-item>
         <ion-label>debug</ion-label>
         <ion-textarea rows="20" [(ngModel)]="debugInfo"></ion-textarea>
-      </ion-item>
+      </ion-item>-->
     </div>
     <div *ngSwitchCase="'bookmark'">
       <ion-list>
@@ -107,7 +106,7 @@
           즐겨 찾기
           <ion-badge color="teal-300" item-right>{{bookmarkAddressInfo}}</ion-badge>
         </ion-item>
-        <ion-item-sliding *ngFor="let bookmark of bookmarkList; let i = index">
+        <ion-item-sliding *ngFor="let bookmark of bookmarkList | orderBy:'index'; let i = index">
           <ion-item>
             <ion-avatar item-left>
               <h1 class="avatar-text" [style.background-color]="getRandomColor(i)" text-center>{{bookmark.roadAddrPart2 | subString:0:2}}</h1>
@@ -117,21 +116,14 @@
               <h4>{{bookmark.jibunAddr}}</h4>
               <h4>{{bookmark.roadAddrPart1}}</h4>
             </div>
+            <ion-row text-right>
+              <ion-col color="danger">
+                <button class="address-menu-icon" (click)="trash(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
+                  <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+                </button>
+              </ion-col>
+            </ion-row>
           </ion-item>
-          <ion-item-options>
-            <button ion-button color="light" icon-left>
-          <ion-icon name="ios-more"></ion-icon>
-          More
-        </button>
-            <button ion-button color="primary" icon-left>
-          <ion-icon name="text"></ion-icon>
-          Text
-        </button>
-            <button ion-button color="secondary" icon-left>
-          <ion-icon name="call"></ion-icon>
-          Call
-        </button>
-          </ion-item-options>
         </ion-item-sliding>
       </ion-list>
     </div>

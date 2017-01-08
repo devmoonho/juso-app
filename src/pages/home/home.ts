@@ -8,6 +8,7 @@ import { DetailPage } from '../detail/detail';
 
 import { FormBuilder, Validators } from '@angular/forms';
 import { AuthService } from '../../services/auth';
+import { DatabaseService } from '../../services/database';
 import { AddressService } from '../../services/address';
 
 import { Storage } from '@ionic/storage';
@@ -45,21 +46,23 @@ export class HomePage implements OnInit {
     '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'];
 
   currentStatus: any = this.STATUS.FIREST_LOAD;
-  
+
   segment: any = 'search';
 
-  debugInfo: any ='';
+  debugInfo: any = '';
 
   constructor(public navCtrl: NavController,
     private modalCtrl: ModalController,
     private authService: AuthService,
     private addressService: AddressService,
     private storage: Storage,
+    private databaseService: DatabaseService,
     private events: Events,
     private toastCtrl: ToastController) {
 
     events.subscribe('user:created', (user, time) => {
       this.debugInfo = JSON.stringify(user);
+      this.getBookmark()
     });
   }
 
@@ -73,9 +76,20 @@ export class HomePage implements OnInit {
     this.getBookmark();
   }
 
-  getBookmark(){
-    this.bookmarkList 
-    this.bookmarkAddressInfo = '0'     
+  getBookmark() {
+    if (this.userInfo != null) {
+      this.databaseService.getBookmark(this.userInfo.uid)
+        .then((res) => {
+          let children = [];
+          res.forEach((childSnapshot) => {
+            children.push(childSnapshot.val());
+          })
+          this.bookmarkAddressInfo = res.numChildren();
+          this.bookmarkList = children;
+        })
+    } else {
+      this.bookmarkList = [];
+    }
   }
 
   getRandomColor(index: number): string {
@@ -84,7 +98,7 @@ export class HomePage implements OnInit {
     // return this.randomColor[index + ((this.searchIndex - 1) % this.randomColor.length)];
     return this.randomColor[idx];
   }
-  
+
   searchJuso(): void {
     this.segment = 'search'
     this.searchIndex = 1
@@ -99,7 +113,7 @@ export class HomePage implements OnInit {
         this.addressList = res.results.juso;
         if (res.results.common.totalCount == 0) {
           this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
-          this.mainNotification = '검색된 주소가 없습니다' 
+          this.mainNotification = '검색된 주소가 없습니다'
         } else {
           this.currentStatus = this.STATUS.EXIST_ITEMS;
           this.mainNotification = '끌어서 더보기';
@@ -154,9 +168,50 @@ export class HomePage implements OnInit {
       })
   }
 
-  detail(idx: number): void {
-    let modal = this.modalCtrl.create(DetailPage, {"addressInfo": JSON.stringify(this.addressList[idx])});
+  detail(idx: number, segement: string): void {
+    let modal;
+    if (segement == 'search') {
+      modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.addressList[idx]) });
+    } else {
+      modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.bookmarkList[idx]) });
+    }
     Keyboard.close()
     modal.present();
+  }
+
+  bookmark(idx: number): void {
+    if (this.userInfo != null) {
+      this.databaseService.addBookmark(this.userInfo.uid, this.addressList[idx].bdMgtSn, this.addressList[idx])
+        .then((res) => {
+          return this.databaseService.getBookmark(this.userInfo.uid)
+        })
+        .then((res) => {
+          this.updateBookmark(res);
+        })
+    } else {
+      this.bookmarkList = [];
+    }
+
+  }
+
+  trash(idx: number) {
+    this.databaseService.removeBookmark(this.userInfo.uid, this.bookmarkList[idx].bdMgtSn)
+      .then((res) => {
+        return this.databaseService.getBookmark(this.userInfo.uid)
+      })
+      .then((res) => {
+        this.updateBookmark(res);
+      })
+  }
+
+  updateBookmark(res: any) {
+    let children = [];
+    res.forEach((childSnapshot) => {
+      children.push(childSnapshot.val());
+    })
+    this.bookmarkAddressInfo = res.numChildren();
+    this.bookmarkList = children;
+    this.segment = "bookmark";
+
   }
 }
