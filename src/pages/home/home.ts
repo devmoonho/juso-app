@@ -62,8 +62,8 @@ export class HomePage implements OnInit {
     private toastCtrl: ToastController) {
 
     events.subscribe('user:created', (user, time) => {
-      this.debugInfo = JSON.stringify(user);
-      this.getBookmark()
+      // this.debugInfo = JSON.stringify(user);
+      // this.getBookmark()
     });
   }
 
@@ -74,23 +74,27 @@ export class HomePage implements OnInit {
       'lastLogin': new Date()
     }
     this.storage.set(this.loginRecord.STORAGE_KEY, JSON.stringify(loginRecord));
-    this.getBookmark();
+    this.initBookmark();
   }
 
-  getBookmark() {
-    if (this.userInfo != null) {
+  initBookmark() {
+    this.debugInfo = JSON.stringify(this.userInfo);
+    if (this.userInfo == null) {
+      this.bookmarkList = [];
+      this.bookmarkAddressInfo = '';
+      this.bookmarkStatus = this.STATUS.NOT_EXIST_ITEMS;
+    } else {
+      this.events.publish('user:created', this.userInfo, Date.now());
       this.databaseService.getBookmark(this.userInfo.uid)
         .then((res) => {
           let children = [];
           res.forEach((childSnapshot) => {
             children.push(childSnapshot.val());
           })
-          this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
-          this.bookmarkAddressInfo = res.numChildren();
           this.bookmarkList = children;
+          this.bookmarkAddressInfo = res.numChildren();
+          this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
         })
-    } else {
-      this.bookmarkList = [];
     }
   }
 
@@ -114,6 +118,7 @@ export class HomePage implements OnInit {
 
         this.addressList = res.results.juso;
         if (res.results.common.totalCount == 0) {
+          this.bookmarkAddressInfo = '';
           this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
           this.mainNotification = '검색된 주소가 없습니다'
         } else {
@@ -123,6 +128,7 @@ export class HomePage implements OnInit {
         Keyboard.close()
       })
       .catch((err) => {
+        this.bookmarkAddressInfo = '';
         this.userInfo = JSON.stringify(err);
         this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
       })

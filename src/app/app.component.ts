@@ -119,7 +119,12 @@ export class MyApp {
       this.pages[2]['title'] = '로그인';
       this.pages[2]['segment'] = 'login';
     } else {
-      let provider = userProfile[0].providerData[0]
+      let provider;
+      if (userProfile.constructor == Array) {
+        provider = userProfile[0].providerData[0];
+      } else {
+        provider = userProfile;
+      }
       this.headingDisplayName = provider.displayName == null ? '이름 공개되지 않음' : provider.displayName;
       this.headingEmail = provider.email == null ? '이메일이 공개되지 않음' : provider.email;
       this.profileImage = provider.photoURL == null ? 'assets/icon/icon.png' : userProfile[0].photoURL;
