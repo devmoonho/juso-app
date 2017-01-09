@@ -107,13 +107,11 @@ export class HomePage implements OnInit {
 
   searchJuso(): void {
     this.segment = 'search'
-    this.searchIndex = 1
     this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
       .then((res) => {
-
         let totalItems = res.results.common.totalCount
         this.totalPage = Math.ceil(totalItems / this.searchPerPage);
-
+        this.searchIndex = 1
         this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex;
 
         this.addressList = res.results.juso;
@@ -125,7 +123,7 @@ export class HomePage implements OnInit {
           this.currentStatus = this.STATUS.EXIST_ITEMS;
           this.mainNotification = '끌어서 더보기';
         }
-        Keyboard.close()
+        // Keyboard.close()
       })
       .catch((err) => {
         this.bookmarkAddressInfo = '';
@@ -136,7 +134,7 @@ export class HomePage implements OnInit {
 
   openAbout(): void {
     let modal = this.modalCtrl.create(AboutPage);
-    Keyboard.close()
+    // Keyboard.close()
     modal.present();
   }
 
@@ -161,21 +159,18 @@ export class HomePage implements OnInit {
     }
 
     setTimeout(() => {
-      this.searchIndex += 1;
+      refresher.complete();
       this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
         .then((res) => {
-
           let totalItems = res.results.common.totalCount
+          this.searchIndex += 1;
           this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex;
           this.addressList = this.addressList.concat(res.results.juso);
           this.currentStatus = this.STATUS.EXIST_ITEMS;
-          refresher.complete();
         })
         .catch((err) => {
           this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
-          refresher.complete();
         })
-      console.log('Async operation has ended');
     }, 1000);
   }
 
@@ -186,7 +181,7 @@ export class HomePage implements OnInit {
     } else {
       modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.bookmarkList[idx]) });
     }
-    Keyboard.close()
+    // Keyboard.close()
     modal.present();
   }
 
