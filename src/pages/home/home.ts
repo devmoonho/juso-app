@@ -62,8 +62,8 @@ export class HomePage implements OnInit {
     private toastCtrl: ToastController) {
 
     events.subscribe('user:created', (user, time) => {
-      this.debugInfo = JSON.stringify(user);
-      this.getBookmark()
+      // this.debugInfo = JSON.stringify(user);
+      // this.getBookmark()
     });
   }
 
@@ -74,23 +74,27 @@ export class HomePage implements OnInit {
       'lastLogin': new Date()
     }
     this.storage.set(this.loginRecord.STORAGE_KEY, JSON.stringify(loginRecord));
-    this.getBookmark();
+    this.initBookmark();
   }
 
-  getBookmark() {
-    if (this.userInfo != null) {
+  initBookmark() {
+    this.debugInfo = JSON.stringify(this.userInfo);
+    if (this.userInfo == null) {
+      this.bookmarkList = [];
+      this.bookmarkAddressInfo = '';
+      this.bookmarkStatus = this.STATUS.NOT_EXIST_ITEMS;
+    } else {
+      this.events.publish('user:created', this.userInfo, Date.now());
       this.databaseService.getBookmark(this.userInfo.uid)
         .then((res) => {
           let children = [];
           res.forEach((childSnapshot) => {
             children.push(childSnapshot.val());
           })
-          this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
-          this.bookmarkAddressInfo = res.numChildren();
           this.bookmarkList = children;
+          this.bookmarkAddressInfo = res.numChildren();
+          this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
         })
-    } else {
-      this.bookmarkList = [];
     }
   }
 
@@ -103,17 +107,16 @@ export class HomePage implements OnInit {
 
   searchJuso(): void {
     this.segment = 'search'
-    this.searchIndex = 1
     this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
       .then((res) => {
-
         let totalItems = res.results.common.totalCount
         this.totalPage = Math.ceil(totalItems / this.searchPerPage);
-
+        this.searchIndex = 1
         this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex;
 
         this.addressList = res.results.juso;
         if (res.results.common.totalCount == 0) {
+          this.bookmarkAddressInfo = '';
           this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
           this.mainNotification = '검색된 주소가 없습니다'
         } else {
@@ -123,6 +126,7 @@ export class HomePage implements OnInit {
         Keyboard.close()
       })
       .catch((err) => {
+        this.bookmarkAddressInfo = '';
         this.userInfo = JSON.stringify(err);
         this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
       })
@@ -130,7 +134,7 @@ export class HomePage implements OnInit {
 
   openAbout(): void {
     let modal = this.modalCtrl.create(AboutPage);
-    Keyboard.close()
+    Keyboard.close();
     modal.present();
   }
 
@@ -155,27 +159,25 @@ export class HomePage implements OnInit {
     }
 
     setTimeout(() => {
-      this.searchIndex += 1;
+      refresher.complete();
       this.addressService.searchAddress(this.searchTerm, this.searchIndex, this.searchPerPage)
         .then((res) => {
-
           let totalItems = res.results.common.totalCount
+          this.searchIndex += 1;
           this.searchedAddressInfo = this.totalPage + ' / ' + this.searchIndex;
           this.addressList = this.addressList.concat(res.results.juso);
           this.currentStatus = this.STATUS.EXIST_ITEMS;
-          refresher.complete();
         })
         .catch((err) => {
           this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
-          refresher.complete();
         })
-      console.log('Async operation has ended');
     }, 1000);
   }
 
-  detail(idx: number, segement: string): void {
+  // detail(idx: number, segement: string): void {
+  detail(idx: number): void {
     let modal;
-    if (segement == 'search') {
+    if (this.segment == 'search') {
       modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.addressList[idx]) });
     } else {
       modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.bookmarkList[idx]) });

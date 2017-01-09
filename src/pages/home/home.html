@@ -65,6 +65,10 @@
             </ion-item>
           </ion-item-sliding>
         </ion-list>
+        <ion-infinite-scroll (ionInfinite)="doRefresh($event)">
+          <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="로딩중...">
+          </ion-infinite-scroll-content>
+        </ion-infinite-scroll>
       </div>
       <div *ngIf="currentStatus==STATUS.NOT_EXIST_ITEMS">
         <div class="spacer" style="width: 300px; height: 80px;"></div>
@@ -94,49 +98,44 @@
     </div>
     <div *ngSwitchCase="'bookmark'">
       <div *ngIf="bookmarkStatus==STATUS.NOT_EXIST_ITEMS">
-      <div class="spacer" style="width: 300px; height: 80px;"></div>
-      <div>
-        <img src="assets/icon/bookmark.png" style="display: block; width: 40%; height: auto; margin-left: auto; margin-right: auto;">
-      </div>
-      <div class="spacer" style="width: 300px; height: 20px;"></div>
-      <div text-center>
-        <h5 color="teal-300">등록된 <b>즐겨찾기</b>가 <br>없습니다.</h5>
-      </div>
+        <div class="spacer" style="width: 300px; height: 80px;"></div>
+        <div>
+          <img src="assets/icon/bookmark.png" style="display: block; width: 40%; height: auto; margin-left: auto; margin-right: auto;">
+        </div>
+        <div class="spacer" style="width: 300px; height: 20px;"></div>
+        <div text-center>
+          <h5 color="teal-300">등록된 <b>즐겨찾기</b>가 <br>없습니다.</h5>
+        </div>
       </div>
 
       <div *ngIf="bookmarkStatus==STATUS.EXIST_ITEMS">
-      <ion-list>
-        <!--<ion-item style="color:#009688;" text-center>
+        <ion-list>
+          <!--<ion-item style="color:#009688;" text-center>
           <ion-icon ios="ios-bookmark" md="md-bookmark" larger item-left></ion-icon>
           즐겨 찾기
           <ion-badge color="teal-300" item-right>{{bookmarkAddressInfo}}</ion-badge>
         </ion-item>-->
-        <ion-item-sliding *ngFor="let bookmark of bookmarkList | orderBy:'index'; let i = index">
-          <ion-item>
-            <ion-avatar item-left>
-              <h1 class="avatar-text" [style.background-color]="getRandomColor(i)" text-center>{{bookmark.roadAddrPart2 | subString:0:2}}</h1>
-            </ion-avatar>
-            <div (click)="detail(i)">
-              <h2>{{bookmark.zipNo}}</h2>
-              <h4>{{bookmark.jibunAddr}}</h4>
-              <h4>{{bookmark.roadAddrPart1}}</h4>
-            </div>
-            <ion-row text-right>
-              <ion-col color="danger">
-                <button class="address-menu-icon" (click)="trash(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
+          <ion-item-sliding *ngFor="let bookmark of bookmarkList | orderBy:'index'; let i = index">
+            <ion-item>
+              <ion-avatar item-left>
+                <h1 class="avatar-text" [style.background-color]="getRandomColor(i)" text-center>{{bookmark.roadAddrPart2 | subString:0:2}}</h1>
+              </ion-avatar>
+              <div (click)="detail(i)">
+                <h2>{{bookmark.zipNo}}</h2>
+                <h4>{{bookmark.jibunAddr}}</h4>
+                <h4>{{bookmark.roadAddrPart1}}</h4>
+              </div>
+              <ion-row text-right>
+                <ion-col color="danger">
+                  <button class="address-menu-icon" (click)="trash(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
                   <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
                 </button>
-              </ion-col>
-            </ion-row>
-          </ion-item>
-        </ion-item-sliding>
-      </ion-list>
+                </ion-col>
+              </ion-row>
+            </ion-item>
+          </ion-item-sliding>
+        </ion-list>
       </div>
     </div>
   </div>
-  <ion-infinite-scroll (ionInfinite)="doRefresh($event)">
-    <ion-infinite-scroll-content loadingSpinner="bubbles" loadingText="로딩중...">
-    </ion-infinite-scroll-content>
-  </ion-infinite-scroll>
-
 </ion-content>
