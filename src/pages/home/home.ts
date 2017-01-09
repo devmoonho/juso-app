@@ -123,7 +123,7 @@ export class HomePage implements OnInit {
           this.currentStatus = this.STATUS.EXIST_ITEMS;
           this.mainNotification = '끌어서 더보기';
         }
-        // Keyboard.close()
+        Keyboard.close()
       })
       .catch((err) => {
         this.bookmarkAddressInfo = '';
@@ -134,7 +134,7 @@ export class HomePage implements OnInit {
 
   openAbout(): void {
     let modal = this.modalCtrl.create(AboutPage);
-    // Keyboard.close()
+    Keyboard.close();
     modal.present();
   }
 
@@ -174,14 +174,15 @@ export class HomePage implements OnInit {
     }, 1000);
   }
 
-  detail(idx: number, segement: string): void {
+  // detail(idx: number, segement: string): void {
+  detail(idx: number): void {
     let modal;
-    if (segement == 'search') {
+    if (this.segment == 'search') {
       modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.addressList[idx]) });
     } else {
       modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.bookmarkList[idx]) });
     }
-    // Keyboard.close()
+    Keyboard.close()
     modal.present();
   }
 
