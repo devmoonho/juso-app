@@ -76,7 +76,12 @@ export class MyApp {
         .then((result) => {
           if (result != null) {
             this.rootPage = HomePage;
-            this.updateSideMenu(firebase.auth().currentUser);
+            // reLogin
+            let userInfo = JSON.parse(JSON.parse(result)['userInfo']);
+            if (userInfo != null) {
+              let accessToken = userInfo['stsTokenManager']['accessToken'];
+              this.updateSideMenu(userInfo);
+            }
           } else {
             this.rootPage = StartPage;
           }
@@ -117,6 +122,8 @@ export class MyApp {
       this.pages[2]['title'] = '로그인';
       this.pages[2]['segment'] = 'login';
     } else {
+      this.setLoginInfo(userProfile);
+
       let provider;
       try {
         provider = userProfile;
@@ -129,5 +136,13 @@ export class MyApp {
       this.pages[2]['title'] = '로그 아웃';
       this.pages[2]['segment'] = 'logout';
     }
+  }
+
+  setLoginInfo(userInfo: any) {
+    let loginRecord: any = {
+      'userInfo': JSON.stringify(userInfo),
+      'lastLogin': new Date()
+    }
+    this.storage.set(this.loginRecord.STORAGE_KEY, JSON.stringify(loginRecord));
   }
 }

@@ -42,7 +42,7 @@ export class HomePage implements OnInit {
 
   prefixAddress: any = 'A';
   randomColor: any = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5',
-    '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', 
+    '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39',
     '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'];
 
   currentStatus: any = this.STATUS.FIREST_LOAD;
@@ -69,12 +69,25 @@ export class HomePage implements OnInit {
 
   ngOnInit() {
     this.userInfo = this.authService.getCurrentUser();
-    let loginRecord: any = {
-      'userInfo': this.userInfo,
-      'lastLogin': new Date()
+
+    if (this.userInfo == null) {
+      this.storage.get(this.loginRecord.STORAGE_KEY)
+        .then((result) => {
+          if (result != null) {
+            this.userInfo = JSON.parse(JSON.parse(result)['userInfo'])
+          }
+          this.initBookmark();
+        });
+    } else {
+      this.initBookmark();
     }
-    this.storage.set(this.loginRecord.STORAGE_KEY, JSON.stringify(loginRecord));
-    this.initBookmark();
+
+    // let loginRecord: any = {
+    //   'userInfo': this.userInfo,
+    //   'lastLogin': new Date()
+    // }
+    // this.storage.set(this.loginRecord.STORAGE_KEY, JSON.stringify(loginRecord));
+    // this.initBookmark();
   }
 
   initBookmark() {
@@ -178,7 +191,7 @@ export class HomePage implements OnInit {
   detail(idx: number): void {
     let modal;
     if (this.segment == 'search') {
-      modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.addressList[idx]), "segment":"search"});
+      modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.addressList[idx]), "segment": "search" });
     } else {
       modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.bookmarkList[idx]), "segment": "bookmark" });
     }
@@ -218,17 +231,27 @@ export class HomePage implements OnInit {
       children.push(childSnapshot.val());
     })
     this.bookmarkAddressInfo = res.numChildren();
-    this.bookmarkAddressInfo == 0?this.bookmarkStatus = this.STATUS.NOT_EXIST_ITEMS:this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
+    this.bookmarkAddressInfo == 0 ? this.bookmarkStatus = this.STATUS.NOT_EXIST_ITEMS : this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
     this.bookmarkList = children;
     this.segment = "bookmark";
   }
-  
+
   showAlert(title: any, subTitle: any) {
     let alert = this.alertCtrl.create({
-      title: title, 
+      title: title,
       subTitle: subTitle,
       buttons: ['OK']
     });
     alert.present();
-  }Î
+  } Î
+
+  debug() {
+    this.storage.get(this.loginRecord.STORAGE_KEY)
+      .then((result) => {
+        if (result != null) {
+          this.debugInfo = result
+        } else {
+        }
+      })
+  }
 }
