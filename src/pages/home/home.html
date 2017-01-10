@@ -54,7 +54,7 @@
               </div>
               <ion-row text-right>
                 <ion-col color="danger">
-                  <button class="address-menu-icon" (click)="bookmark(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
+                  <button class="address-menu-icon" (click)="addBookmark(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
                 <ion-icon ios="ios-bookmark" md="md-bookmark"></ion-icon>
               </button>
                   <button class="address-menu-icon" (click)="detail(i)" ion-button icon-right clear color="bg-500" style="height: 22px;">
@@ -110,11 +110,6 @@
 
       <div *ngIf="bookmarkStatus==STATUS.EXIST_ITEMS">
         <ion-list>
-          <!--<ion-item style="color:#009688;" text-center>
-          <ion-icon ios="ios-bookmark" md="md-bookmark" larger item-left></ion-icon>
-          즐겨 찾기
-          <ion-badge color="teal-300" item-right>{{bookmarkAddressInfo}}</ion-badge>
-        </ion-item>-->
           <ion-item-sliding *ngFor="let bookmark of bookmarkList | orderBy:'index'; let i = index">
             <ion-item>
               <ion-avatar item-left>

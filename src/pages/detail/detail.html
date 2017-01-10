@@ -20,22 +20,21 @@
                 <h1>{{addressInfo.jibunAddr}}</h1>
             </ion-card-title>
             <ion-item>
-                <ion-checkbox [(ngModel)]="checkZipNo" color="teal-300"></ion-checkbox>
-                <ion-label><b>우편번호 :</b> {{addressInfo.zipNo}}</ion-label>
+                <ion-label stacked color="teal-300">우편번호</ion-label>
+                <div item-content class="detail-item-content"> {{addressInfo.zipNo}}</div>
             </ion-item>
             <ion-item>
-                <ion-checkbox [(ngModel)]="checkRoadAddr" color="teal-300"></ion-checkbox>
-                <ion-label><b>도로명 주소 :</b> {{addressInfo.roadAddrPart1}}</ion-label>
+                <ion-label stacked color="teal-300">도로명주소</ion-label>
+                <div item-content class="detail-item-content"> {{addressInfo.roadAddrPart1}}</div>
             </ion-item>
             <ion-item>
-                <ion-checkbox [(ngModel)]="checkEngAddr" color="teal-300"></ion-checkbox>
-                <ion-label style="margin: none; height: 100%"><b>영문 주소 :</b> {{addressInfo.engAddr}}</ion-label>
+                <ion-label stacked color="teal-300">영문주소</ion-label>
+                <div item-content class="detail-item-content"> {{addressInfo.engAddr}}</div>
             </ion-item>
             <ion-item>
-                <ion-checkbox [(ngModel)]="checkLocal" color="teal-300"></ion-checkbox>
-                <ion-label><b>위도 :</b> {{daumInfo['lat']}}
-                    <br> <b>경도 :</b> {{daumInfo['lng']}}
-                </ion-label>
+                <ion-label stacked color="teal-300">좌표</ion-label>
+                <div item-content class="detail-item-content"> 위도: {{daumInfo['lat']}}</div>
+                <div item-content class="detail-item-content"> 경도: {{daumInfo['lng']}}</div>
             </ion-item>
         </ion-card-content>
         <ion-row text-right>
@@ -43,9 +42,16 @@
                 <button ion-button icon-left clear color="bg-500" (click)="clipboard()" style="padding-left: 4px;padding-right: 4px;">
                     <ion-icon ios="ios-copy" md="md-copy"></ion-icon>
                 </button>
-                <button ion-button icon-left clear color="bg-500" style="padding-left: 4px;padding-right: 4px;">
+                <span *ngIf="segment=='search'">
+                    <button ion-button icon-left clear color="bg-500" (click)="addBookmark()" style="padding-left: 4px;padding-right: 4px;">
                     <ion-icon ios="ios-bookmark" md="md-bookmark"></ion-icon>
                 </button>
+                </span>
+                <span *ngIf="segment=='bookmark'">
+                    <button ion-button icon-left clear color="bg-500" (click)="trash()" style="padding-left: 4px;padding-right: 4px;">
+                    <ion-icon ios="ios-trash" md="md-trash"></ion-icon>
+                </button>
+                </span>
             </ion-col>
         </ion-row>
     </ion-card>

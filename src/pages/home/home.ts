@@ -42,7 +42,7 @@ export class HomePage implements OnInit {
 
   prefixAddress: any = 'A';
   randomColor: any = ['#F44336', '#E91E63', '#9C27B0', '#673AB7', '#3F51B5',
-    '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', '#FFEB3B',
+    '#2196F3', '#03A9F4', '#00BCD4', '#009688', '#4CAF50', '#8BC34A', '#CDDC39', 
     '#FFC107', '#FF9800', '#FF5722', '#795548', '#9E9E9E', '#607D8B'];
 
   currentStatus: any = this.STATUS.FIREST_LOAD;
@@ -61,9 +61,8 @@ export class HomePage implements OnInit {
     private events: Events,
     private toastCtrl: ToastController) {
 
-    events.subscribe('user:created', (user, time) => {
-      // this.debugInfo = JSON.stringify(user);
-      // this.getBookmark()
+    events.subscribe('bookmark:updated', (res, time) => {
+      this.updateBookmark(res);
     });
   }
 
@@ -178,15 +177,15 @@ export class HomePage implements OnInit {
   detail(idx: number): void {
     let modal;
     if (this.segment == 'search') {
-      modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.addressList[idx]) });
+      modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.addressList[idx]), "segment":"search"});
     } else {
-      modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.bookmarkList[idx]) });
+      modal = this.modalCtrl.create(DetailPage, { "addressInfo": JSON.stringify(this.bookmarkList[idx]), "segment": "bookmark" });
     }
     Keyboard.close()
     modal.present();
   }
 
-  bookmark(idx: number): void {
+  addBookmark(idx: number): void {
     if (this.userInfo != null) {
       this.databaseService.addBookmark(this.userInfo.uid, this.addressList[idx].bdMgtSn, this.addressList[idx])
         .then((res) => {
@@ -220,6 +219,5 @@ export class HomePage implements OnInit {
     this.bookmarkAddressInfo = res.numChildren();
     this.bookmarkList = children;
     this.segment = "bookmark";
-
   }
 }

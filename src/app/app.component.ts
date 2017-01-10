@@ -76,8 +76,6 @@ export class MyApp {
         .then((result) => {
           if (result != null) {
             this.rootPage = HomePage;
-            // this.rootPage = LoginPage;
-            this.rootPage = StartPage;
             this.updateSideMenu(firebase.auth().currentUser);
           } else {
             this.rootPage = StartPage;
