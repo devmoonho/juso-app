@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Keyboard } from 'ionic-native';
 import { ModalController, ToastController, Events } from 'ionic-angular';
-import { NavController } from 'ionic-angular';
+import { NavController, AlertController } from 'ionic-angular';
 import { AboutPage } from '../about/about';
 import { StartPage } from '../start/start';
 import { DetailPage } from '../detail/detail';
@@ -59,6 +59,7 @@ export class HomePage implements OnInit {
     private storage: Storage,
     private databaseService: DatabaseService,
     private events: Events,
+    private alertCtrl: AlertController,
     private toastCtrl: ToastController) {
 
     events.subscribe('bookmark:updated', (res, time) => {
@@ -196,6 +197,7 @@ export class HomePage implements OnInit {
         })
     } else {
       this.bookmarkList = [];
+      this.showAlert("알림", "로그인 후 즐겨찾기 추가가 가능합니다.")
     }
 
   }
@@ -220,4 +222,13 @@ export class HomePage implements OnInit {
     this.bookmarkList = children;
     this.segment = "bookmark";
   }
+  
+  showAlert(title: any, subTitle: any) {
+    let alert = this.alertCtrl.create({
+      title: title, 
+      subTitle: subTitle,
+      buttons: ['OK']
+    });
+    alert.present();
+  }Î
 }
