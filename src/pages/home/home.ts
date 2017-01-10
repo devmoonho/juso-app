@@ -217,8 +217,8 @@ export class HomePage implements OnInit {
     res.forEach((childSnapshot) => {
       children.push(childSnapshot.val());
     })
-    this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
     this.bookmarkAddressInfo = res.numChildren();
+    this.bookmarkAddressInfo == 0?this.bookmarkStatus = this.STATUS.NOT_EXIST_ITEMS:this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
     this.bookmarkList = children;
     this.segment = "bookmark";
   }
