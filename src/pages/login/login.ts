@@ -252,13 +252,13 @@ export class LoginPage {
         {
           text: '취소',
           handler: data => {
-          }
+         }
         },
         {
           text: '보내기',
           handler: data => {
-            var auth = firebase.auth();
-            var emailAddress = data.email;
+             var auth = firebase.auth();
+            var emailAddress = data;
             auth.sendPasswordResetEmail(emailAddress)
               .then((res) => {
                 // Email sent.

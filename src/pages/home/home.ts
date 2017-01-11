@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Keyboard } from 'ionic-native';
-import { ModalController, ToastController, Events } from 'ionic-angular';
+import { ModalController, ToastController, Events, LoadingController } from 'ionic-angular';
 import { NavController, AlertController } from 'ionic-angular';
 import { AboutPage } from '../about/about';
 import { StartPage } from '../start/start';
@@ -54,8 +54,11 @@ export class HomePage implements OnInit {
 
   bookmarkListener: any;
 
+  loader: any;
+
   constructor(public navCtrl: NavController,
     private modalCtrl: ModalController,
+    private loadingCtrl: LoadingController,
     private authService: AuthService,
     private addressService: AddressService,
     private storage: Storage,
@@ -66,6 +69,7 @@ export class HomePage implements OnInit {
 
     events.subscribe('bookmark:updated', (res, time) => {
       this.updateBookmark(res);
+
     });
 
   }
@@ -211,7 +215,8 @@ export class HomePage implements OnInit {
           return this.databaseService.getBookmark(this.userInfo.uid)
         })
         .then((res) => {
-          this.updateBookmark(res);
+          // this.updateBookmark(res);
+          this.events.publish('bookmark:add', res, Date.now());
         })
     } else {
       this.bookmarkList = [];
@@ -225,7 +230,8 @@ export class HomePage implements OnInit {
         return this.databaseService.getBookmark(this.userInfo.uid)
       })
       .then((res) => {
-        this.updateBookmark(res);
+        this.events.publish('bookmark:remove', res, Date.now());
+        // this.updateBookmark(res);
       })
   }
 
@@ -238,6 +244,7 @@ export class HomePage implements OnInit {
     this.bookmarkAddressInfo == 0 ? this.bookmarkStatus = this.STATUS.NOT_EXIST_ITEMS : this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
     this.bookmarkList = children;
     this.segment = "bookmark";
+    this.displayLoading('업데이트...', 500);
   }
 
   showAlert(title: any, subTitle: any) {
@@ -257,5 +264,13 @@ export class HomePage implements OnInit {
         } else {
         }
       })
+  }
+
+  displayLoading(msg: string, du: number) {
+    this.loader = this.loadingCtrl.create({
+      content: msg,
+      duration: du
+    });
+    this.loader.present();
   }
 }
