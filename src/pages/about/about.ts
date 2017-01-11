@@ -11,8 +11,8 @@ export class AboutPage {
   admin: any = {
     tel: '+82-10-9968-8303',
     email: 'yeomoonho@gmail.com',
-    facebook: 'kr.linkedin.com/in/yeomoonho',
-    linkedin: 'facebook.com/yeomoonho',
+    linkedin: 'kr.linkedin.com/in/yeomoonho',
+    facebook: 'facebook.com/yeomoonho',
     about: 'Ionic2 & Firebase3 & Angular2'
   }
 
