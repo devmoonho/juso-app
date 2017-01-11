@@ -86,6 +86,7 @@ export class MyApp {
             this.rootPage = StartPage;
           }
         })
+        
     });
   }
 

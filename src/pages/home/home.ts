@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Keyboard } from 'ionic-native';
+import { Keyboard, Network } from 'ionic-native';
 import { ModalController, ToastController, Events, LoadingController } from 'ionic-angular';
 import { NavController, AlertController } from 'ionic-angular';
 import { AboutPage } from '../about/about';
@@ -56,6 +56,8 @@ export class HomePage implements OnInit {
 
   loader: any;
 
+  networkStatus: any = "connection";
+
   constructor(public navCtrl: NavController,
     private modalCtrl: ModalController,
     private loadingCtrl: LoadingController,
@@ -72,6 +74,14 @@ export class HomePage implements OnInit {
 
     });
 
+    Network.onDisconnect().subscribe(() => {
+      this.showAlert("연결 끊어짐", "네트워크 연결이 끊어졌습니다. 일부기능을 사용할 수 없습니다. ");
+      this.networkStatus = "disconnection"
+    });
+    Network.onConnect().subscribe(() => {
+      this.displayToast("네트워크 연결됨");
+      this.networkStatus = "connection"
+    });
   }
 
   ngOnInit() {
@@ -273,4 +283,13 @@ export class HomePage implements OnInit {
     });
     this.loader.present();
   }
+  displayToast(msg: string) {
+    let toast: any;
+    toast = this.toastCtrl.create({
+      message: msg,
+      duration: 1000
+    });
+    toast.present();
+  }
+
 }
