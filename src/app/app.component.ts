@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events } from 'ionic-angular';
-import { StatusBar, Splashscreen, Keyboard } from 'ionic-native';
+import { StatusBar, Splashscreen, Keyboard, AdMob } from 'ionic-native';
 
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
@@ -11,6 +11,8 @@ import { LoginRecord } from '../services/auth-provider'
 import { Storage } from '@ionic/storage';
 
 import * as firebase from 'firebase';
+
+// declare var AdMob: any;
 
 @Component({
   templateUrl: 'app.html'
@@ -86,7 +88,38 @@ export class MyApp {
             this.rootPage = StartPage;
           }
         })
-        
+
+      interface AdMobType {
+        banner: string,
+        interstitial: string
+      };
+
+      var admobid: AdMobType;
+
+      // select the right Ad Id according to platform
+      if (/(android)/i.test(navigator.userAgent)) {
+        admobid = { // for Android
+          banner: 'ca-app-pub-4627327727581552/2410127425',
+          interstitial: 'ca-app-pub-4627327727581552/2410127425'
+        };
+      } else if (/(ipod|iphone|ipad)/i.test(navigator.userAgent)) {
+        admobid = { // for iOS
+          banner: 'ca-app-pub-4627327727581552/5003667025',
+          interstitial: 'ca-app-pub-4627327727581552/5003667025'
+        };
+      } else {
+        admobid = { // for Windows Phone
+          banner: 'ca-app-pub-4627327727581552/5003667025',
+          interstitial: 'ca-app-pub-4627327727581552/5003667025'
+        };
+      }
+      if (AdMob) AdMob.createBanner({
+        adId: admobid.banner,
+        position: 8,
+        adSize: "SMART_BANNER",
+        isTesting: false,//comment this out before publishing the app
+        autoShow: true
+      });
     });
   }
 

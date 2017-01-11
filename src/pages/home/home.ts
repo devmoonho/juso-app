@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Keyboard, Network } from 'ionic-native';
+import { Keyboard, Network, AdMob } from 'ionic-native';
 import { ModalController, ToastController, Events, LoadingController } from 'ionic-angular';
 import { NavController, AlertController } from 'ionic-angular';
 import { AboutPage } from '../about/about';
@@ -100,13 +100,6 @@ export class HomePage implements OnInit {
     } else {
       this.initBookmark();
     }
-
-    // let loginRecord: any = {
-    //   'userInfo': this.userInfo,
-    //   'lastLogin': new Date()
-    // }
-    // this.storage.set(this.loginRecord.STORAGE_KEY, JSON.stringify(loginRecord));
-    // this.initBookmark();
   }
 
   initBookmark() {
