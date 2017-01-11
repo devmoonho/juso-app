@@ -1,7 +1,7 @@
 <ion-header>
   <ion-toolbar color="teal-300">
     <ion-title>
-      ABOUT
+     About  
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
@@ -20,6 +20,7 @@
     <p style="color:#000000;" text-center> Developer
       <strong>Yeo MoonHo</strong>
     </p>
+    <div item-content class="detail-item-content" text-center>Tools: {{admin.about}}</div>
   </div>
   <div class="spacer" style="width: 300px; height: 20px;"></div>
   <ion-item>
@@ -30,12 +31,16 @@
     <ion-label stacked color="teal-300">Email</ion-label>
     <div (click)="goEmail()" item-content class="detail-item-content">{{admin.email}}</div>
   </ion-item>
-  <!--<ion-item>
+  <ion-item>
+    <ion-label stacked color="teal-300">Facebook</ion-label>
+    <div (click)="goFacebook()" item-content class="detail-item-content">{{admin.facebook}}</div>
+  </ion-item>
+  <ion-item>
     <ion-label stacked color="teal-300">Linkedin</ion-label>
     <div (click)="goLinkedin()" item-content class="detail-item-content">{{admin.linkedin}}</div>
-  </ion-item>-->
-  <!--<ion-item>
-    <ion-label stacked color="teal-300">about</ion-label>
+  </ion-item>
+   <!--<ion-item>
+    <ion-label stacked color="teal-300">Develop Tools</ion-label>
     <div item-content class="detail-item-content">{{admin.about}}</div>
   </ion-item>-->
 </ion-content>

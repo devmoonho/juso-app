@@ -11,8 +11,9 @@ export class AboutPage {
   admin: any = {
     tel: '+82-10-9968-8303',
     email: 'yeomoonho@gmail.com',
-    linkedin: 'https://kr.linkedin.com/in/moonho-yeo-8b53b9117',
-    // about: '도로명주소 검색기능을 모바일에서 구현한 App이며 Firebase와 연동하여 사용자 관리및 즐겨찾기 구현 '
+    facebook: 'kr.linkedin.com/in/yeomoonho',
+    linkedin: 'facebook.com/yeomoonho',
+    about: 'Ionic2 & Firebase3 & Angular2'
   }
 
   constructor(
@@ -31,7 +32,7 @@ export class AboutPage {
   }
 
   goLinkedin() {
-    this.displayToast("클립보드에 저장되었습니다.");
+    // this.displayToast("클립보드에 저장되었습니다.");
   }
 
   dismiss() {

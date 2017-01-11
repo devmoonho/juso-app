@@ -67,7 +67,7 @@ export class LoginPage {
       });
   }
 
-    goFacebookAuth() {
+  goFacebookAuth() {
     this.authService.facebook()
       .then((userData) => {
         var credential = firebase.auth.FacebookAuthProvider.credential(userData.authResponse.accessToken);
@@ -101,7 +101,7 @@ export class LoginPage {
       })
   }
 
-  goKakaoAuth(){
+  goKakaoAuth() {
 
   }
 
@@ -222,6 +222,56 @@ export class LoginPage {
         this.generateKorMessage(error.code);
         this.loader.dismiss();
       })
+  }
+
+  goResetPassword() {
+    this.showPrompt();
+    // var auth = firebase.auth();
+    // var emailAddress = 
+
+    // auth.sendPasswordResetEmail(emailAddress)
+    //   .then((res) => {
+    //     // Email sent.
+    //   })
+    //   .catch((err) => {
+    //     // An error happened.
+    //   });
+  }
+
+  showPrompt() {
+    let prompt = this.alertCtrl.create({
+      title: '패스워드 재설정',
+      message: "가입한 이메일을 적어 주세요",
+      inputs: [
+        {
+          name: 'email',
+          placeholder: 'Email'
+        },
+      ],
+      buttons: [
+        {
+          text: '취소',
+          handler: data => {
+          }
+        },
+        {
+          text: '보내기',
+          handler: data => {
+            var auth = firebase.auth();
+            var emailAddress = data.email;
+            auth.sendPasswordResetEmail(emailAddress)
+              .then((res) => {
+                // Email sent.
+                this.displayToast("이메일이 발송되었습니다.")
+              })
+              .catch((err) => {
+                // An error happened.
+              });
+          }
+        }
+      ]
+    });
+    prompt.present();
   }
 
   dismiss() {
