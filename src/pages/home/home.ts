@@ -218,8 +218,6 @@ export class HomePage implements OnInit {
           return this.databaseService.getBookmark(this.userInfo.uid)
         })
         .then((res) => {
-          // this.updateBookmark(res);
-          this.events.publish('bookmark:add', res, Date.now());
         })
     } else {
       this.bookmarkList = [];
@@ -233,8 +231,6 @@ export class HomePage implements OnInit {
         return this.databaseService.getBookmark(this.userInfo.uid)
       })
       .then((res) => {
-        this.events.publish('bookmark:remove', res, Date.now());
-        // this.updateBookmark(res);
       })
   }
 
