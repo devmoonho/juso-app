@@ -31,6 +31,9 @@ export class AboutPage {
 
   }
 
+  goFacebook(){
+    
+  }
   goLinkedin() {
     // this.displayToast("클립보드에 저장되었습니다.");
   }

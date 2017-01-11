@@ -52,6 +52,8 @@ export class HomePage implements OnInit {
 
   debugInfo: any = '';
 
+  bookmarkListener: any;
+
   constructor(public navCtrl: NavController,
     private modalCtrl: ModalController,
     private authService: AuthService,
@@ -65,6 +67,7 @@ export class HomePage implements OnInit {
     events.subscribe('bookmark:updated', (res, time) => {
       this.updateBookmark(res);
     });
+
   }
 
   ngOnInit() {
@@ -75,9 +78,11 @@ export class HomePage implements OnInit {
         .then((result) => {
           if (result != null) {
             this.userInfo = JSON.parse(JSON.parse(result)['userInfo'])
+            this.databaseService.listenerBookmark(this.userInfo.uid, this.events);
           }
           this.initBookmark();
         });
+
     } else {
       this.initBookmark();
     }
@@ -212,7 +217,6 @@ export class HomePage implements OnInit {
       this.bookmarkList = [];
       this.showAlert("알림", "로그인 후 즐겨찾기 추가가 가능합니다.")
     }
-
   }
 
   trash(idx: number) {
