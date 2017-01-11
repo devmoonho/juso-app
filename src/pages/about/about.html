@@ -1,15 +1,41 @@
 <ion-header>
-  <ion-toolbar>
+  <ion-toolbar color="teal-300">
     <ion-title>
-      Description
+      ABOUT
     </ion-title>
     <ion-buttons start>
       <button ion-button (click)="dismiss()">
-        <span color="primary" showWhen="ios">Cancel</span>
+        <span color="white" showWhen="ios">닫기</span>
         <ion-icon name="md-close" showWhen="android,windows"></ion-icon>
       </button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
-<ion-content padding>
+<ion-content padding="true">
+  <div class="spacer" style="width: 300px; height: 20px;"></div>
+  <div class="profile-image">
+    <img src="assets/icon/moonho.jpg" style="display: block; width: 40%; height: auto; margin-left: auto; margin-right: auto;">
+  </div>
+  <div class="show-list-numbers-and-dots">
+    <p style="color:#000000;" text-center> Developer
+      <strong>Yeo MoonHo</strong>
+    </p>
+  </div>
+  <div class="spacer" style="width: 300px; height: 20px;"></div>
+  <ion-item>
+    <ion-label stacked color="teal-300">Tel</ion-label>
+    <div (click)="goCall()" item-content class="detail-item-content">{{admin.tel}}</div>
+  </ion-item>
+  <ion-item>
+    <ion-label stacked color="teal-300">Email</ion-label>
+    <div (click)="goEmail()" item-content class="detail-item-content">{{admin.email}}</div>
+  </ion-item>
+  <!--<ion-item>
+    <ion-label stacked color="teal-300">Linkedin</ion-label>
+    <div (click)="goLinkedin()" item-content class="detail-item-content">{{admin.linkedin}}</div>
+  </ion-item>-->
+  <!--<ion-item>
+    <ion-label stacked color="teal-300">about</ion-label>
+    <div item-content class="detail-item-content">{{admin.about}}</div>
+  </ion-item>-->
 </ion-content>
