@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, NgZone } from '@angular/core';
 import { Keyboard, Network, AdMob } from 'ionic-native';
 import { ModalController, ToastController, Events, LoadingController } from 'ionic-angular';
 import { NavController, AlertController } from 'ionic-angular';
@@ -66,6 +66,7 @@ export class HomePage implements OnInit {
     private storage: Storage,
     private databaseService: DatabaseService,
     private events: Events,
+    private ngZone: NgZone,
     private alertCtrl: AlertController,
     private toastCtrl: ToastController) {
 
@@ -235,15 +236,16 @@ export class HomePage implements OnInit {
   }
 
   updateBookmark(res: any) {
-    let children = [];
-    res.forEach((childSnapshot) => {
-      children.push(childSnapshot.val());
-    })
-    this.bookmarkAddressInfo = res.numChildren();
-    this.bookmarkAddressInfo == 0 ? this.bookmarkStatus = this.STATUS.NOT_EXIST_ITEMS : this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
-    this.bookmarkList = children;
-    this.segment = "bookmark";
-    this.displayLoading('업데이트...', 500);
+    this.ngZone.run(() => {
+      let children = [];
+      res.forEach((childSnapshot) => {
+        children.push(childSnapshot.val());
+      })
+      this.bookmarkAddressInfo = res.numChildren();
+      this.bookmarkAddressInfo == 0 ? this.bookmarkStatus = this.STATUS.NOT_EXIST_ITEMS : this.bookmarkStatus = this.STATUS.EXIST_ITEMS;
+      this.bookmarkList = children;
+      this.segment = "bookmark";
+    });
   }
 
   showAlert(title: any, subTitle: any) {
