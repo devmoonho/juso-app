@@ -72,10 +72,9 @@ export class HomePage implements OnInit {
 
     events.subscribe('bookmark:updated', (res, time) => {
       this.updateBookmark(res);
-
     });
 
-    Network.onDisconnect().subscribe(() => {
+   Network.onDisconnect().subscribe(() => {
       this.showAlert("연결 끊어짐", "네트워크 연결이 끊어졌습니다. 일부기능을 사용할 수 없습니다. ");
       this.networkStatus = "disconnection"
     });
@@ -93,7 +92,6 @@ export class HomePage implements OnInit {
         .then((result) => {
           if (result != null) {
             this.userInfo = JSON.parse(JSON.parse(result)['userInfo'])
-            this.databaseService.listenerBookmark(this.userInfo.uid, this.events);
           }
           this.initBookmark();
         });
@@ -105,6 +103,8 @@ export class HomePage implements OnInit {
 
   initBookmark() {
     this.debugInfo = JSON.stringify(this.userInfo);
+    this.databaseService.listenerBookmark(this.userInfo.uid, this.events);
+
     if (this.userInfo == null) {
       this.bookmarkList = [];
       this.bookmarkAddressInfo = '';
@@ -142,7 +142,6 @@ export class HomePage implements OnInit {
 
         this.addressList = res.results.juso;
         if (res.results.common.totalCount == 0) {
-          this.bookmarkAddressInfo = '';
           this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
           this.mainNotification = '검색된 주소가 없습니다'
         } else {
@@ -216,9 +215,11 @@ export class HomePage implements OnInit {
     if (this.userInfo != null) {
       this.databaseService.addBookmark(this.userInfo.uid, this.addressList[idx].bdMgtSn, this.addressList[idx])
         .then((res) => {
+          this.databaseService.listenerBookmark(this.userInfo.uid, this.events);
           return this.databaseService.getBookmark(this.userInfo.uid)
         })
         .then((res) => {
+          this.events.publish('bookmark:updated', res, Date.now());
         })
     } else {
       this.bookmarkList = [];
@@ -229,9 +230,11 @@ export class HomePage implements OnInit {
   trash(idx: number) {
     this.databaseService.removeBookmark(this.userInfo.uid, this.bookmarkList[idx].bdMgtSn)
       .then((res) => {
+        this.databaseService.listenerBookmark(this.userInfo.uid, this.events);
         return this.databaseService.getBookmark(this.userInfo.uid)
       })
       .then((res) => {
+        this.events.publish('bookmark:updated', res, Date.now());
       })
   }
 

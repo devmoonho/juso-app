@@ -1,6 +1,6 @@
 import { Component, ViewChild } from '@angular/core';
 import { Nav, Platform, Events } from 'ionic-angular';
-import { StatusBar, Splashscreen, Keyboard, AdMob } from 'ionic-native';
+import { StatusBar, Splashscreen, Keyboard, AdMob, ScreenOrientation } from 'ionic-native';
 
 import { StartPage } from '../pages/start/start';
 import { HomePage } from '../pages/home/home';
@@ -71,7 +71,7 @@ export class MyApp {
       Keyboard.disableScroll(true);
 
       if (platform.is('android') || platform.is('ios')) {
-        // ScreenOrientation.lockOrientation('portrait');
+          ScreenOrientation.lockOrientation('portrait');
       }
 
       this.storage.get(this.loginRecord.STORAGE_KEY)
