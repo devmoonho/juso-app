@@ -142,7 +142,6 @@ export class HomePage implements OnInit {
 
         this.addressList = res.results.juso;
         if (res.results.common.totalCount == 0) {
-          this.bookmarkAddressInfo = '';
           this.currentStatus = this.STATUS.NOT_EXIST_ITEMS;
           this.mainNotification = '검색된 주소가 없습니다'
         } else {
@@ -216,6 +215,7 @@ export class HomePage implements OnInit {
     if (this.userInfo != null) {
       this.databaseService.addBookmark(this.userInfo.uid, this.addressList[idx].bdMgtSn, this.addressList[idx])
         .then((res) => {
+          this.databaseService.listenerBookmark(this.userInfo.uid, this.events);
           return this.databaseService.getBookmark(this.userInfo.uid)
         })
         .then((res) => {
@@ -230,6 +230,7 @@ export class HomePage implements OnInit {
   trash(idx: number) {
     this.databaseService.removeBookmark(this.userInfo.uid, this.bookmarkList[idx].bdMgtSn)
       .then((res) => {
+        this.databaseService.listenerBookmark(this.userInfo.uid, this.events);
         return this.databaseService.getBookmark(this.userInfo.uid)
       })
       .then((res) => {
