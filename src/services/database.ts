@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { AuthService } from '../services/auth'
 import firebase from 'firebase';
 import { Observable } from 'rxjs/Rx';
+import * as moment from 'moment';
 
 // Import RxJs required methods
 import 'rxjs/add/operator/map';
@@ -42,7 +43,8 @@ export class DatabaseService {
             .then((res) => {
                 // let today = new Date();
                 // let date = today.toString().replace( /^(\d{4})(\d\d)(\d\d)(\d\d)(\d\d)(\d\d)$/, '$4:$5:$6 $2/$3/$1' );
-                contents['index'] = this.makeIndex();
+               
+                contents['index'] = moment().format('YYYYMMDDHHmmss');
                 this.database.ref(this.USERS + uid + this.BOOKMARK + buildMgtNo)
                     .set(contents)
             })
@@ -50,25 +52,5 @@ export class DatabaseService {
 
     removeBookmark(uid: string, buildMgtNo: string) {
         return this.database.ref(this.USERS + uid + this.BOOKMARK).child(buildMgtNo).remove();
-    }
-
-    makeIndex(): any {
-        let index;
-        let today = new Date();
-        let yyyy = today.getFullYear();
-        let mm = today.getMonth() + 1; // getMonth() is zero-based
-        let dd = today.getDate();
-        return String(10000 * yyyy + 100 * mm + dd + this.time_format(today)); // Leading zeros for mm and dd
-    }
-
-    time_format(d) {
-        let hours = this.format_two_digits(d.getHours());
-        let minutes = this.format_two_digits(d.getMinutes());
-        let seconds = this.format_two_digits(d.getSeconds());
-        return hours + minutes + seconds;
-    }
-
-    format_two_digits(n) {
-        return n < 10 ? '0' + n : n;
     }
 }
