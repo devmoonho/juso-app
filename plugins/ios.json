@@ -7,9 +7,6 @@
         "files": {}
     },
     "installed_plugins": {
-        "cordova-plugin-console": {
-            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
-        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         },
