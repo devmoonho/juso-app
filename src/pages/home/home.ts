@@ -219,6 +219,7 @@ export class HomePage implements OnInit {
           return this.databaseService.getBookmark(this.userInfo.uid)
         })
         .then((res) => {
+          this.events.publish('bookmark:updated', res, Date.now());
         })
     } else {
       this.bookmarkList = [];
@@ -232,6 +233,7 @@ export class HomePage implements OnInit {
         return this.databaseService.getBookmark(this.userInfo.uid)
       })
       .then((res) => {
+        this.events.publish('bookmark:updated', res, Date.now());
       })
   }
 
