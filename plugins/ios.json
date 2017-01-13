@@ -7,6 +7,12 @@
         "files": {}
     },
     "installed_plugins": {
+        "com.verso.cordova.clipboard": {
+            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
+        },
+        "cordova-plugin-admobpro": {
+            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
+        },
         "cordova-plugin-device": {
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         },
@@ -20,6 +26,12 @@
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         },
         "cordova-plugin-inappbrowser": {
+            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
+        },
+        "cordova-plugin-network-information": {
+            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
+        },
+        "cordova-plugin-screen-orientation": {
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         },
         "cordova-plugin-splashscreen": {
@@ -36,18 +48,6 @@
         },
         "twitter-connect-plugin": {
             "FABRIC_KEY": "c56b751ddca407ddc6c66b22c00eb8fe0fad190b",
-            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
-        },
-        "com.verso.cordova.clipboard": {
-            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
-        },
-        "cordova-plugin-network-information": {
-            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
-        },
-        "cordova-plugin-admobpro": {
-            "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
-        },
-        "cordova-plugin-screen-orientation": {
             "PACKAGE_NAME": "com.ionicframework.jusoapp934053"
         }
     },
