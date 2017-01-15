@@ -74,13 +74,17 @@ export class HomePage implements OnInit {
       this.updateBookmark(res);
     });
 
-   Network.onDisconnect().subscribe(() => {
-      this.showAlert("연결 끊어짐", "네트워크 연결이 끊어졌습니다. 일부기능을 사용할 수 없습니다. ");
+    Network.onDisconnect().subscribe(() => {
+      // this.showAlert("연결 끊어짐", "네트워크 연결이 끊어졌습니다. 일부기능을 사용할 수 없습니다. ");
       this.networkStatus = "disconnection"
     });
     Network.onConnect().subscribe(() => {
-      this.displayToast("네트워크 연결됨");
+      // this.displayToast("네트워크 연결됨");
       this.networkStatus = "connection"
+
+      if (this.userInfo == null) {
+        this.databaseService.getBookmark(this.userInfo.uid)
+      }
     });
   }
 
